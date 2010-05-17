@@ -19,24 +19,29 @@ AnalogClock,Button,Chronometer,ImageButton,ImageView,ProgressBar,TextView
 
 	<!-- TODO: How to create those dynamically in the RemoteViews? -->
 	
-	<ImageButton android:src="#FF0000"
-		android:layout_width="72dp"
+	<ImageButton
+		android:src="#FF0000"
+		android:layout_width="74dp"
 		android:layout_height="fill_parent"
+		android:id="@+id/image01" 
 		/>
 
 	<ImageButton android:src="#FFFF00"
-		android:layout_width="72dp"
+		android:layout_width="74dp"
 		android:layout_height="fill_parent"
+		android:id="@+id/image02" 
 		/>
 
 	<ImageButton android:src="#FFFFFF"
-		android:layout_width="72dp"
+		android:layout_width="74dp"
 		android:layout_height="fill_parent"
+		android:id="@+id/image03" 
 		/>
 
 	<ImageButton android:src="#FF00FF"
-		android:layout_width="72dp"
+		android:layout_width="74dp"
 		android:layout_height="fill_parent"
+		android:id="@+id/image04" 
 		/>
 
 </LinearLayout>
