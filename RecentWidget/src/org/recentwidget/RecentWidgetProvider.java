@@ -17,8 +17,10 @@ public class RecentWidgetProvider extends AppWidgetProvider {
 	@Override
 	public void onUpdate(Context context, AppWidgetManager appWidgetManager,
 			int[] appWidgetIds) {
+
 		// Note: not called when using a ConfigurationActivity
 		super.onUpdate(context, appWidgetManager, appWidgetIds);
+
 	}
 
 	@Override
