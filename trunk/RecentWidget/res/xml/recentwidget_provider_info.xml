@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+	<!--
+		To find your minimum width and height in density-independent pixels
+		(dp), use this formula: (number of cells * 74) - 2 Following this
+		formula, you should use 72 dp for a height of one cell, 294 dp and for
+		a width of four cells.
+	-->
+<appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
+
+	android:minWidth="294dp" android:minHeight="72dp"
+	android:updatePeriodMillis="3600000" android:initialLayout="@layout/recentwidget"
+	android:configure="org.recentwidget.RecentWidgetMainActivity">
+
+</appwidget-provider>

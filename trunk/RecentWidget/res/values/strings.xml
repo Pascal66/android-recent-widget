@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="configure_header">Hello there. No configuration yet. Just click on save.</string>
+    <string name="app_name">RecentWidget</string>
+    <string name="save_action">Save</string>
+    <string name="test">TEST</string>
+</resources>
