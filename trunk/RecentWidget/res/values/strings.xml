@@ -4,4 +4,5 @@
     <string name="app_name">RecentWidget</string>
     <string name="save_action">Save</string>
     <string name="test">TEST</string>
+    <string name="popup_title">Recent Widget</string>
 </resources>
