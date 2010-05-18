@@ -12,10 +12,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.RemoteViews;
 
+// TODO: Extend PreferenceActivity for easier management?
 public class RecentWidgetMainActivity extends Activity {
 
-	private static final String TAG = "READ_PHONE_STATE";
+	// private static final String TAG = "RecentWidgetMainActivity";
 
+	// Set as protected so we can use it in the click listener
 	int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
 
 	/**
@@ -55,25 +57,34 @@ public class RecentWidgetMainActivity extends Activity {
 
 	PhoneStateListener phoneListener = new PhoneStateListener() {
 
-		private static final String TAG = "READ_PHONE_STATE";
+		private static final String TAG = "RecentWidgetMainActivity:phoneListener";
 
 		@Override
 		public void onCallStateChanged(int state, String incomingNumber) {
+
+			boolean updateWidget = false;
 
 			// Just log that we had a Telephony state change
 
 			switch (state) {
 			case TelephonyManager.CALL_STATE_RINGING:
-				Log.d(TAG, "Listened to incoming call: " + incomingNumber);
+			case TelephonyManager.CALL_STATE_OFFHOOK:
+				Log.d(TAG, "Listened to phone state change: " + incomingNumber);
+				updateWidget = true;
 				break;
-
 			default:
 				break;
 			}
 
-			// Then we'll update the widget later... how?
+			// Let the parent do its thing first (to avoid lag?)
 
 			super.onCallStateChanged(state, incomingNumber);
+
+			if (updateWidget) {
+				Intent intent = new Intent(
+						RecentWidgetUtils.ACTION_UPDATE_TELEPHONY);
+				sendBroadcast(intent);
+			}
 		}
 	};
 
@@ -87,27 +98,11 @@ public class RecentWidgetMainActivity extends Activity {
 
 			AppWidgetManager appWidgetManager = AppWidgetManager
 					.getInstance(context);
-			RemoteViews views = new RemoteViews(context.getPackageName(),
-					R.layout.recentwidget);
-
-			// What to do when onClick
-
-			Intent defineIntent = new Intent(
-					RecentWidgetUtils.ACTION_SHOW_POPUP);
-
-			PendingIntent pendingIntent = PendingIntent.getActivity(context, 0 // no
-					// requestCode
-					, defineIntent, Intent.FLAG_ACTIVITY_NEW_TASK // no flags
-					);
-
-			views.setOnClickPendingIntent(R.id.image01, pendingIntent);
-			views.setOnClickPendingIntent(R.id.image02, pendingIntent);
-			views.setOnClickPendingIntent(R.id.image03, pendingIntent);
-			views.setOnClickPendingIntent(R.id.image04, pendingIntent);
 
 			// Set it all and leave it be
 
-			appWidgetManager.updateAppWidget(mAppWidgetId, views);
+			appWidgetManager.updateAppWidget(mAppWidgetId,
+					buildWidgetView(context));
 
 			// Set the listeners...
 
@@ -124,6 +119,26 @@ public class RecentWidgetMainActivity extends Activity {
 			setResult(RESULT_OK, resultValue);
 			finish();
 		}
+
 	};
 
+	static final RemoteViews buildWidgetView(final Context context) {
+		RemoteViews views = new RemoteViews(context.getPackageName(),
+				R.layout.recentwidget);
+
+		// What to do when onClick
+
+		Intent defineIntent = new Intent(RecentWidgetUtils.ACTION_SHOW_POPUP);
+
+		PendingIntent pendingIntent = PendingIntent.getActivity(context, 0 // no
+				// requestCode
+				, defineIntent, Intent.FLAG_ACTIVITY_NEW_TASK // no flags
+				);
+
+		views.setOnClickPendingIntent(R.id.image01, pendingIntent);
+		views.setOnClickPendingIntent(R.id.image02, pendingIntent);
+		views.setOnClickPendingIntent(R.id.image03, pendingIntent);
+		views.setOnClickPendingIntent(R.id.image04, pendingIntent);
+		return views;
+	}
 }
