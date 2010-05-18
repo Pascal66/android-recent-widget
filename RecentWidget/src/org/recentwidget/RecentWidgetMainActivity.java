@@ -29,9 +29,12 @@ public class RecentWidgetMainActivity extends Activity {
 		setContentView(R.layout.main);
 
 		// Bind the action for the save button.
+		// TODO: This should be done somewhere else...
+
 		findViewById(R.id.saveButton).setOnClickListener(mOnClickListener);
 
 		// Find the widget id from the intent.
+
 		Intent intent = getIntent();
 		Bundle extras = intent.getExtras();
 		if (extras != null) {
@@ -40,6 +43,7 @@ public class RecentWidgetMainActivity extends Activity {
 		}
 
 		// If they gave us an intent without the widget id, just bail.
+
 		if (mAppWidgetId == AppWidgetManager.INVALID_APPWIDGET_ID) {
 			finish();
 		}
@@ -60,15 +64,27 @@ public class RecentWidgetMainActivity extends Activity {
 
 			// What to do when onClick
 
-			Intent defineIntent = new Intent(Intent.ACTION_VIEW, Uri
-					.parse("http://www.google.com"));
+			Intent defineIntent = new Intent(
+					RecentWidgetUtils.ACTION_SHOW_POPUP);
 
 			PendingIntent pendingIntent = PendingIntent.getActivity(context, 0 // no
 					// requestCode
-					, defineIntent, 0 // no flags
+					, defineIntent, Intent.FLAG_ACTIVITY_NEW_TASK // no flags
 					);
 
 			views.setOnClickPendingIntent(R.id.image01, pendingIntent);
+
+			Intent defineIntent2 = new Intent(Intent.ACTION_DEFAULT, Uri
+					.parse("http://www.google.com"));
+
+			PendingIntent pendingIntent2 = PendingIntent.getActivity(context, 0 // no
+					// requestCode
+					, defineIntent2, 0 // no flags
+					);
+
+			views.setOnClickPendingIntent(R.id.image02, pendingIntent2);
+			views.setOnClickPendingIntent(R.id.image03, pendingIntent2);
+			views.setOnClickPendingIntent(R.id.image04, pendingIntent2);
 
 			// Set it all and leave it be
 
