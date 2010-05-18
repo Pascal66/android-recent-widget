@@ -5,12 +5,16 @@ import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
+import android.telephony.PhoneStateListener;
+import android.telephony.TelephonyManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.RemoteViews;
 
 public class RecentWidgetMainActivity extends Activity {
+
+	private static final String TAG = "READ_PHONE_STATE";
 
 	int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
 
@@ -49,6 +53,30 @@ public class RecentWidgetMainActivity extends Activity {
 		}
 	}
 
+	PhoneStateListener phoneListener = new PhoneStateListener() {
+
+		private static final String TAG = "READ_PHONE_STATE";
+
+		@Override
+		public void onCallStateChanged(int state, String incomingNumber) {
+
+			// Just log that we had a Telephony state change
+
+			switch (state) {
+			case TelephonyManager.CALL_STATE_RINGING:
+				Log.d(TAG, "Listened to incoming call: " + incomingNumber);
+				break;
+
+			default:
+				break;
+			}
+
+			// Then we'll update the widget later... how?
+
+			super.onCallStateChanged(state, incomingNumber);
+		}
+	};
+
 	View.OnClickListener mOnClickListener = new View.OnClickListener() {
 		public void onClick(View v) {
 
@@ -73,22 +101,20 @@ public class RecentWidgetMainActivity extends Activity {
 					);
 
 			views.setOnClickPendingIntent(R.id.image01, pendingIntent);
-
-			Intent defineIntent2 = new Intent(Intent.ACTION_DEFAULT, Uri
-					.parse("http://www.google.com"));
-
-			PendingIntent pendingIntent2 = PendingIntent.getActivity(context, 0 // no
-					// requestCode
-					, defineIntent2, 0 // no flags
-					);
-
-			views.setOnClickPendingIntent(R.id.image02, pendingIntent2);
-			views.setOnClickPendingIntent(R.id.image03, pendingIntent2);
-			views.setOnClickPendingIntent(R.id.image04, pendingIntent2);
+			views.setOnClickPendingIntent(R.id.image02, pendingIntent);
+			views.setOnClickPendingIntent(R.id.image03, pendingIntent);
+			views.setOnClickPendingIntent(R.id.image04, pendingIntent);
 
 			// Set it all and leave it be
 
 			appWidgetManager.updateAppWidget(mAppWidgetId, views);
+
+			// Set the listeners...
+
+			TelephonyManager telManager = (TelephonyManager) context
+					.getSystemService(Context.TELEPHONY_SERVICE);
+			telManager.listen(phoneListener,
+					PhoneStateListener.LISTEN_CALL_STATE);
 
 			// Make sure we pass back the original appWidgetId
 
