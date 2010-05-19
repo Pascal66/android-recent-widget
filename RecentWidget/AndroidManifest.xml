@@ -3,7 +3,8 @@
 	 android:debuggable="true"
 	 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-	package="org.recentwidget" android:versionCode="1" android:versionName="1.0">
+	android:debuggable="true" package="org.recentwidget"
+	android:versionCode="1" android:versionName="1.0">
 	
 	<uses-permission android:name="android.permission.READ_PHONE_STATE" />
 	<uses-permission android:name="android.permission.READ_CONTACTS" />

@@ -14,13 +14,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.provider.CallLog.Calls;
+import android.util.Log;
 import android.widget.RemoteViews;
 
-/**
- * @author Administrator
- * 
- */
 public class RecentWidgetProvider extends AppWidgetProvider {
+
+	private static final String TAG = "RW:RecentWidgetProvider";
 
 	static List<RecentEvent> recentEvents = new ArrayList<RecentEvent>();
 
@@ -35,10 +34,15 @@ public class RecentWidgetProvider extends AppWidgetProvider {
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
+
 		if (RecentWidgetUtils.ACTION_UPDATE_TELEPHONY
 				.equals(intent.getAction())) {
 
+			Log.d(TAG, "Received broadcasted ACTION_UPDATE_TELEPHONY");
+
 			// Update the Recent Calls stack
+
+			recentEvents.clear();
 
 			// Do not use managedQuery because we will unload it ourselves
 
@@ -67,6 +71,7 @@ public class RecentWidgetProvider extends AppWidgetProvider {
 					event.setNumber(number);
 					event.setType(type);
 
+					Log.v(TAG, "Pushing recent event");
 					recentEvents.add(event);
 
 					callsCursor.moveToNext();
@@ -77,13 +82,18 @@ public class RecentWidgetProvider extends AppWidgetProvider {
 			callsCursor.close();
 
 			// Update widget
+
 			// TODO: This should be done on first creation (but how to access
 			// the recentEvents field? Maybe the Configurer should delegate to
 			// the onUpdate...)
 
-			// BUG! Does not include the current caller in the list!!!
+			// BUG! Does not include the current caller in the list!!! Wait for
+			// phone to be idle?
 
 			if (recentEvents.size() > 0) {
+
+				Log.d(TAG, "Updating widget labels");
+
 				String label = "N/A";
 
 				RemoteViews views = RecentWidgetMainActivity
@@ -99,12 +109,16 @@ public class RecentWidgetProvider extends AppWidgetProvider {
 
 				// Push update for this widget to the home screen
 
+				Log.d(TAG, "Pushing updated widget to provider");
+
 				ComponentName thisWidget = new ComponentName(context,
 						RecentWidgetProvider.class);
 				AppWidgetManager manager = AppWidgetManager
 						.getInstance(context);
 				manager.updateAppWidget(thisWidget, views);
 
+			} else {
+				Log.d(TAG, "No recent events to set on widget");
 			}
 
 		} else {
