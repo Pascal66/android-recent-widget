@@ -7,6 +7,7 @@ Popup that is supposed to be shown when a button is pressed... or not.
     android:orientation="horizontal"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:theme="@android:style/Theme.NoTitleBar"
     >
     
     <TextView 

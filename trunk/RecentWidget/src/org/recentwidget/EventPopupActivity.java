@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.Display;
 import android.view.View;
-import android.view.Window;
 
 public class EventPopupActivity extends Activity {
 
@@ -15,7 +14,8 @@ public class EventPopupActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		// requestWindowFeature(Window.FEATURE_NO_TITLE);
+
 		setContentView(R.layout.eventpopup);
 
 		// Resize to make it look like a popup

@@ -54,6 +54,9 @@ public class RecentWidgetMainActivity extends Activity {
 
 		if (mAppWidgetId == AppWidgetManager.INVALID_APPWIDGET_ID) {
 			finish();
+		} else {
+			// Update the widget for the 1st time
+			broadcastTelephonyUpdate();
 		}
 	}
 
@@ -84,12 +87,10 @@ public class RecentWidgetMainActivity extends Activity {
 			super.onCallStateChanged(state, incomingNumber);
 
 			if (updateWidget) {
-				Intent intent = new Intent(
-						RecentWidgetUtils.ACTION_UPDATE_TELEPHONY);
-				Log.d(TAG, "Broadcasting ACTION_UPDATE_TELEPHONY");
-				sendBroadcast(intent);
+				broadcastTelephonyUpdate();
 			}
 		}
+
 	};
 
 	View.OnClickListener mOnClickListener = new View.OnClickListener() {
@@ -100,25 +101,14 @@ public class RecentWidgetMainActivity extends Activity {
 
 			final Context context = RecentWidgetMainActivity.this;
 
-			// This does not belong here, but let's do it anyways...
-			// Note: Should be done after all the configuration has been stored.
-
-			AppWidgetManager appWidgetManager = AppWidgetManager
-					.getInstance(context);
-
-			// Set it all and leave it be
-
-			appWidgetManager.updateAppWidget(mAppWidgetId,
-					buildWidgetView(context));
-
-			// Set the listeners...
+			// Set the listeners (might have more listeners later...)
 
 			TelephonyManager telManager = (TelephonyManager) context
 					.getSystemService(Context.TELEPHONY_SERVICE);
 			telManager.listen(phoneListener,
 					PhoneStateListener.LISTEN_CALL_STATE);
 
-			// Make sure we pass back the original appWidgetId
+			// Make sure we pass back the original appWidgetId (for what?)
 
 			Intent resultValue = new Intent();
 			resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
@@ -154,5 +144,11 @@ public class RecentWidgetMainActivity extends Activity {
 		views.setOnClickPendingIntent(R.id.image04, pendingIntent);
 		return views;
 
+	}
+
+	public void broadcastTelephonyUpdate() {
+		Intent intent = new Intent(RecentWidgetUtils.ACTION_UPDATE_TELEPHONY);
+		Log.d(TAG, "Broadcasting ACTION_UPDATE_TELEPHONY");
+		sendBroadcast(intent);
 	}
 }
