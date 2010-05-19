@@ -21,7 +21,16 @@ public class RecentWidgetProvider extends AppWidgetProvider {
 
 	private static final String TAG = "RW:RecentWidgetProvider";
 
-	static List<RecentEvent> recentEvents = new ArrayList<RecentEvent>();
+	/**
+	 * Number of recent events displayed on widget. Might be configurable?
+	 */
+	static final int maxRetrieved = 4;
+
+	/**
+	 * List of the Events to be displayed on the widget.
+	 */
+	static List<RecentEvent> recentEvents = new ArrayList<RecentEvent>(
+			maxRetrieved);
 
 	@Override
 	// Note: not called when using a ConfigurationActivity
@@ -40,9 +49,17 @@ public class RecentWidgetProvider extends AppWidgetProvider {
 
 			Log.d(TAG, "Received broadcasted ACTION_UPDATE_TELEPHONY");
 
-			// Update the Recent Calls stack
+			// Retrieve the last telephony events
 
-			recentEvents.clear();
+			// TODO: Use template pattern if sms, email, etc also use a
+			// ContentProvider?
+
+			List<RecentEvent> telRecentEvents = new ArrayList<RecentEvent>(
+					maxRetrieved);
+
+			// BUG! Does not include the current caller in the list!!! Wait for
+			// phone to be idle? (Configure columns and translations to
+			// RecentEvent, rest is the same)
 
 			// Do not use managedQuery because we will unload it ourselves
 
@@ -51,13 +68,17 @@ public class RecentWidgetProvider extends AppWidgetProvider {
 					new String[] { Calls.CACHED_NAME, Calls.NUMBER, Calls.NEW,
 							Calls.TYPE }, null, null, Calls.DEFAULT_SORT_ORDER);
 
-			int maxRetrieved = 4;
 			String name;
 			String number;
 			int type;
+			int counter = maxRetrieved;
+
+			// Note: we might not want to retrieve all the maxRetrieved events
+			// (maybe just the last one is enough?)... depends on the current
+			// state of the recentEvents list.
 
 			if (callsCursor.moveToFirst()) {
-				while (!callsCursor.isAfterLast() && maxRetrieved > 0) {
+				while (!callsCursor.isAfterLast() && counter > 0) {
 
 					name = callsCursor.getString(callsCursor
 							.getColumnIndex(Calls.CACHED_NAME));
@@ -71,55 +92,23 @@ public class RecentWidgetProvider extends AppWidgetProvider {
 					event.setNumber(number);
 					event.setType(type);
 
-					Log.v(TAG, "Pushing recent event");
-					recentEvents.add(event);
+					Log.v(TAG, "Pushing telephony recent event");
+					telRecentEvents.add(event);
 
 					callsCursor.moveToNext();
-					maxRetrieved--;
+					counter--;
 				}
 			}
 
 			callsCursor.close();
 
-			// Update widget
+			// Cheat: all recent events are telephony events for now
 
-			// TODO: This should be done on first creation (but how to access
-			// the recentEvents field? Maybe the Configurer should delegate to
-			// the onUpdate...)
+			recentEvents = telRecentEvents;
 
-			// BUG! Does not include the current caller in the list!!! Wait for
-			// phone to be idle?
+			// Update the widget
 
-			if (recentEvents.size() > 0) {
-
-				Log.d(TAG, "Updating widget labels");
-
-				String label = "N/A";
-
-				RemoteViews views = RecentWidgetMainActivity
-						.buildWidgetView(context);
-
-				if (recentEvents.get(0).getPerson() != null) {
-					label = recentEvents.get(0).getPerson();
-				} else if (recentEvents.get(0).getNumber() != null) {
-					label = recentEvents.get(0).getNumber();
-				}
-
-				views.setCharSequence(R.id.image01, "setText", label);
-
-				// Push update for this widget to the home screen
-
-				Log.d(TAG, "Pushing updated widget to provider");
-
-				ComponentName thisWidget = new ComponentName(context,
-						RecentWidgetProvider.class);
-				AppWidgetManager manager = AppWidgetManager
-						.getInstance(context);
-				manager.updateAppWidget(thisWidget, views);
-
-			} else {
-				Log.d(TAG, "No recent events to set on widget");
-			}
+			updateWidgetLabels(context);
 
 		} else {
 
@@ -127,6 +116,51 @@ public class RecentWidgetProvider extends AppWidgetProvider {
 			// http://groups.google.com/group/android-developers/msg/e405ca19df2170e2?pli=1
 
 			super.onReceive(context, intent);
+		}
+	}
+
+	private void updateWidgetLabels(Context context) {
+		// Update labels on widget
+
+		if (recentEvents.size() > 0) {
+
+			Log.d(TAG, "Updating widget labels");
+
+			String label = "N/A";
+
+			RemoteViews views = RecentWidgetMainActivity
+					.buildWidgetView(context);
+
+			int[] imageMap = new int[] { R.id.image01, R.id.image02,
+					R.id.image03, R.id.image04 };
+
+			for (int i = 0; i < maxRetrieved; i++) {
+
+				if (recentEvents.get(i).getPerson() != null) {
+					label = recentEvents.get(i).getPerson();
+				} else if (recentEvents.get(i).getNumber() != null) {
+					label = recentEvents.get(i).getNumber();
+				}
+
+				Log.d(TAG, "Setting button label");
+
+				views.setCharSequence(imageMap[i], "setText", label);
+
+			}
+
+			// Push update for this widget to the home screen
+
+			Log.d(TAG, "Pushing updated widget to provider");
+
+			ComponentName thisWidget = new ComponentName(context,
+					RecentWidgetProvider.class);
+			AppWidgetManager manager = AppWidgetManager.getInstance(context);
+			manager.updateAppWidget(thisWidget, views);
+
+		} else {
+
+			Log.d(TAG, "No recent events to set on widget");
+
 		}
 	}
 }
