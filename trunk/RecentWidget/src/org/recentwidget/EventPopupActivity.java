@@ -2,6 +2,7 @@ package org.recentwidget;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.View;
 import android.view.Window;
 
 public class EventPopupActivity extends Activity {
@@ -14,12 +15,19 @@ public class EventPopupActivity extends Activity {
 		super.onCreate(savedInstanceState);
 
 		requestWindowFeature(Window.FEATURE_LEFT_ICON);
+		requestWindowFeature(Window.FEATURE_RIGHT_ICON);
 
 		setContentView(R.layout.eventpopup);
 
 		// Different icons: sym_call_incoming ic_dialog_info
+
 		getWindow().setFeatureDrawableResource(Window.FEATURE_LEFT_ICON,
 				android.R.drawable.ic_dialog_info);
+
+		getWindow().setFeatureDrawableResource(Window.FEATURE_RIGHT_ICON,
+				android.R.drawable.ic_delete);
+
+		View closeButton = findViewById(android.R.drawable.ic_delete);
 	}
 
 }
