@@ -10,10 +10,15 @@ import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
 import android.content.ContentResolver;
+import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.provider.Contacts;
 import android.provider.CallLog.Calls;
+import android.provider.Contacts.People;
+import android.provider.Contacts.Phones;
 import android.util.Log;
 import android.widget.RemoteViews;
 
@@ -116,6 +121,7 @@ public class RecentWidgetProvider extends AppWidgetProvider {
 	}
 
 	private void updateWidgetLabels(Context context) {
+
 		// Update labels on widget
 
 		if (recentEvents.size() > 0) {
@@ -132,16 +138,69 @@ public class RecentWidgetProvider extends AppWidgetProvider {
 
 			for (int i = 0; i < maxRetrieved; i++) {
 
-				if (recentEvents.get(i).getPerson() != null) {
-					label = recentEvents.get(i).getPerson();
-				} else if (recentEvents.get(i).getNumber() != null) {
-					label = recentEvents.get(i).getNumber();
+				RecentEvent recentEvent = recentEvents.get(i);
+
+				// Try to fetch the Contact
+				// TODO: Skip it if we already have the info!
+
+				ContentResolver resolver = context.getContentResolver();
+				Cursor contactCursor = resolver.query(
+						Contacts.Phones.CONTENT_URI, new String[] {
+								Phones.PERSON_ID, Phones.DISPLAY_NAME },
+						Phones.NUMBER + " = ?", new String[] { recentEvent
+								.getNumber() }, Phones.DEFAULT_SORT_ORDER);
+
+				if (contactCursor.getCount() >= 1) {
+
+					// Just take the 1st result even if there are several
+					// matches
+
+					contactCursor.moveToFirst();
+
+					label = contactCursor.getString(contactCursor
+							.getColumnIndex(Phones.DISPLAY_NAME));
+
+					// Set it, so next time we might not need to repeat this
+					// query...
+
+					recentEvent.setPerson(label);
+
+					String personIdAsString = contactCursor
+							.getString(contactCursor
+									.getColumnIndex(Phones.PERSON_ID));
+
+					recentEvent.setPersonId(Long.parseLong(personIdAsString));
+
+				} else {
+
+					// Defaults to the basic info we got
+
+					if (recentEvent.getPerson() != null) {
+						label = recentEvent.getPerson();
+					} else if (recentEvent.getNumber() != null) {
+						label = recentEvent.getNumber();
+					}
 				}
+
+				contactCursor.close();
 
 				Log.d(TAG, "Setting button label");
 
 				views.setCharSequence(imageMap[i], "setText", label);
 
+				if (recentEvent.getPersonId() != null) {
+
+					// Also try to set the picture
+
+					Log.d(TAG, "Setting button photo");
+
+					Bitmap contactPhoto = People.loadContactPhoto(context,
+							ContentUris.withAppendedId(People.CONTENT_URI,
+									recentEvent.getPersonId()),
+							R.drawable.icon, null);
+
+					views.setBitmap(R.id.src01, "setImageBitmap", contactPhoto);
+				}
 			}
 
 			// Push update for this widget to the home screen

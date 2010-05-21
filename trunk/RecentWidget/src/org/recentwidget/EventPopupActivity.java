@@ -27,6 +27,7 @@ public class EventPopupActivity extends Activity {
 		getWindow().setFeatureDrawableResource(Window.FEATURE_RIGHT_ICON,
 				android.R.drawable.ic_delete);
 
+		// Does not work. TODO: Remove title bar and create custom title bar.
 		View closeButton = findViewById(android.R.drawable.ic_delete);
 	}
 

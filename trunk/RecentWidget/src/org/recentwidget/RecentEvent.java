@@ -10,6 +10,8 @@ public class RecentEvent implements Serializable {
 	private String number;
 	private int type;
 
+	private Long personId;
+
 	public String getPerson() {
 		return person;
 	}
@@ -32,6 +34,14 @@ public class RecentEvent implements Serializable {
 
 	public int getType() {
 		return type;
+	}
+
+	public Long getPersonId() {
+		return personId;
+	}
+
+	public void setPersonId(Long personId) {
+		this.personId = personId;
 	}
 
 }
