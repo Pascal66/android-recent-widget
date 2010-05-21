@@ -37,7 +37,6 @@ public class RecentWidgetMainActivity extends Activity {
 		setContentView(R.layout.main);
 
 		// Bind the action for the save button.
-		// TODO: This should be done somewhere else...
 
 		findViewById(R.id.saveButton).setOnClickListener(mOnClickListener);
 
@@ -57,6 +56,9 @@ public class RecentWidgetMainActivity extends Activity {
 		} else {
 			// Update the widget for the 1st time
 			broadcastTelephonyUpdate();
+			// TODO: No configuration so skip this part!
+			bindTelephonyListener();
+			finish();
 		}
 	}
 
@@ -100,23 +102,9 @@ public class RecentWidgetMainActivity extends Activity {
 
 		public void onClick(View v) {
 
-			final Context context = RecentWidgetMainActivity.this;
+			Log.d(TAG, "Saving configuration and binding listener");
 
-			// Set the listeners (might have more listeners later...)
-
-			TelephonyManager telManager = (TelephonyManager) context
-					.getSystemService(Context.TELEPHONY_SERVICE);
-			telManager.listen(phoneListener,
-					PhoneStateListener.LISTEN_CALL_STATE);
-
-			// Make sure we pass back the original appWidgetId (for what?)
-
-			Intent resultValue = new Intent();
-			resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
-					mAppWidgetId);
-			setResult(RESULT_OK, resultValue);
-
-			Log.d(TAG, "Finished registering widget");
+			bindTelephonyListener();
 
 			finish();
 		}
@@ -143,6 +131,7 @@ public class RecentWidgetMainActivity extends Activity {
 		views.setOnClickPendingIntent(R.id.image02, pendingIntent);
 		views.setOnClickPendingIntent(R.id.image03, pendingIntent);
 		views.setOnClickPendingIntent(R.id.image04, pendingIntent);
+
 		return views;
 
 	}
@@ -152,4 +141,23 @@ public class RecentWidgetMainActivity extends Activity {
 		Log.d(TAG, "Broadcasting ACTION_UPDATE_TELEPHONY");
 		sendBroadcast(intent);
 	}
+
+	private void bindTelephonyListener() {
+		final Context context = RecentWidgetMainActivity.this;
+
+		// Set the listeners (might have more listeners later...)
+
+		TelephonyManager telManager = (TelephonyManager) context
+				.getSystemService(Context.TELEPHONY_SERVICE);
+		telManager.listen(phoneListener, PhoneStateListener.LISTEN_CALL_STATE);
+
+		// Make sure we pass back the original appWidgetId (for what?)
+
+		Intent resultValue = new Intent();
+		resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
+		setResult(RESULT_OK, resultValue);
+
+		Log.d(TAG, "Finished registering widget");
+	}
+
 }

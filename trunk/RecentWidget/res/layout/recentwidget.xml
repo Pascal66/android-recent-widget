@@ -12,33 +12,40 @@ AnalogClock,Button,Chronometer,ImageButton,ImageView,ProgressBar,TextView
 
  -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:background="@drawable/widget_frame_landscape_4x1"
     android:orientation="horizontal"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:paddingLeft="14dp"
     >
 
 	<!-- TODO: How to create those dynamically in the RemoteViews? -->
 	
+	<!-- TODO: create onPressed images... -->
+	
 	<Button
-		android:background="#FF0000"
+		android:background="@android:color/transparent"
 		android:layout_width="74dp"
 		android:layout_height="fill_parent"
 		android:id="@+id/image01" 
 		/>
 
-	<Button android:background="#FFFF00"
+	<Button 
+		android:background="@android:color/transparent"
 		android:layout_width="74dp"
 		android:layout_height="fill_parent"
 		android:id="@+id/image02" 
 		/>
 
-	<Button android:background="#FFFFFF"
+	<Button 
+		android:background="@android:color/transparent"
 		android:layout_width="74dp"
 		android:layout_height="fill_parent"
 		android:id="@+id/image03" 
 		/>
 
-	<Button android:background="#FF00FF"
+	<Button 
+		android:background="@android:color/transparent"
 		android:layout_width="74dp"
 		android:layout_height="fill_parent"
 		android:id="@+id/image04" 

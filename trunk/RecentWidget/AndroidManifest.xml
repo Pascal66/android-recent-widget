@@ -22,7 +22,9 @@
 			</intent-filter>
 		</activity>
 
-		<activity android:name=".EventPopupActivity" android:label="@string/popup_title">
+		<activity android:name=".EventPopupActivity" 
+			android:theme="@android:style/Theme.Dialog"
+			android:label="@string/popup_title">
 			<intent-filter>
 				<action android:name="org.recentwidget.SHOW_POPUP" />
 				<category android:name="android.intent.category.DEFAULT" />
