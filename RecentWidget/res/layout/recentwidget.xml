@@ -1,54 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- 
-http://developer.android.com/guide/topics/appwidgets/index.html
+	<!--
+		http://developer.android.com/guide/topics/appwidgets/index.html A
+		RemoteViews object (and, consequently, an App Widget) can support the
+		following layout classes: FrameLayout,LinearLayout,RelativeLayout And
+		the following widget classes (Descendants of these classes are not
+		supported):
 
-A RemoteViews object (and, consequently, an App Widget) can support the following layout classes:
-
-FrameLayout,LinearLayout,RelativeLayout
-
-And the following widget classes (Descendants of these classes are not supported):
-
-AnalogClock,Button,Chronometer,ImageButton,ImageView,ProgressBar,TextView
-
- -->
+		AnalogClock,Button,Chronometer,ImageButton,ImageView,ProgressBar,TextView
+	-->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:background="@drawable/widget_frame_landscape_4x1"
-    android:orientation="horizontal"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:paddingLeft="14dp"
-    >
+	android:orientation="horizontal" android:layout_width="fill_parent"
+	android:layout_height="fill_parent" android:paddingLeft="14dp">
+
+	<!-- TODO: Add a default "initializing" message... -->
 
 	<!-- TODO: How to create those dynamically in the RemoteViews? -->
-	
+
 	<!-- TODO: create onPressed images... -->
-	
-	<Button
-		android:background="@android:color/transparent"
-		android:layout_width="74dp"
-		android:layout_height="fill_parent"
-		android:id="@+id/image01" 
-		/>
 
-	<Button 
-		android:background="@android:color/transparent"
-		android:layout_width="74dp"
-		android:layout_height="fill_parent"
-		android:id="@+id/image02" 
-		/>
+	<AbsoluteLayout android:layout_width="74dp"
+		android:layout_height="fill_parent">
+		<ImageView android:id="@+id/src01" android:layout_width="74dp"
+			android:layout_height="fill_parent" />
+		<Button android:background="@android:color/transparent"
+			android:layout_width="74dp" android:layout_height="fill_parent"
+			android:id="@+id/image01" />
+	</AbsoluteLayout>
 
-	<Button 
-		android:background="@android:color/transparent"
-		android:layout_width="74dp"
-		android:layout_height="fill_parent"
-		android:id="@+id/image03" 
-		/>
+	<Button android:background="@android:color/transparent"
+		android:layout_width="74dp" android:layout_height="fill_parent"
+		android:id="@+id/image02" />
 
-	<Button 
-		android:background="@android:color/transparent"
-		android:layout_width="74dp"
-		android:layout_height="fill_parent"
-		android:id="@+id/image04" 
-		/>
+	<Button android:background="@android:color/transparent"
+		android:layout_width="74dp" android:layout_height="fill_parent"
+		android:id="@+id/image03" />
+
+	<Button android:background="@android:color/transparent"
+		android:layout_width="74dp" android:layout_height="fill_parent"
+		android:id="@+id/image04" />
 
 </LinearLayout>

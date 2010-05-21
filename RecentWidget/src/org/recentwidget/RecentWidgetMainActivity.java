@@ -54,9 +54,22 @@ public class RecentWidgetMainActivity extends Activity {
 		if (mAppWidgetId == AppWidgetManager.INVALID_APPWIDGET_ID) {
 			finish();
 		} else {
+
 			// Update the widget for the 1st time
+
 			broadcastTelephonyUpdate();
-			// TODO: No configuration so skip this part!
+
+			// Make sure we pass back the original appWidgetId (for what?)
+
+			Intent resultValue = new Intent();
+			resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
+					mAppWidgetId);
+			setResult(RESULT_OK, resultValue);
+
+			Log.d(TAG, "Finished registering widget");
+
+			// TODO: No configuration so skip this activity!
+
 			bindTelephonyListener();
 			finish();
 		}
@@ -111,6 +124,12 @@ public class RecentWidgetMainActivity extends Activity {
 
 	};
 
+	/**
+	 * Create the RemoteViews and
+	 * 
+	 * @param context
+	 * @return
+	 */
 	static final RemoteViews buildWidgetView(final Context context) {
 
 		Log.d(TAG, "Creating widget view");
@@ -145,19 +164,14 @@ public class RecentWidgetMainActivity extends Activity {
 	private void bindTelephonyListener() {
 		final Context context = RecentWidgetMainActivity.this;
 
+		Log.d(TAG, "Binding telephony listener");
+
 		// Set the listeners (might have more listeners later...)
 
 		TelephonyManager telManager = (TelephonyManager) context
 				.getSystemService(Context.TELEPHONY_SERVICE);
 		telManager.listen(phoneListener, PhoneStateListener.LISTEN_CALL_STATE);
 
-		// Make sure we pass back the original appWidgetId (for what?)
-
-		Intent resultValue = new Intent();
-		resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
-		setResult(RESULT_OK, resultValue);
-
-		Log.d(TAG, "Finished registering widget");
 	}
 
 }
