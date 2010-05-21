@@ -74,11 +74,13 @@ public class RecentWidgetMainActivity extends Activity {
 			switch (state) {
 			case TelephonyManager.CALL_STATE_RINGING:
 			case TelephonyManager.CALL_STATE_OFFHOOK:
-				Log.d(TAG, "Listened to phone state change");
-				updateWidget = true;
+				Log.d(TAG, "Ignoring phone state change");
 				break;
 			default:
-				Log.d(TAG, "Ignoring phone state change");
+				// Actually listen when telephone is back to normal -> means a
+				// call was in/outgoing
+				Log.d(TAG, "Listened to phone state change");
+				updateWidget = true;
 				break;
 			}
 

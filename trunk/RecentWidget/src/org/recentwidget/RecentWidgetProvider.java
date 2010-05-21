@@ -57,10 +57,6 @@ public class RecentWidgetProvider extends AppWidgetProvider {
 			List<RecentEvent> telRecentEvents = new ArrayList<RecentEvent>(
 					maxRetrieved);
 
-			// BUG! Does not include the current caller in the list!!! Wait for
-			// phone to be idle? (Configure columns and translations to
-			// RecentEvent, rest is the same)
-
 			// Do not use managedQuery because we will unload it ourselves
 
 			ContentResolver dataProvider = context.getContentResolver();
