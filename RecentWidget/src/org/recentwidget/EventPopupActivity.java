@@ -56,6 +56,7 @@ public class EventPopupActivity extends Activity {
 
 		ImageButton actionButton = (ImageButton) findViewById(R.id.popupAction);
 		final Intent actionIntent = new Intent(Intent.ACTION_VIEW);
+		actionIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
 		if (recentEvent.getPersonId() == null) {
 			// Bring up the dialer since no Contact registered
