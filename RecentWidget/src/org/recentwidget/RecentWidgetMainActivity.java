@@ -1,7 +1,6 @@
 package org.recentwidget;
 
 import android.app.Activity;
-import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
@@ -10,7 +9,6 @@ import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
-import android.widget.RemoteViews;
 
 // TODO: Extend PreferenceActivity for easier management?
 public class RecentWidgetMainActivity extends Activity {
@@ -123,37 +121,6 @@ public class RecentWidgetMainActivity extends Activity {
 		}
 
 	};
-
-	/**
-	 * Create the RemoteViews and
-	 * 
-	 * @param context
-	 * @return
-	 */
-	static final RemoteViews buildWidgetView(final Context context) {
-
-		Log.d(TAG, "Creating widget view");
-
-		RemoteViews views = new RemoteViews(context.getPackageName(),
-				R.layout.recentwidget);
-
-		// What to do when onClick
-
-		Intent defineIntent = new Intent(RecentWidgetUtils.ACTION_SHOW_POPUP);
-
-		PendingIntent pendingIntent = PendingIntent.getActivity(context, 0 // no
-				// requestCode
-				, defineIntent, Intent.FLAG_ACTIVITY_NEW_TASK // no flags
-				);
-
-		views.setOnClickPendingIntent(R.id.image01, pendingIntent);
-		views.setOnClickPendingIntent(R.id.image02, pendingIntent);
-		views.setOnClickPendingIntent(R.id.image03, pendingIntent);
-		views.setOnClickPendingIntent(R.id.image04, pendingIntent);
-
-		return views;
-
-	}
 
 	public void broadcastTelephonyUpdate() {
 		Intent intent = new Intent(RecentWidgetUtils.ACTION_UPDATE_TELEPHONY);
