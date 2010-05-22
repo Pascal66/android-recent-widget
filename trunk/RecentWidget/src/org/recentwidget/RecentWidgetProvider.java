@@ -32,6 +32,8 @@ public class RecentWidgetProvider extends AppWidgetProvider {
 	 */
 	static final int maxRetrieved = 4;
 
+	public static final String BUTTON_PRESSED = "org.recentwidget.BUTTON_PRESSED";
+
 	/**
 	 * The buttons available on the widget.
 	 */
@@ -251,22 +253,51 @@ public class RecentWidgetProvider extends AppWidgetProvider {
 		RemoteViews views = new RemoteViews(context.getPackageName(),
 				R.layout.recentwidget);
 
-		// What to do when onClick
-
-		Intent defineIntent = new Intent(RecentWidgetUtils.ACTION_SHOW_POPUP);
-
-		PendingIntent pendingIntent = PendingIntent.getActivity(context, 0 // no
-				// requestCode
-				, defineIntent, Intent.FLAG_ACTIVITY_NEW_TASK // no flags
-				);
-
 		// Note: API-7 supports RemoteViews.addView !!!
 
+		// What to do when onClick
+
 		for (int buttonId : buttonMap) {
+
+			Intent defineIntent = new Intent(
+					RecentWidgetUtils.ACTION_SHOW_POPUP);
+
+			// TODO: bad idea, give index of RecentEvent rather?
+			defineIntent.putExtra(BUTTON_PRESSED, buttonId);
+
+			// buttonId as requestCode = hack to make sure that each intent is
+			// created as a new instance (instead of re-used or overwritten)
+
+			PendingIntent pendingIntent = PendingIntent.getActivity(context,
+					buttonId // no
+					// requestCode
+					, defineIntent, Intent.FLAG_ACTIVITY_NEW_TASK // no flags
+					);
+
 			views.setOnClickPendingIntent(buttonId, pendingIntent);
+
 		}
 
 		return views;
 
+	}
+
+	protected static RecentEvent getRecentEvent(int buttonPressed) {
+
+		boolean found = false;
+		int index = 0;
+
+		for (index = 0; index < buttonMap.length; index++) {
+			if (buttonMap[index] == buttonPressed) {
+				found = true;
+				break;
+			}
+		}
+
+		if (found && recentEvents.size() - 1 >= index) {
+			return recentEvents.get(index);
+		} else {
+			return null;
+		}
 	}
 }
