@@ -5,7 +5,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
 	android:debuggable="true" package="org.recentwidget"
 	android:versionCode="1" android:versionName="0.2">
-	
+
 	<uses-permission android:name="android.permission.READ_PHONE_STATE" />
 	<uses-permission android:name="android.permission.READ_CONTACTS" />
 
@@ -22,8 +22,12 @@
 			</intent-filter>
 		</activity>
 
-		<activity android:name=".EventPopupActivity" 
-			android:theme="@android:style/Theme.Dialog"
+		<!--
+			usefull but unused attributes: android:clearTaskOnLaunch="true"
+			android:finishOnTaskLaunch="true"
+		-->
+		<activity android:name=".EventPopupActivity" android:noHistory="true"
+			android:excludeFromRecents="true" android:theme="@android:style/Theme.Dialog"
 			android:label="@string/popup_title">
 			<intent-filter>
 				<action android:name="org.recentwidget.SHOW_POPUP" />
@@ -41,7 +45,7 @@
 		</receiver>
 
 	</application>
-	
+
 	<uses-sdk android:minSdkVersion="3" />
 
 </manifest> 
