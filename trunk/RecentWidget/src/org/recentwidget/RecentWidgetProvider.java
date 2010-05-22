@@ -6,6 +6,7 @@ package org.recentwidget;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
@@ -30,6 +31,20 @@ public class RecentWidgetProvider extends AppWidgetProvider {
 	 * Number of recent events displayed on widget. Might be configurable?
 	 */
 	static final int maxRetrieved = 4;
+
+	/**
+	 * The buttons available on the widget.
+	 */
+	static int[] buttonMap = new int[] { R.id.contactButton01,
+			R.id.contactButton02, R.id.contactButton03, R.id.contactButton04 };
+
+	/**
+	 * The contact images available on the widget.
+	 */
+	static int[] imageMap = new int[] { R.id.contactSrc01, R.id.contactSrc02,
+			R.id.contactSrc03, R.id.contactSrc04 };
+
+	static int defaultContactImage = android.R.drawable.picture_frame;
 
 	/**
 	 * List of the Events to be displayed on the widget.
@@ -124,17 +139,15 @@ public class RecentWidgetProvider extends AppWidgetProvider {
 
 		// Update labels on widget
 
+		// Note: Labels/Photos are better handled using ContactsContract (API-5)
+
 		if (recentEvents.size() > 0) {
 
 			Log.d(TAG, "Updating widget labels");
 
 			String label = "N/A";
 
-			RemoteViews views = RecentWidgetMainActivity
-					.buildWidgetView(context);
-
-			int[] imageMap = new int[] { R.id.image01, R.id.image02,
-					R.id.image03, R.id.image04 };
+			RemoteViews views = RecentWidgetProvider.buildWidgetView(context);
 
 			for (int i = 0; i < maxRetrieved; i++) {
 
@@ -186,7 +199,7 @@ public class RecentWidgetProvider extends AppWidgetProvider {
 
 				Log.d(TAG, "Setting button label");
 
-				views.setCharSequence(imageMap[i], "setText", label);
+				views.setCharSequence(buttonMap[i], "setText", label);
 
 				if (recentEvent.getPersonId() != null) {
 
@@ -197,9 +210,15 @@ public class RecentWidgetProvider extends AppWidgetProvider {
 					Bitmap contactPhoto = People.loadContactPhoto(context,
 							ContentUris.withAppendedId(People.CONTENT_URI,
 									recentEvent.getPersonId()),
-							R.drawable.icon, null);
+							defaultContactImage, null);
 
-					views.setBitmap(R.id.src01, "setImageBitmap", contactPhoto);
+					views
+							.setBitmap(imageMap[i], "setImageBitmap",
+									contactPhoto);
+				} else {
+					views
+							.setImageViewResource(imageMap[i],
+									defaultContactImage);
 				}
 			}
 
@@ -217,5 +236,37 @@ public class RecentWidgetProvider extends AppWidgetProvider {
 			Log.d(TAG, "No recent events to set on widget");
 
 		}
+	}
+
+	/**
+	 * Create the RemoteViews and
+	 * 
+	 * @param context
+	 * @return
+	 */
+	static final RemoteViews buildWidgetView(final Context context) {
+
+		Log.d(TAG, "Creating widget view");
+
+		RemoteViews views = new RemoteViews(context.getPackageName(),
+				R.layout.recentwidget);
+
+		// What to do when onClick
+
+		Intent defineIntent = new Intent(RecentWidgetUtils.ACTION_SHOW_POPUP);
+
+		PendingIntent pendingIntent = PendingIntent.getActivity(context, 0 // no
+				// requestCode
+				, defineIntent, Intent.FLAG_ACTIVITY_NEW_TASK // no flags
+				);
+
+		// Note: API-7 supports RemoteViews.addView !!!
+
+		for (int buttonId : buttonMap) {
+			views.setOnClickPendingIntent(buttonId, pendingIntent);
+		}
+
+		return views;
+
 	}
 }

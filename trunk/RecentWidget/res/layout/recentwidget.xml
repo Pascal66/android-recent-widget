@@ -15,29 +15,67 @@
 
 	<!-- TODO: Add a default "initializing" message... -->
 
-	<!-- TODO: How to create those dynamically in the RemoteViews? -->
+	<!--
+		TODO: How to create those dynamically in the RemoteViews? (Requires
+		API-7!)
+	-->
 
-	<!-- TODO: create onPressed images... -->
+	<!-- TODO: create onPressed drawables for better visual -->
 
 	<AbsoluteLayout android:layout_width="74dp"
 		android:layout_height="fill_parent">
-		<ImageView android:id="@+id/src01" android:layout_width="74dp"
-			android:layout_height="fill_parent" />
+
+		<!-- ImageView for displaying contact pic -->
+		<ImageView android:id="@+id/contactSrc01"
+			android:layout_width="74dp" android:layout_height="fill_parent" />
+
+		<!-- Button for displaying name -->
 		<Button android:background="@android:color/transparent"
 			android:layout_width="74dp" android:layout_height="fill_parent"
-			android:id="@+id/image01" />
+			android:id="@+id/contactButton01" />
+			
 	</AbsoluteLayout>
 
-	<Button android:background="@android:color/transparent"
-		android:layout_width="74dp" android:layout_height="fill_parent"
-		android:id="@+id/image02" />
+	<AbsoluteLayout android:layout_width="74dp"
+		android:layout_height="fill_parent">
 
-	<Button android:background="@android:color/transparent"
-		android:layout_width="74dp" android:layout_height="fill_parent"
-		android:id="@+id/image03" />
+		<!-- ImageView for displaying contact pic -->
+		<ImageView android:id="@+id/contactSrc02"
+			android:layout_width="74dp" android:layout_height="fill_parent" />
 
-	<Button android:background="@android:color/transparent"
-		android:layout_width="74dp" android:layout_height="fill_parent"
-		android:id="@+id/image04" />
+		<!-- Button for displaying name -->
+		<Button android:background="@android:color/transparent"
+			android:layout_width="74dp" android:layout_height="fill_parent"
+			android:id="@+id/contactButton02" />
+			
+	</AbsoluteLayout>
+
+	<AbsoluteLayout android:layout_width="74dp"
+		android:layout_height="fill_parent">
+
+		<!-- ImageView for displaying contact pic -->
+		<ImageView android:id="@+id/contactSrc03"
+			android:layout_width="74dp" android:layout_height="fill_parent" />
+
+		<!-- Button for displaying name -->
+		<Button android:background="@android:color/transparent"
+			android:layout_width="74dp" android:layout_height="fill_parent"
+			android:id="@+id/contactButton03" />
+			
+	</AbsoluteLayout>
+
+	<AbsoluteLayout android:layout_width="74dp"
+		android:layout_height="fill_parent">
+
+		<!-- ImageView for displaying contact pic -->
+		<ImageView android:id="@+id/contactSrc04"
+			android:layout_width="74dp" android:layout_height="fill_parent" />
+
+		<!-- Button for displaying name -->
+		<Button android:background="@android:color/transparent"
+			android:layout_width="74dp" android:layout_height="fill_parent"
+			android:id="@+id/contactButton04" />
+			
+	</AbsoluteLayout>
 
 </LinearLayout>
