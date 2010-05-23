@@ -80,29 +80,22 @@ public class RecentWidgetMainActivity extends Activity {
 		@Override
 		public void onCallStateChanged(int state, String incomingNumber) {
 
-			boolean updateWidget = false;
+			// Let the parent do its thing first (to avoid lag?)
 
-			// Just log that we had a Telephony state change
+			super.onCallStateChanged(state, incomingNumber);
 
 			switch (state) {
 			case TelephonyManager.CALL_STATE_IDLE:
 				// Actually listen when telephone is back to normal -> means a
 				// call was in/outgoing
 				Log.d(TAG, "Listened to phone state change");
-				updateWidget = true;
+				broadcastTelephonyUpdate();
 				break;
 			default:
 				Log.d(TAG, "Ignoring phone state change");
 				break;
 			}
 
-			// Let the parent do its thing first (to avoid lag?)
-
-			super.onCallStateChanged(state, incomingNumber);
-
-			if (updateWidget) {
-				broadcastTelephonyUpdate();
-			}
 		}
 
 	};

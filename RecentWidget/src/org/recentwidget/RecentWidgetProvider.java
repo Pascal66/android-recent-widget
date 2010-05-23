@@ -151,7 +151,7 @@ public class RecentWidgetProvider extends AppWidgetProvider {
 
 			RemoteViews views = RecentWidgetProvider.buildWidgetView(context);
 
-			for (int i = 0; i < maxRetrieved; i++) {
+			for (int i = 0; i < recentEvents.size() && i < maxRetrieved; i++) {
 
 				RecentEvent recentEvent = recentEvents.get(i);
 
