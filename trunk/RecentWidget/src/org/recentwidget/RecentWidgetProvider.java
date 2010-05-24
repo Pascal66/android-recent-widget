@@ -3,7 +3,6 @@
  */
 package org.recentwidget;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import android.app.PendingIntent;
@@ -27,11 +26,6 @@ public class RecentWidgetProvider extends AppWidgetProvider {
 
 	private static final String TAG = "RW:RecentWidgetProvider";
 
-	/**
-	 * Number of recent events displayed on widget. Might be configurable?
-	 */
-	static final int maxRetrieved = 4;
-
 	public static final String BUTTON_PRESSED = "org.recentwidget.BUTTON_PRESSED";
 
 	/**
@@ -51,8 +45,7 @@ public class RecentWidgetProvider extends AppWidgetProvider {
 	/**
 	 * List of the Events to be displayed on the widget.
 	 */
-	static List<RecentEvent> recentEvents = new ArrayList<RecentEvent>(
-			maxRetrieved);
+	static List<RecentEvent> recentEvents;
 
 	@Override
 	// Note: not called when using a ConfigurationActivity
@@ -71,13 +64,12 @@ public class RecentWidgetProvider extends AppWidgetProvider {
 
 			Log.d(TAG, "Received broadcasted ACTION_UPDATE_TELEPHONY");
 
+			EventListBuilder builder = new EventListBuilder(recentEvents);
+
 			// Retrieve the last telephony events
 
 			// TODO: Use template pattern if sms, email, etc also use a
 			// ContentProvider?
-
-			List<RecentEvent> telRecentEvents = new ArrayList<RecentEvent>(
-					maxRetrieved);
 
 			// Do not use managedQuery because we will unload it ourselves
 
@@ -89,14 +81,13 @@ public class RecentWidgetProvider extends AppWidgetProvider {
 			String name;
 			String number;
 			int type;
-			int counter = maxRetrieved;
 
 			// Note: we might not want to retrieve all the maxRetrieved events
 			// (maybe just the last one is enough?)... depends on the current
-			// state of the recentEvents list.
+			// state of the recentEvents list -> use a builder
 
 			if (callsCursor.moveToFirst()) {
-				while (!callsCursor.isAfterLast() && counter > 0) {
+				while (!callsCursor.isAfterLast() && !builder.isFull()) {
 
 					name = callsCursor.getString(callsCursor
 							.getColumnIndex(Calls.CACHED_NAME));
@@ -105,28 +96,28 @@ public class RecentWidgetProvider extends AppWidgetProvider {
 					type = callsCursor.getInt(callsCursor
 							.getColumnIndex(Calls.TYPE));
 
-					RecentEvent event = new RecentEvent();
-					event.setPerson(name);
-					event.setNumber(number);
-					event.setType(type);
+					/*
+					 * RecentEvent event = new RecentEvent();
+					 * event.setPerson(name); event.setNumber(number);
+					 * event.setType(type);
+					 */
 
 					Log.v(TAG, "Pushing telephony recent event");
-					telRecentEvents.add(event);
+					builder.add(name, number, type);
 
 					callsCursor.moveToNext();
-					counter--;
 				}
 			}
 
 			callsCursor.close();
 
-			// Cheat: all recent events are telephony events for now
+			// Cache the recentEvents
 
-			recentEvents = telRecentEvents;
+			recentEvents = builder.build();
 
 			// Update the widget
 
-			updateWidgetLabels(context);
+			updateWidgetLabels(context, recentEvents);
 
 		} else {
 
@@ -137,13 +128,13 @@ public class RecentWidgetProvider extends AppWidgetProvider {
 		}
 	}
 
-	private void updateWidgetLabels(Context context) {
+	private void updateWidgetLabels(Context context, List<RecentEvent> events) {
 
 		// Update labels on widget
 
 		// Note: Labels/Photos are better handled using ContactsContract (API-5)
 
-		if (recentEvents.size() > 0) {
+		if (events.size() > 0) {
 
 			Log.d(TAG, "Updating widget labels");
 
@@ -151,9 +142,9 @@ public class RecentWidgetProvider extends AppWidgetProvider {
 
 			RemoteViews views = RecentWidgetProvider.buildWidgetView(context);
 
-			for (int i = 0; i < recentEvents.size() && i < maxRetrieved; i++) {
+			for (int i = 0; i < events.size(); i++) {
 
-				RecentEvent recentEvent = recentEvents.get(i);
+				RecentEvent recentEvent = events.get(i);
 
 				// Try to fetch the Contact
 				// TODO: Skip it if we already have the info!
@@ -297,6 +288,7 @@ public class RecentWidgetProvider extends AppWidgetProvider {
 		if (found && recentEvents.size() - 1 >= index) {
 			return recentEvents.get(index);
 		} else {
+			// TODO: button pressed but no recentEvent attached? gc'ed?
 			return null;
 		}
 	}
