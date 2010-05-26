@@ -7,8 +7,7 @@ import android.database.Cursor;
 import android.provider.CallLog.Calls;
 import android.util.Log;
 
-public class CallLogDao extends ContentResolverTemplate implements
-		EventObserver {
+public class CallLogDao extends ContentResolverTemplate {
 
 	private static final String TAG = "RW:CallLogDao";
 

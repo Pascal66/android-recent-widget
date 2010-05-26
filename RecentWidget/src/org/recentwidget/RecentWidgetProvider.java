@@ -3,9 +3,12 @@
  */
 package org.recentwidget;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.recentwidget.dao.CallLogDao;
 import org.recentwidget.dao.EventObserver;
+import org.recentwidget.dao.SmsDao;
 
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
@@ -49,8 +52,7 @@ public class RecentWidgetProvider extends AppWidgetProvider {
 	static List<RecentEvent> recentEvents;
 
 	static EventObserver[] eventObservers = new EventObserver[] {
-
-	};
+			new CallLogDao(), new SmsDao() };
 
 	@Override
 	// Note: not called when using a ConfigurationActivity
@@ -72,7 +74,8 @@ public class RecentWidgetProvider extends AppWidgetProvider {
 
 				// Retrieve the last specific events and store in cache
 
-				recentEvents = observer.update(recentEvents, intent, context);
+				recentEvents = observer.update(recentEvents, intent, context
+						.getContentResolver());
 
 				// Update the widget
 
@@ -237,7 +240,8 @@ public class RecentWidgetProvider extends AppWidgetProvider {
 
 	}
 
-	protected static RecentEvent getRecentEvent(int buttonPressed) {
+	protected static RecentEvent getRecentEventPressed(int buttonPressed,
+			ContentResolver contentResolver) {
 
 		boolean found = false;
 		int index = 0;
@@ -249,12 +253,23 @@ public class RecentWidgetProvider extends AppWidgetProvider {
 			}
 		}
 
+		if (recentEvents == null) {
+
+			// Button pressed but no recentEvent attached! Surely
+			// garbage-collected so let's create a new list...
+
+			recentEvents = new ArrayList<RecentEvent>();
+
+			for (EventObserver observer : eventObservers) {
+				recentEvents = observer.update(recentEvents, null,
+						contentResolver);
+			}
+		}
+
 		if (found && recentEvents.size() - 1 >= index) {
 			return recentEvents.get(index);
 		} else {
-			// Button pressed but no recentEvent attached! Surely
-			// garbage-collected so let's create a new list...
-			// TODO
+			Log.e(TAG, "Button pressed but no corresponding recent events.");
 			return null;
 		}
 	}

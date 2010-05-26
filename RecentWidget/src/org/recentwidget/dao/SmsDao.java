@@ -7,7 +7,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.util.Log;
 
-public class SmsDao extends ContentResolverTemplate implements EventObserver {
+public class SmsDao extends ContentResolverTemplate {
 
 	private static final String TAG = "RW:SmsDao";
 
