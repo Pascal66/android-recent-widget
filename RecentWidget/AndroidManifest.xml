@@ -40,7 +40,12 @@
 
 		<receiver android:name=".RecentWidgetProvider">
 			<intent-filter>
+				<!-- Core android events -->
 				<action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+			</intent-filter>
+			<intent-filter>
+				<!-- Internal events -->
+				<action android:name="org.recentwidget.UPDATE_ALL" />
 				<action android:name="org.recentwidget.UPDATE_TELEPHONY" />
 				<action android:name="android.provider.Telephony.SMS_RECEIVED" />
 			</intent-filter>

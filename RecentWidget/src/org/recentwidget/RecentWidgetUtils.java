@@ -5,6 +5,7 @@ public class RecentWidgetUtils {
 	// Some constants
 
 	public static final String ACTION_SHOW_POPUP = "org.recentwidget.SHOW_POPUP";
+	public static final String ACTION_UPDATE_ALL = "org.recentwidget.UPDATE_ALL";
 	public static final String ACTION_UPDATE_TELEPHONY = "org.recentwidget.UPDATE_TELEPHONY";
 	public static final String ACTION_UPDATE_SMS = "android.provider.Telephony.SMS_RECEIVED";
 

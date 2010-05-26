@@ -67,6 +67,14 @@ public class RecentWidgetProvider extends AppWidgetProvider {
 	public void onReceive(Context context, Intent intent) {
 
 		String action = intent.getAction();
+
+		// Shortcut for rebuilding the list
+
+		if (RecentWidgetUtils.ACTION_UPDATE_ALL.equals(action)) {
+			rebuildRecentEvents(context.getContentResolver());
+			return;
+		}
+
 		boolean consumed = false;
 
 		for (EventObserver observer : eventObservers) {
@@ -258,12 +266,7 @@ public class RecentWidgetProvider extends AppWidgetProvider {
 			// Button pressed but no recentEvent attached! Surely
 			// garbage-collected so let's create a new list...
 
-			recentEvents = new ArrayList<RecentEvent>();
-
-			for (EventObserver observer : eventObservers) {
-				recentEvents = observer.update(recentEvents, null,
-						contentResolver);
-			}
+			rebuildRecentEvents(contentResolver);
 		}
 
 		if (found && recentEvents.size() - 1 >= index) {
@@ -271,6 +274,14 @@ public class RecentWidgetProvider extends AppWidgetProvider {
 		} else {
 			Log.e(TAG, "Button pressed but no corresponding recent events.");
 			return null;
+		}
+	}
+
+	public static void rebuildRecentEvents(ContentResolver contentResolver) {
+		recentEvents = new ArrayList<RecentEvent>();
+
+		for (EventObserver observer : eventObservers) {
+			recentEvents = observer.update(recentEvents, null, contentResolver);
 		}
 	}
 }

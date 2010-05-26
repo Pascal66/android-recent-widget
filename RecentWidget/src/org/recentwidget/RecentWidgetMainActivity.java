@@ -55,7 +55,11 @@ public class RecentWidgetMainActivity extends Activity {
 
 			// Update the widget for the 1st time
 
-			broadcastTelephonyUpdate();
+			Log.d(TAG, "Broadcasting ACTION_UPDATE_ALL");
+
+			Intent rebuildIntent = new Intent(
+					RecentWidgetUtils.ACTION_UPDATE_ALL);
+			sendBroadcast(rebuildIntent);
 
 			// Make sure we pass back the original appWidgetId (for what?)
 
@@ -98,6 +102,13 @@ public class RecentWidgetMainActivity extends Activity {
 
 		}
 
+		public void broadcastTelephonyUpdate() {
+			Intent intent = new Intent(
+					RecentWidgetUtils.ACTION_UPDATE_TELEPHONY);
+			Log.d(TAG, "Broadcasting ACTION_UPDATE_TELEPHONY");
+			sendBroadcast(intent);
+		}
+
 	};
 
 	View.OnClickListener mOnClickListener = new View.OnClickListener() {
@@ -114,12 +125,6 @@ public class RecentWidgetMainActivity extends Activity {
 		}
 
 	};
-
-	public void broadcastTelephonyUpdate() {
-		Intent intent = new Intent(RecentWidgetUtils.ACTION_UPDATE_TELEPHONY);
-		Log.d(TAG, "Broadcasting ACTION_UPDATE_TELEPHONY");
-		sendBroadcast(intent);
-	}
 
 	private void bindTelephonyListener() {
 		final Context context = RecentWidgetMainActivity.this;
