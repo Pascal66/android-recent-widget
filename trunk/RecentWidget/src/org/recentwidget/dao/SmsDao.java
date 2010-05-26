@@ -14,7 +14,7 @@ public class SmsDao extends ContentResolverTemplate {
 	public SmsDao() {
 		super();
 
-		contentUri = Uri.parse("content://mms-sms/");
+		contentUri = Uri.parse("content://mms-sms/conversations/");
 		projection = new String[] { "_id", "thread_id", "address", "person",
 				"date", "body" };
 		sortOrder = "date DESC";
