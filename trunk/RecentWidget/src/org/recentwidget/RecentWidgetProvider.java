@@ -51,8 +51,8 @@ public class RecentWidgetProvider extends AppWidgetProvider {
 	 */
 	static List<RecentEvent> recentEvents;
 
-	static EventObserver[] eventObservers = new EventObserver[] {
-			new CallLogDao(), new SmsDao() };
+	static EventObserver[] eventObservers = new EventObserver[] { new SmsDao(),
+			new CallLogDao() };
 
 	@Override
 	// Note: not called when using a ConfigurationActivity
@@ -72,6 +72,7 @@ public class RecentWidgetProvider extends AppWidgetProvider {
 
 		if (RecentWidgetUtils.ACTION_UPDATE_ALL.equals(action)) {
 			rebuildRecentEvents(context.getContentResolver());
+			updateWidgetLabels(context, recentEvents);
 			return;
 		}
 
