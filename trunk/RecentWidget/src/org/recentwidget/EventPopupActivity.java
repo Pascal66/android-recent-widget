@@ -33,8 +33,9 @@ public class EventPopupActivity extends Activity {
 			finish();
 		}
 
-		RecentEvent recentEvent = RecentWidgetProvider
-				.getRecentEvent(buttonPressed);
+		RecentEvent recentEvent = RecentWidgetProvider.getRecentEventPressed(
+				buttonPressed, getContentResolver());
+
 		if (recentEvent == null) {
 			Log.w(TAG, "ButtonPressed extra correspond to no RecentEvent!");
 			finish();

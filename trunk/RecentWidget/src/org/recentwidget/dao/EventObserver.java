@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.recentwidget.RecentEvent;
 
-import android.content.Context;
+import android.content.ContentResolver;
 import android.content.Intent;
 
 public interface EventObserver {
@@ -12,6 +12,6 @@ public interface EventObserver {
 	boolean supports(String intentAction);
 
 	List<RecentEvent> update(List<RecentEvent> recentEvents, Intent intent,
-			Context context);
+			ContentResolver contentResolver);
 
 }

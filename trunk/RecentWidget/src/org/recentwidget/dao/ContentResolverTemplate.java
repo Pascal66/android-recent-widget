@@ -12,9 +12,9 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.util.Log;
 
-public abstract class ContentResolverTemplate {
+public abstract class ContentResolverTemplate implements EventObserver {
 
-	private static final String TAG = "RW:ContentResolverTemplate";
+	private static final String TAG = "RW:ContentResolverTplt";
 
 	protected Uri contentUri;
 
@@ -24,10 +24,13 @@ public abstract class ContentResolverTemplate {
 
 	protected Context context;
 
+	private ContentResolver contentResolver;
+
 	protected abstract void extractEvent(EventListBuilder builder, Cursor cursor);
 
+	@Override
 	public List<RecentEvent> update(List<RecentEvent> recentEvents,
-			Intent intent, Context context) {
+			Intent intent, ContentResolver contentResolver) {
 
 		if (Log.isLoggable(TAG, Log.DEBUG)) {
 			Log.d(TAG, "Received broadcasted " + intent.getAction());
@@ -35,7 +38,7 @@ public abstract class ContentResolverTemplate {
 
 		// Note: Not concurrent-friendly!
 
-		setContext(context);
+		setContentResolver(contentResolver);
 
 		return fetchEvents(recentEvents);
 	}
@@ -44,7 +47,10 @@ public abstract class ContentResolverTemplate {
 
 		EventListBuilder builder = new EventListBuilder(recentEvents);
 
-		Cursor cursor = getCursor();
+		// Do not use managedQuery() because we will unload it ourselves
+
+		Cursor cursor = contentResolver.query(contentUri, projection, null,
+				null, sortOrder);
 
 		// Note: we might not want to retrieve all the maxRetrieved events
 		// (maybe just the last one is enough?)... depends on the current
@@ -73,20 +79,7 @@ public abstract class ContentResolverTemplate {
 		return builder.build();
 	}
 
-	public void setContext(Context context) {
-		this.context = context;
+	public void setContentResolver(ContentResolver contentResolver) {
+		this.contentResolver = contentResolver;
 	}
-
-	private Cursor getCursor() {
-
-		// Do not use managedQuery() because we will unload it ourselves
-
-		ContentResolver dataProvider = context.getContentResolver();
-
-		Cursor cursor = dataProvider.query(contentUri, projection, null, null,
-				sortOrder);
-
-		return cursor;
-	}
-
 }
