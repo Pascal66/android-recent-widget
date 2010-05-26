@@ -4,6 +4,8 @@ TODO:
 H- switch compute recent events in service, or else ANR! See WordWidget
 H- RWProvider.recentEvents might be garbage-collected -> need to persist? or re-compute?
 
+M- List is shown in reverse order -> builder adds at beginning but query is sort descending
+
 L- If showing contact on button press, the missed call notification does not go away
 L- Why double-initialization on widget creation?
 
