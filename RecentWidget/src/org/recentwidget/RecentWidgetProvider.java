@@ -5,6 +5,8 @@ package org.recentwidget;
 
 import java.util.List;
 
+import org.recentwidget.dao.EventObserver;
+
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
@@ -16,7 +18,6 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.provider.Contacts;
-import android.provider.CallLog.Calls;
 import android.provider.Contacts.People;
 import android.provider.Contacts.Phones;
 import android.util.Log;
@@ -47,6 +48,10 @@ public class RecentWidgetProvider extends AppWidgetProvider {
 	 */
 	static List<RecentEvent> recentEvents;
 
+	static EventObserver[] eventObservers = new EventObserver[] {
+
+	};
+
 	@Override
 	// Note: not called when using a ConfigurationActivity
 	public void onUpdate(Context context, AppWidgetManager appWidgetManager,
@@ -59,67 +64,26 @@ public class RecentWidgetProvider extends AppWidgetProvider {
 	@Override
 	public void onReceive(Context context, Intent intent) {
 
-		if (RecentWidgetUtils.ACTION_UPDATE_TELEPHONY
-				.equals(intent.getAction())) {
+		String action = intent.getAction();
+		boolean consumed = false;
 
-			Log.d(TAG, "Received broadcasted ACTION_UPDATE_TELEPHONY");
+		for (EventObserver observer : eventObservers) {
+			if (observer.supports(action)) {
 
-			EventListBuilder builder = new EventListBuilder(recentEvents);
+				// Retrieve the last specific events and store in cache
 
-			// Retrieve the last telephony events
+				recentEvents = observer.update(recentEvents, intent, context);
 
-			// TODO: Use template pattern if sms, email, etc also use a
-			// ContentProvider?
+				// Update the widget
 
-			// Do not use managedQuery because we will unload it ourselves
+				updateWidgetLabels(context, recentEvents);
 
-			ContentResolver dataProvider = context.getContentResolver();
-			Cursor callsCursor = dataProvider.query(Calls.CONTENT_URI,
-					new String[] { Calls.CACHED_NAME, Calls.NUMBER, Calls.NEW,
-							Calls.TYPE }, null, null, Calls.DEFAULT_SORT_ORDER);
-
-			String name;
-			String number;
-			int type;
-
-			// Note: we might not want to retrieve all the maxRetrieved events
-			// (maybe just the last one is enough?)... depends on the current
-			// state of the recentEvents list -> use a builder
-
-			if (callsCursor.moveToFirst()) {
-				while (!callsCursor.isAfterLast() && !builder.isFull()) {
-
-					name = callsCursor.getString(callsCursor
-							.getColumnIndex(Calls.CACHED_NAME));
-					number = callsCursor.getString(callsCursor
-							.getColumnIndex(Calls.NUMBER));
-					type = callsCursor.getInt(callsCursor
-							.getColumnIndex(Calls.TYPE));
-
-					/*
-					 * RecentEvent event = new RecentEvent();
-					 * event.setPerson(name); event.setNumber(number);
-					 * event.setType(type);
-					 */
-
-					Log.v(TAG, "Pushing telephony recent event");
-					builder.add(name, number, type);
-
-					callsCursor.moveToNext();
-				}
+				consumed = true;
+				break;
 			}
+		}
 
-			callsCursor.close();
-
-			// Cache the recentEvents
-
-			recentEvents = builder.build();
-
-			// Update the widget
-
-			updateWidgetLabels(context, recentEvents);
-
-		} else {
+		if (!consumed) {
 
 			// TODO: workaround for onDelete in 1.5
 			// http://groups.google.com/group/android-developers/msg/e405ca19df2170e2?pli=1
@@ -288,7 +252,9 @@ public class RecentWidgetProvider extends AppWidgetProvider {
 		if (found && recentEvents.size() - 1 >= index) {
 			return recentEvents.get(index);
 		} else {
-			// TODO: button pressed but no recentEvent attached? gc'ed?
+			// Button pressed but no recentEvent attached! Surely
+			// garbage-collected so let's create a new list...
+			// TODO
 			return null;
 		}
 	}

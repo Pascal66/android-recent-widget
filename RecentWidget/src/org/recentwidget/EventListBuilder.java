@@ -26,9 +26,58 @@ public class EventListBuilder {
 		}
 	}
 
-	public void add(String name, String number, int type) {
+	public void add(String name, String number, int type, long date) {
 
-		boolean alreadyExists = false;
+		if (!isNumberInList(number)) {
+
+			RecentEvent newEvent = new RecentEvent();
+			newEvent.setNumber(number);
+			newEvent.setPerson(name);
+			newEvent.setType(type);
+
+			// TODO: Should compare timestamps!
+
+			events.add(0, newEvent);
+
+		}
+
+		// Truncate a bit (try to avoid object creation)
+
+		cleanOldEvents();
+	}
+
+	public void add(long personId, String number, int type, long date) {
+
+		// TODO: Copy/paste! How to refactor?
+
+		if (!isNumberInList(number)) {
+
+			RecentEvent newEvent = new RecentEvent();
+			newEvent.setNumber(number);
+			newEvent.setPersonId(personId);
+			newEvent.setType(type);
+
+			// TODO: Should compare timestamps!
+
+			events.add(0, newEvent);
+
+		}
+
+		// Truncate a bit (try to avoid object creation)
+
+		cleanOldEvents();
+	}
+
+	private void cleanOldEvents() {
+
+		// Truncate a bit (try to avoid object creation)
+
+		while (events.size() > maxRetrieved) {
+			events.remove(events.size() - 1);
+		}
+	}
+
+	private boolean isNumberInList(String number) {
 
 		// Check whether the person is already there, to avoid duplicates
 
@@ -37,32 +86,24 @@ public class EventListBuilder {
 					&& recentEvent.getNumber().equals(number)) {
 
 				Log.v(TAG, "Number already in list");
-				alreadyExists = true;
+
+				return true;
 
 				// TODO: How to track that?
+				// + move the entry to the first place
 			}
 		}
-
-		if (!alreadyExists) {
-
-			RecentEvent newEvent = new RecentEvent();
-			newEvent.setNumber(number);
-			newEvent.setPerson(name);
-			newEvent.setType(type);
-
-			events.add(0, newEvent);
-
-		}
+		return false;
 	}
 
 	public List<RecentEvent> build() {
 		// Just return the list...
-		// TODO Do we fetch the picture and everything now?
+		// Note: Do we fetch the picture and everything now?
 		return events;
 	}
 
 	/**
-	 * @return Whether the list is already full (do we need to fetch more
+	 * @return Whether the list is already full (i.e. do we need to fetch more
 	 *         entries?)
 	 */
 	public boolean isFull() {
