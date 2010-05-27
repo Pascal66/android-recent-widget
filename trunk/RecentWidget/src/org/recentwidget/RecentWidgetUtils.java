@@ -9,5 +9,8 @@ public class RecentWidgetUtils {
 	public static final String ACTION_UPDATE_TELEPHONY = "org.recentwidget.UPDATE_TELEPHONY";
 	public static final String ACTION_UPDATE_SMS = "android.provider.Telephony.SMS_RECEIVED";
 
+	public static final String[] ACTION_UPDATE_TYPES = new String[] {
+			ACTION_UPDATE_ALL, ACTION_UPDATE_TELEPHONY, ACTION_UPDATE_SMS };
+
 	public static final String MESSAGE_SENT_ACTION = "com.android.mms.transaction.MESSAGE_SENT";
 }

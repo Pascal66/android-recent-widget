@@ -33,7 +33,7 @@ public class EventPopupActivity extends Activity {
 			finish();
 		}
 
-		RecentEvent recentEvent = RecentWidgetProvider.getRecentEventPressed(
+		RecentEvent recentEvent = RecentWidgetHolder.getRecentEventPressed(
 				buttonPressed, getContentResolver());
 
 		if (recentEvent == null) {
