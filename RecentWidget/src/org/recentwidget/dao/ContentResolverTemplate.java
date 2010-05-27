@@ -38,12 +38,25 @@ public abstract class ContentResolverTemplate implements EventObserver {
 
 		// Note: Not concurrent-friendly!
 
+		// Note: Make sure no unnecessary ArrayLists created in all those
+		// params/returns.
+
 		setContentResolver(contentResolver);
 
 		return fetchEvents(recentEvents);
 	}
 
+	/**
+	 * Only one-time use as the template's content resolver is set to null
+	 * afterwards. (this is to avoid any long-lived reference / leaks)
+	 * 
+	 * Uses the specific Dao extractEvent to traverse (pattern?) the cursor.
+	 * 
+	 */
 	protected List<RecentEvent> fetchEvents(List<RecentEvent> recentEvents) {
+
+		// The builder is useful in order for the business logic to be stored
+		// elsewhere.
 
 		EventListBuilder builder = new EventListBuilder(recentEvents);
 
@@ -75,6 +88,11 @@ public abstract class ContentResolverTemplate implements EventObserver {
 		} catch (Exception e) {
 			cursor.close();
 		}
+
+		// Avoid memory leaks
+		// http://www.curious-creature.org/2008/12/18/avoid-memory-leaks-on-android/
+
+		contentResolver = null;
 
 		return builder.build();
 	}

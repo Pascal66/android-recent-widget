@@ -1,8 +1,11 @@
-package org.recentwidget;
+package org.recentwidget.android;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import org.recentwidget.R;
+import org.recentwidget.RecentEvent;
+import org.recentwidget.RecentWidgetUtils;
 import org.recentwidget.dao.EventObserver;
 
 import android.app.PendingIntent;

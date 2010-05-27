@@ -1,5 +1,6 @@
-package org.recentwidget;
+package org.recentwidget.android;
 
+import org.recentwidget.RecentWidgetUtils;
 import org.recentwidget.dao.EventObserver;
 
 import android.app.Service;
