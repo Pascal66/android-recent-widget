@@ -1,8 +1,11 @@
 /**
  * 
  */
-package org.recentwidget;
+package org.recentwidget.android;
 
+import org.recentwidget.R;
+import org.recentwidget.RecentWidgetUtils;
+import org.recentwidget.R.id;
 import org.recentwidget.dao.CallLogDao;
 import org.recentwidget.dao.EventObserver;
 import org.recentwidget.dao.SmsDao;

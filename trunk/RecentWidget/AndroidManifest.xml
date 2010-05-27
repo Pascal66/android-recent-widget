@@ -14,9 +14,9 @@
 
 	<application android:icon="@drawable/icon" android:label="@string/app_name">
 
-		<service android:name=".RecentWidgetUpdateService" />
+		<service android:name=".android.RecentWidgetUpdateService" />
 		
-		<activity android:name=".RecentWidgetMainActivity"
+		<activity android:name=".android.RecentWidgetMainActivity"
 			android:label="@string/app_name">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
@@ -31,7 +31,7 @@
 			usefull but unused attributes: android:clearTaskOnLaunch="true"
 			android:finishOnTaskLaunch="true"
 		-->
-		<activity android:name=".EventPopupActivity"
+		<activity android:name=".android.EventPopupActivity"
 			android:noHistory="true" android:excludeFromRecents="true"
 			android:theme="@android:style/Theme.Dialog" android:label="@string/popup_title">
 			<intent-filter>
@@ -40,7 +40,7 @@
 			</intent-filter>
 		</activity>
 
-		<receiver android:name=".RecentWidgetProvider">
+		<receiver android:name=".android.RecentWidgetProvider">
 			<intent-filter>
 				<!-- Core android events -->
 				<action android:name="android.appwidget.action.APPWIDGET_UPDATE" />

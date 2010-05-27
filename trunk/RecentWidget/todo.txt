@@ -4,6 +4,7 @@ TODO:
 H- RecentEvent->RecentContact*(1-n)*RecentEvent
 H- Check list:isFull condition!
 
+M- email content provider
 M- SmsDao just retrieves inbox?
 M- List is shown in reverse order -> builder adds at beginning but query is sort descending
 

@@ -1,4 +1,9 @@
-package org.recentwidget;
+package org.recentwidget.android;
+
+import org.recentwidget.R;
+import org.recentwidget.RecentEvent;
+import org.recentwidget.R.id;
+import org.recentwidget.R.layout;
 
 import android.app.Activity;
 import android.content.ContentUris;
