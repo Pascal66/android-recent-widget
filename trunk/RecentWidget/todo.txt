@@ -1,7 +1,6 @@
 TODO:
 -----
 
-H- Find other way to handle PopupActivity intent
 H- RecentEvent->RecentContact*(1-n)*RecentEvent
 H- Check list:isFull condition!
 
@@ -10,8 +9,9 @@ M- List is shown in reverse order -> builder adds at beginning but query is sort
 
 L- If showing contact on button press, the missed call notification does not go away
 L- Why double-initialization on widget creation?
+L- Find other way to handle PopupActivity intent (works for now, but might not work with multiple widgets on screen << might have several list of recent events)
 
-KINDA FIXED / KINDA UGLY:
+KINDA FIXED / TO TEST / KINDA UGLY:
 -------------------------
 
 To Test: H- RWProvider.recentEvents might be garbage-collected -> need to persist? or re-compute?

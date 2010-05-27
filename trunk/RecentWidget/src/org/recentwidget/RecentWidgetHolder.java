@@ -168,8 +168,7 @@ public class RecentWidgetHolder {
 			// created as a new instance (instead of re-used or overwritten)
 
 			PendingIntent pendingIntent = PendingIntent.getActivity(context,
-					buttonId // no
-					// requestCode
+					buttonId // requestCode
 					, defineIntent, Intent.FLAG_ACTIVITY_NEW_TASK // no flags
 					);
 
