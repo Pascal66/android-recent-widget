@@ -82,6 +82,9 @@ public class EventListBuilder {
 		// Check whether the person is already there, to avoid duplicates
 
 		for (RecentEvent recentEvent : events) {
+
+			// TODO: Also check _id?!
+
 			if (recentEvent.getNumber() != null
 					&& recentEvent.getNumber().equals(number)) {
 
