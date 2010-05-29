@@ -85,7 +85,7 @@ public abstract class ContentResolverTemplate implements EventObserver {
 				}
 			}
 
-		} catch (Exception e) {
+		} finally {
 			cursor.close();
 		}
 
