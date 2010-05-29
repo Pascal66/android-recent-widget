@@ -63,12 +63,12 @@ public class EventPopupActivity extends Activity {
 		actionIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
 		if (recentContact.hasContactInfo()) {
-			// Bring up the dialer since no Contact registered
-			actionIntent.setData(Uri.parse("tel:" + recentContact.getNumber()));
-		} else {
 			// Show the contact page
 			actionIntent.setData(ContentUris.withAppendedId(People.CONTENT_URI,
 					recentContact.getPersonId()));
+		} else {
+			// Bring up the dialer since no Contact registered
+			actionIntent.setData(Uri.parse("tel:" + recentContact.getNumber()));
 		}
 
 		actionButton.setOnClickListener(new OnClickListener() {
