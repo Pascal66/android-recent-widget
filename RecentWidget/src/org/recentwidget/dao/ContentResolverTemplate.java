@@ -3,7 +3,7 @@ package org.recentwidget.dao;
 import java.util.List;
 
 import org.recentwidget.EventListBuilder;
-import org.recentwidget.RecentEvent;
+import org.recentwidget.model.RecentContact;
 
 import android.content.ContentResolver;
 import android.content.Context;
@@ -29,7 +29,7 @@ public abstract class ContentResolverTemplate implements EventObserver {
 	protected abstract void extractEvent(EventListBuilder builder, Cursor cursor);
 
 	@Override
-	public List<RecentEvent> update(List<RecentEvent> recentEvents,
+	public List<RecentContact> update(List<RecentContact> recentContacts,
 			Intent intent, ContentResolver contentResolver) {
 
 		if (Log.isLoggable(TAG, Log.DEBUG)) {
@@ -43,7 +43,7 @@ public abstract class ContentResolverTemplate implements EventObserver {
 
 		setContentResolver(contentResolver);
 
-		return fetchEvents(recentEvents);
+		return fetchEvents(recentContacts);
 	}
 
 	/**
@@ -53,12 +53,12 @@ public abstract class ContentResolverTemplate implements EventObserver {
 	 * Uses the specific Dao extractEvent to traverse (pattern?) the cursor.
 	 * 
 	 */
-	protected List<RecentEvent> fetchEvents(List<RecentEvent> recentEvents) {
+	protected List<RecentContact> fetchEvents(List<RecentContact> recentContacts) {
 
 		// The builder is useful in order for the business logic to be stored
 		// elsewhere.
 
-		EventListBuilder builder = new EventListBuilder(recentEvents);
+		EventListBuilder builder = new EventListBuilder(recentContacts);
 
 		// Do not use managedQuery() because we will unload it ourselves
 

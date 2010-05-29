@@ -2,6 +2,7 @@ package org.recentwidget.dao;
 
 import org.recentwidget.EventListBuilder;
 import org.recentwidget.RecentWidgetUtils;
+import org.recentwidget.model.RecentEvent;
 
 import android.database.Cursor;
 import android.provider.CallLog.Calls;
@@ -46,7 +47,7 @@ public class CallLogDao extends ContentResolverTemplate {
 
 		Log.v(TAG, "Fetched telephony recent event");
 
-		builder.add(name, number, type, date);
+		builder.add(null, name, number, RecentEvent.TYPE_CALL, type, date);
 	}
 
 	@Override

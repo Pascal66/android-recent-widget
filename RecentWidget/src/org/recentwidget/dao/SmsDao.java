@@ -2,6 +2,7 @@ package org.recentwidget.dao;
 
 import org.recentwidget.EventListBuilder;
 import org.recentwidget.RecentWidgetUtils;
+import org.recentwidget.model.RecentEvent;
 
 import android.database.Cursor;
 import android.net.Uri;
@@ -29,18 +30,13 @@ public class SmsDao extends ContentResolverTemplate {
 
 		long date = messageCursor.getLong(4);
 
-		String body = messageCursor.getString(5);
-
-		Log.d(TAG, address + "--" + personId + "--" + date + "--" + body);
-
-		/*
-		 * RecentEvent event = new RecentEvent(); event.setPerson(name);
-		 * event.setNumber(number); event.setType(type);
-		 */
+		// String body = messageCursor.getString(5);
+		// Log.d(TAG, address + "--" + personId + "--" + date + "--" + body);
 
 		Log.v(TAG, "Fetched sms recent event");
 
-		builder.add(personId, address, 0, date);
+		builder.add(personId, null, address, RecentEvent.TYPE_SMS,
+				RecentEvent.SUBTYPE_INCOMING, date);
 	}
 
 	@Override

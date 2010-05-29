@@ -3,7 +3,8 @@ package org.recentwidget;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.util.Log;
+import org.recentwidget.model.RecentContact;
+import org.recentwidget.model.RecentEvent;
 
 public class EventListBuilder {
 
@@ -15,94 +16,79 @@ public class EventListBuilder {
 	private static final String TAG = "EventListBuilder";
 
 	// Temporary reference/variable
-	private List<RecentEvent> events;
+	private List<RecentContact> contacts;
 
-	public EventListBuilder(List<RecentEvent> events) {
-		if (events != null) {
-			this.events = events;
+	public EventListBuilder(List<RecentContact> previousContacts) {
+		if (previousContacts != null) {
+			this.contacts = previousContacts;
 		} else {
-			// May happen if the RWProvider was garbage-collected
-			this.events = new ArrayList<RecentEvent>(maxRetrieved);
+			// May happen if the RWHolder was killed
+			this.contacts = new ArrayList<RecentContact>(maxRetrieved);
 		}
 	}
 
-	public void add(String name, String number, int type, long date) {
+	public void add(Long personId, String name, String number, int type,
+			int subtype, long date) {
 
-		if (!isNumberInList(number)) {
+		// Unnecessary object creation?!?
 
-			RecentEvent newEvent = new RecentEvent();
-			newEvent.setNumber(number);
-			newEvent.setPerson(name);
-			newEvent.setType(type);
+		RecentContact contact = new RecentContact();
+		contact.setNumber(number);
+		contact.setPerson(name);
+		contact.setPersonId(personId);
 
-			// TODO: Should compare timestamps!
+		// i = index of the contact to be removed/added
 
-			events.add(0, newEvent);
+		int i = contacts.indexOf(contact);
 
+		if (i >= 0) {
+			contact = contacts.remove(i);
 		}
 
-		// Truncate a bit (try to avoid object creation)
+		// Add the event, if needed
 
-		cleanOldEvents();
-	}
+		RecentEvent newEvent = new RecentEvent();
+		newEvent.setDate(date);
+		newEvent.setType(type);
+		newEvent.setSubType(subtype);
 
-	public void add(long personId, String number, int type, long date) {
+		contact.addEvent(newEvent);
 
-		// TODO: Copy/paste! How to refactor?
+		// Put this contact at the right place
 
-		if (!isNumberInList(number)) {
+		// i = index where to add the new/updated contact
 
-			RecentEvent newEvent = new RecentEvent();
-			newEvent.setNumber(number);
-			newEvent.setPersonId(personId);
-			newEvent.setType(type);
+		i = contacts.size();
 
-			// TODO: Should compare timestamps!
-
-			events.add(0, newEvent);
-
-		}
-
-		// Truncate a bit (try to avoid object creation)
-
-		cleanOldEvents();
-	}
-
-	private void cleanOldEvents() {
-
-		// Truncate a bit (try to avoid object creation)
-
-		while (events.size() > maxRetrieved) {
-			events.remove(events.size() - 1);
-		}
-	}
-
-	private boolean isNumberInList(String number) {
-
-		// Check whether the person is already there, to avoid duplicates
-
-		for (RecentEvent recentEvent : events) {
-
-			// TODO: Also check _id?!
-
-			if (recentEvent.getNumber() != null
-					&& recentEvent.getNumber().equals(number)) {
-
-				Log.v(TAG, "Number already in list");
-
-				return true;
-
-				// TODO: How to track that?
-				// + move the entry to the first place
+		for (int a = 0; a < i; a++) {
+			if (contacts.get(a).getMostRecentDate() < contact
+					.getMostRecentDate()) {
+				i = a;
+				break;
 			}
+
 		}
-		return false;
+
+		contacts.add(i, contact);
+
+		// Truncate a bit (try to avoid object creation)
+
+		cleanOldContacts();
 	}
 
-	public List<RecentEvent> build() {
+	private void cleanOldContacts() {
+
+		// Truncate a bit (try to avoid object creation)
+
+		while (contacts.size() > maxRetrieved) {
+			contacts.remove(contacts.size() - 1);
+		}
+	}
+
+	public List<RecentContact> build() {
 		// Just return the list...
 		// Note: Do we fetch the picture and everything now?
-		return events;
+		return contacts;
 	}
 
 	/**
@@ -110,7 +96,10 @@ public class EventListBuilder {
 	 *         entries?)
 	 */
 	public boolean isFull() {
-		return events.size() >= maxRetrieved;
+		// TODO: WRONG! Should check whether the event has already been
+		// recorded... or that the timestamp of the newly added event is older
+		// than the older event in the list.
+		return contacts.size() >= maxRetrieved;
 	}
 
 }
