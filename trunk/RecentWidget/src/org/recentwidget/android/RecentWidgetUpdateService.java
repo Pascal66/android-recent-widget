@@ -32,8 +32,8 @@ public class RecentWidgetUpdateService extends Service {
 
 				// Update the recent events
 
-				RecentWidgetHolder.recentEvents = observer.update(
-						RecentWidgetHolder.recentEvents, intent, this
+				RecentWidgetHolder.recentContacts = observer.update(
+						RecentWidgetHolder.recentContacts, intent, this
 								.getContentResolver());
 
 				// Update the widget

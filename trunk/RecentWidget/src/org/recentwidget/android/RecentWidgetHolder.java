@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.recentwidget.R;
-import org.recentwidget.RecentEvent;
 import org.recentwidget.RecentWidgetUtils;
 import org.recentwidget.dao.EventObserver;
+import org.recentwidget.model.RecentContact;
 
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
@@ -31,11 +31,11 @@ public class RecentWidgetHolder {
 	/**
 	 * List of the Events to be displayed on the widget.
 	 */
-	static List<RecentEvent> recentEvents;
+	static List<RecentContact> recentContacts;
 
 	static final void updateWidgetLabels(Context context) {
 
-		if (recentEvents == null) {
+		if (recentContacts == null) {
 			return;
 		}
 
@@ -43,7 +43,7 @@ public class RecentWidgetHolder {
 
 		// Note: Labels/Photos are better handled using ContactsContract (API-5)
 
-		if (recentEvents.size() > 0) {
+		if (recentContacts.size() > 0) {
 
 			Log.d(TAG, "Updating widget labels");
 
@@ -51,9 +51,9 @@ public class RecentWidgetHolder {
 
 			RemoteViews views = buildWidgetView(context);
 
-			for (int i = 0; i < recentEvents.size(); i++) {
+			for (int i = 0; i < recentContacts.size(); i++) {
 
-				RecentEvent recentEvent = recentEvents.get(i);
+				RecentContact recentContact = recentContacts.get(i);
 
 				// Try to fetch the Contact
 				// TODO: Skip it if we already have the info!
@@ -62,7 +62,7 @@ public class RecentWidgetHolder {
 				Cursor contactCursor = resolver.query(
 						Contacts.Phones.CONTENT_URI, new String[] {
 								Phones.PERSON_ID, Phones.DISPLAY_NAME },
-						Phones.NUMBER + " = ?", new String[] { recentEvent
+						Phones.NUMBER + " = ?", new String[] { recentContact
 								.getNumber() }, Phones.DEFAULT_SORT_ORDER);
 
 				if (contactCursor.getCount() >= 1) {
@@ -78,22 +78,22 @@ public class RecentWidgetHolder {
 					// Set it, so next time we might not need to repeat this
 					// query...
 
-					recentEvent.setPerson(label);
+					recentContact.setPerson(label);
 
 					String personIdAsString = contactCursor
 							.getString(contactCursor
 									.getColumnIndex(Phones.PERSON_ID));
 
-					recentEvent.setPersonId(Long.parseLong(personIdAsString));
+					recentContact.setPersonId(Long.parseLong(personIdAsString));
 
 				} else {
 
 					// Defaults to the basic info we got
 
-					if (recentEvent.getPerson() != null) {
-						label = recentEvent.getPerson();
-					} else if (recentEvent.getNumber() != null) {
-						label = recentEvent.getNumber();
+					if (recentContact.getPerson() != null) {
+						label = recentContact.getPerson();
+					} else if (recentContact.getNumber() != null) {
+						label = recentContact.getNumber();
 					}
 				}
 
@@ -104,7 +104,7 @@ public class RecentWidgetHolder {
 				views.setCharSequence(RecentWidgetProvider.buttonMap[i],
 						"setText", label);
 
-				if (recentEvent.getPersonId() != null) {
+				if (recentContact.hasContactInfo()) {
 
 					// Also try to set the picture
 
@@ -112,7 +112,7 @@ public class RecentWidgetHolder {
 
 					Bitmap contactPhoto = People.loadContactPhoto(context,
 							ContentUris.withAppendedId(People.CONTENT_URI,
-									recentEvent.getPersonId()),
+									recentContact.getPersonId()),
 							RecentWidgetProvider.defaultContactImage, null);
 
 					views.setBitmap(RecentWidgetProvider.imageMap[i],
@@ -183,7 +183,7 @@ public class RecentWidgetHolder {
 
 	}
 
-	protected static RecentEvent getRecentEventPressed(int buttonPressed,
+	protected static RecentContact getRecentEventPressed(int buttonPressed,
 			ContentResolver contentResolver) {
 
 		boolean found = false;
@@ -196,7 +196,7 @@ public class RecentWidgetHolder {
 			}
 		}
 
-		if (recentEvents == null) {
+		if (recentContacts == null) {
 
 			// Button pressed but no recentEvent attached! Surely
 			// garbage-collected so let's create a new list...
@@ -204,8 +204,8 @@ public class RecentWidgetHolder {
 			rebuildRecentEvents(contentResolver);
 		}
 
-		if (found && recentEvents.size() - 1 >= index) {
-			return recentEvents.get(index);
+		if (found && recentContacts.size() - 1 >= index) {
+			return recentContacts.get(index);
 		} else {
 			Log.e(TAG, "Button pressed but no corresponding recent events.");
 			return null;
@@ -213,10 +213,11 @@ public class RecentWidgetHolder {
 	}
 
 	public static void rebuildRecentEvents(ContentResolver contentResolver) {
-		recentEvents = new ArrayList<RecentEvent>();
+		recentContacts = new ArrayList<RecentContact>();
 
 		for (EventObserver observer : RecentWidgetProvider.eventObservers) {
-			recentEvents = observer.update(recentEvents, null, contentResolver);
+			recentContacts = observer.update(recentContacts, null,
+					contentResolver);
 		}
 	}
 }

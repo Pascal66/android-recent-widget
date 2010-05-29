@@ -1,9 +1,7 @@
 package org.recentwidget.android;
 
 import org.recentwidget.R;
-import org.recentwidget.RecentEvent;
-import org.recentwidget.R.id;
-import org.recentwidget.R.layout;
+import org.recentwidget.model.RecentContact;
 
 import android.app.Activity;
 import android.content.ContentUris;
@@ -38,10 +36,10 @@ public class EventPopupActivity extends Activity {
 			finish();
 		}
 
-		RecentEvent recentEvent = RecentWidgetHolder.getRecentEventPressed(
+		RecentContact recentContact = RecentWidgetHolder.getRecentEventPressed(
 				buttonPressed, getContentResolver());
 
-		if (recentEvent == null) {
+		if (recentContact == null) {
 			Log.w(TAG, "ButtonPressed extra correspond to no RecentEvent!");
 			finish();
 		}
@@ -58,19 +56,19 @@ public class EventPopupActivity extends Activity {
 		// Set the content
 
 		TextView textView = (TextView) findViewById(R.id.popupText);
-		textView.setText(recentEvent.getPerson());
+		textView.setText(recentContact.getPerson());
 
 		ImageButton actionButton = (ImageButton) findViewById(R.id.popupAction);
 		final Intent actionIntent = new Intent(Intent.ACTION_VIEW);
 		actionIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
-		if (recentEvent.getPersonId() == null) {
+		if (recentContact.hasContactInfo()) {
 			// Bring up the dialer since no Contact registered
-			actionIntent.setData(Uri.parse("tel:" + recentEvent.getNumber()));
+			actionIntent.setData(Uri.parse("tel:" + recentContact.getNumber()));
 		} else {
 			// Show the contact page
 			actionIntent.setData(ContentUris.withAppendedId(People.CONTENT_URI,
-					recentEvent.getPersonId()));
+					recentContact.getPersonId()));
 		}
 
 		actionButton.setOnClickListener(new OnClickListener() {
