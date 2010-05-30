@@ -189,7 +189,7 @@ public class RecentWidgetHolder {
 	}
 
 	protected static RecentContact getRecentEventPressed(int buttonPressed,
-			ContentResolver contentResolver) {
+			Context context) {
 
 		boolean found = false;
 		int index = 0;
@@ -206,7 +206,8 @@ public class RecentWidgetHolder {
 			// Button pressed but no recentEvent attached! Surely
 			// garbage-collected so let's create a new list...
 
-			rebuildRecentEvents(contentResolver);
+			rebuildRecentEvents(context.getContentResolver());
+			updateWidgetLabels(context);
 		}
 
 		if (found && recentContacts.size() - 1 >= index) {

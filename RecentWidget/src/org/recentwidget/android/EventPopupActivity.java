@@ -43,7 +43,7 @@ public class EventPopupActivity extends Activity {
 		}
 
 		RecentContact recentContact = RecentWidgetHolder.getRecentEventPressed(
-				buttonPressed, getContentResolver());
+				buttonPressed, this);
 
 		if (recentContact == null) {
 			Log.w(TAG, "ButtonPressed extra correspond to no RecentEvent!");
