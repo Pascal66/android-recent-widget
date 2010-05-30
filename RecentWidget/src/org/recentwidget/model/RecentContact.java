@@ -10,7 +10,7 @@ public class RecentContact implements Serializable {
 
 	private String person;
 	private String number;
-	private Long personId;
+	private Long personId = null;
 	private long mostRecentDate;
 
 	// Are arrays more appropriate for mobile development?
@@ -30,6 +30,10 @@ public class RecentContact implements Serializable {
 			return true;
 		}
 		return false;
+	}
+
+	public List<RecentEvent> getRecentEvents() {
+		return recentEvents;
 	}
 
 	public String getPerson() {
@@ -66,6 +70,14 @@ public class RecentContact implements Serializable {
 	 */
 	public boolean hasContactInfo() {
 		return personId != null && personId >= 0;
+	}
+
+	public String getDisplayName() {
+		if (person != null) {
+			return person;
+		} else {
+			return number;
+		}
 	}
 
 	@Override
