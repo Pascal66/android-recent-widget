@@ -69,7 +69,7 @@ public class RecentContact implements Serializable {
 	 *         number).
 	 */
 	public boolean hasContactInfo() {
-		return personId != null && personId >= 0;
+		return personId != null && personId > 0;
 	}
 
 	public String getDisplayName() {
@@ -114,6 +114,13 @@ public class RecentContact implements Serializable {
 		} else if (!personId.equals(other.personId))
 			return false;
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "RecentContact [number=" + number + ", person=" + person
+				+ ", personId=" + personId + ", mostRecentDate="
+				+ mostRecentDate + ", " + recentEvents.size() + " event(s)]";
 	}
 
 }

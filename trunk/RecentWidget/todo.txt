@@ -1,8 +1,7 @@
 TODO:
 -----
 
-HH- When rebuilding list, the personId = 0 !!!
-HH- personId/fullName, ... should be fetched elsewhere (info is lost when process is killed)
+HH- TelephonyListener is killed? detached?
 
 H- Check list:isFull condition!
 
@@ -17,10 +16,12 @@ L- Find other way to handle PopupActivity intent (works for now, but might not w
 KINDA FIXED / TO TEST / KINDA UGLY:
 -------------------------
 
-To Test: H- RWProvider.recentEvents might be garbage-collected -> need to persist? or re-compute?
-To Test: H- switch compute recent events in service, or else ANR! See WordWidget
-TO Test: M- SmsDao just retrieves inbox?
-To Test: M- List is shown in reverse order -> builder adds at beginning but query is sort descending
+test: H- RWProvider.recentEvents might be garbage-collected -> need to persist? or re-compute?
+test: H- switch compute recent events in service, or else ANR! See WordWidget
+test: M- SmsDao just retrieves inbox?
+test: M- List is shown in reverse order -> builder adds at beginning but query is sort descending
+test: HH- When rebuilding list, the personId = 0 !!!
+test: HH- personId/fullName, ... should be fetched elsewhere (info is lost when process is killed)
 
 NOTES:
 ------

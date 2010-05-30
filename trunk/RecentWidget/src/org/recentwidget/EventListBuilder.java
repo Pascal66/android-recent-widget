@@ -43,6 +43,17 @@ public class EventListBuilder {
 
 		if (i >= 0) {
 			contact = contacts.remove(i);
+			// Contact removed might have less information than the info given
+			// as parameters. Merge them
+			if (contact.getNumber() == null && number != null) {
+				contact.setNumber(number);
+			}
+			if (contact.getPerson() == null && name != null) {
+				contact.setPerson(name);
+			}
+			if (!contact.hasContactInfo() && personId != null) {
+				contact.setPersonId(personId);
+			}
 		}
 
 		// Add the event, if needed

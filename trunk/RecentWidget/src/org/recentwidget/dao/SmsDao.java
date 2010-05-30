@@ -35,8 +35,13 @@ public class SmsDao extends ContentResolverTemplate {
 
 		Log.v(TAG, "Fetched sms recent event");
 
-		builder.add(personId, null, address, RecentEvent.TYPE_SMS,
-				RecentEvent.SUBTYPE_INCOMING, date);
+		if (personId == 0) {
+			builder.add(null, null, address, RecentEvent.TYPE_SMS,
+					RecentEvent.SUBTYPE_INCOMING, date);
+		} else {
+			builder.add(personId, null, address, RecentEvent.TYPE_SMS,
+					RecentEvent.SUBTYPE_INCOMING, date);
+		}
 	}
 
 	@Override
