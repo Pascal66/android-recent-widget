@@ -5,4 +5,7 @@
     <string name="save_action">Save</string>
     <string name="loading">Loading...</string>
     <string name="popup_title">Recent Widget</string>
+    
+    <string name="popup_telephone">Telephone</string>
+    <string name="popup_sms">SMS</string>
 </resources>

@@ -88,6 +88,11 @@ public class RecentWidgetHolder {
 
 				} else {
 
+					// Make sure that we flag the contact as having no contact
+					// info. TODO: UGLY! Fix real cause.
+
+					recentContact.setPersonId(null);
+
 					// Defaults to the basic info we got
 
 					if (recentContact.getPerson() != null) {

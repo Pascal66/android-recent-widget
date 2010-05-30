@@ -1,7 +1,12 @@
 package org.recentwidget.android;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import org.recentwidget.R;
 import org.recentwidget.model.RecentContact;
+import org.recentwidget.model.RecentEvent;
 
 import android.app.Activity;
 import android.content.ContentUris;
@@ -14,6 +19,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
+import android.widget.TableLayout;
 import android.widget.TextView;
 
 public class EventPopupActivity extends Activity {
@@ -53,10 +59,10 @@ public class EventPopupActivity extends Activity {
 		getWindow().setFeatureDrawableResource(Window.FEATURE_LEFT_ICON,
 				android.R.drawable.ic_dialog_info);
 
-		// Set the content
+		// Set the header content
 
 		TextView textView = (TextView) findViewById(R.id.popupText);
-		textView.setText(recentContact.getPerson());
+		textView.setText(recentContact.getDisplayName());
 
 		ImageButton actionButton = (ImageButton) findViewById(R.id.popupAction);
 		final Intent actionIntent = new Intent(Intent.ACTION_VIEW);
@@ -80,5 +86,37 @@ public class EventPopupActivity extends Activity {
 				finish();
 			}
 		});
+
+		// Show the recent events
+		// TODO: Make it more dynamic... less magic-number based.
+
+		TableLayout telLayout = (TableLayout) findViewById(R.id.popupTable1);
+		TableLayout smsLayout = (TableLayout) findViewById(R.id.popupTable2);
+
+		for (RecentEvent recentEvent : recentContact.getRecentEvents()) {
+
+			DateFormat dateFormat = SimpleDateFormat
+					.getDateInstance(DateFormat.FULL);
+			String date = dateFormat.format(new Date(recentEvent.getDate()));
+
+			// No buttons yet, so we can just add a TextView instead of a
+			// TextRow...
+
+			TextView eventText = new TextView(this);
+			eventText.setText("Event: " + date + " (type "
+					+ recentEvent.getSubType() + ")");
+
+			switch (recentEvent.getType()) {
+			case RecentEvent.TYPE_CALL:
+				telLayout.addView(eventText);
+				break;
+			case RecentEvent.TYPE_SMS:
+				smsLayout.addView(eventText);
+				break;
+			default:
+				break;
+			}
+
+		}
 	}
 }

@@ -2,13 +2,11 @@ TODO:
 -----
 
 HH- When rebuilding list, the personId = 0 !!!
+HH- personId/fullName, ... should be fetched elsewhere (info is lost when process is killed)
 
-H- RecentEvent->RecentContact*(1-n)*RecentEvent
-	- personId/fullName, ... should be fetched elsewhere (info is lost when process is killed)
-H- Check list:isFull condition! + sort order
+H- Check list:isFull condition!
 
 M- email content provider
-M- List is shown in reverse order -> builder adds at beginning but query is sort descending
 M- When opening Contact page, pressing back shows the list of all Dialer app! cumbersome
 M- Override long-press on search?
 
@@ -22,6 +20,7 @@ KINDA FIXED / TO TEST / KINDA UGLY:
 To Test: H- RWProvider.recentEvents might be garbage-collected -> need to persist? or re-compute?
 To Test: H- switch compute recent events in service, or else ANR! See WordWidget
 TO Test: M- SmsDao just retrieves inbox?
+To Test: M- List is shown in reverse order -> builder adds at beginning but query is sort descending
 
 NOTES:
 ------
