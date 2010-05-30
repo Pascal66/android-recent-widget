@@ -36,15 +36,14 @@ public class RecentWidgetUpdateService extends Service {
 						RecentWidgetHolder.recentContacts, intent, this
 								.getContentResolver());
 
-				// Update the widget
-
-				RecentWidgetHolder.updateWidgetLabels(this);
-
 				// Only support 1 observer for a given action
-
 				break;
 			}
 		}
+
+		// Update the widget
+
+		RecentWidgetHolder.updateWidgetLabels(this);
 
 	}
 

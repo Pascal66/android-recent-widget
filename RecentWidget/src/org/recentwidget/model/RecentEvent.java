@@ -47,4 +47,10 @@ public class RecentEvent implements Serializable {
 		this.subType = subType;
 	}
 
+	@Override
+	public String toString() {
+		return "RecentEvent [date=" + date + ", subType=" + subType + ", type="
+				+ type + "]";
+	}
+
 }
