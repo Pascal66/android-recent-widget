@@ -22,7 +22,7 @@ public class CallLogDao extends ContentResolverTemplate {
 
 	}
 
-	protected void extractEvent(EventListBuilder builder, Cursor callsCursor) {
+	protected long extractEvent(EventListBuilder builder, Cursor callsCursor) {
 
 		// Cached name, may not be the name as in the Contacts
 
@@ -48,6 +48,8 @@ public class CallLogDao extends ContentResolverTemplate {
 		Log.v(TAG, "Fetched telephony recent event");
 
 		builder.add(null, name, number, RecentEvent.TYPE_CALL, type, date);
+
+		return date;
 	}
 
 	@Override
@@ -55,4 +57,8 @@ public class CallLogDao extends ContentResolverTemplate {
 		return RecentWidgetUtils.ACTION_UPDATE_TELEPHONY.equals(intentAction);
 	}
 
+	@Override
+	protected int getTargetType() {
+		return RecentEvent.TYPE_CALL;
+	}
 }
