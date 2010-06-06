@@ -5,7 +5,6 @@ package org.recentwidget.android;
 
 import org.recentwidget.R;
 import org.recentwidget.RecentWidgetUtils;
-import org.recentwidget.R.id;
 import org.recentwidget.dao.CallLogDao;
 import org.recentwidget.dao.EventObserver;
 import org.recentwidget.dao.SmsDao;
@@ -50,6 +49,17 @@ public class RecentWidgetProvider extends AppWidgetProvider {
 
 		Log.d(TAG, "Called onUpdate");
 
+		// Still, check that process was not killed and update everything...
+		// (use AlarmManager
+		// instead?)
+
+		if (!RecentWidgetHolder.isAlive()) {
+			Log.d(TAG, "Holder was empty. Rebuild the list.");
+			startUpdateService(context, RecentWidgetUtils.ACTION_UPDATE_ALL);
+		} else {
+			Log.d(TAG, "Holder still filled.");
+		}
+
 	}
 
 	@Override
@@ -61,15 +71,10 @@ public class RecentWidgetProvider extends AppWidgetProvider {
 		// To prevent any ANR timeouts, we perform the update in a service
 
 		for (String acceptedAction : RecentWidgetUtils.ACTION_UPDATE_TYPES) {
+
 			if (acceptedAction.equals(action)) {
 
-				Intent serviceIntent = new Intent(context,
-						RecentWidgetUpdateService.class);
-
-				serviceIntent.putExtra(
-						RecentWidgetUpdateService.ORIGINAL_ACTION, action);
-
-				context.startService(serviceIntent);
+				startUpdateService(context, action);
 
 				return;
 
@@ -80,6 +85,17 @@ public class RecentWidgetProvider extends AppWidgetProvider {
 		// http://groups.google.com/group/android-developers/msg/e405ca19df2170e2?pli=1
 
 		super.onReceive(context, intent);
+	}
+
+	private void startUpdateService(Context context, String action) {
+
+		Intent serviceIntent = new Intent(context,
+				RecentWidgetUpdateService.class);
+
+		serviceIntent.putExtra(RecentWidgetUpdateService.ORIGINAL_ACTION,
+				action);
+
+		context.startService(serviceIntent);
 	}
 
 }

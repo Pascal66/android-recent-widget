@@ -104,16 +104,12 @@ public class RecentWidgetHolder {
 
 				contactCursor.close();
 
-				Log.d(TAG, "Setting button label");
-
 				views.setCharSequence(RecentWidgetProvider.buttonMap[i],
 						"setText", label);
 
 				if (recentContact.hasContactInfo()) {
 
 					// Also try to set the picture
-
-					Log.d(TAG, "Setting button photo");
 
 					Bitmap contactPhoto = People.loadContactPhoto(context,
 							ContentUris.withAppendedId(People.CONTENT_URI,
@@ -201,7 +197,7 @@ public class RecentWidgetHolder {
 			}
 		}
 
-		if (recentContacts == null) {
+		if (!isAlive()) {
 
 			// Button pressed but no recentEvent attached! Surely
 			// garbage-collected so let's create a new list...
@@ -225,5 +221,9 @@ public class RecentWidgetHolder {
 			recentContacts = observer.update(recentContacts, null,
 					contentResolver);
 		}
+	}
+
+	public static boolean isAlive() {
+		return recentContacts != null;
 	}
 }

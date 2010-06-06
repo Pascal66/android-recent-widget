@@ -26,7 +26,9 @@ public abstract class ContentResolverTemplate implements EventObserver {
 
 	private ContentResolver contentResolver;
 
-	protected abstract void extractEvent(EventListBuilder builder, Cursor cursor);
+	protected abstract long extractEvent(EventListBuilder builder, Cursor cursor);
+
+	protected abstract int getTargetType();
 
 	@Override
 	public List<RecentContact> update(List<RecentContact> recentContacts,
@@ -73,13 +75,21 @@ public abstract class ContentResolverTemplate implements EventObserver {
 
 			if (cursor.moveToFirst()) {
 
-				// TODO: Wrong condition: should stop when the date of the
-				// fetched
-				// event is smaller than the small date in the builder list
+				while (!cursor.isAfterLast()) {
 
-				while (!cursor.isAfterLast() && !builder.isFull()) {
+					// TODO: Wrong condition: should stop when the date of the
+					// fetched event is smaller than the small date in the
+					// builder
+					// list...
 
-					extractEvent(builder, cursor);
+					long eventDate = extractEvent(builder, cursor);
+
+					// At this point, the event was already added. Just check if
+					// next event pertains to the list.
+
+					if (builder.isFull(eventDate, getTargetType())) {
+						break;
+					}
 
 					cursor.moveToNext();
 				}

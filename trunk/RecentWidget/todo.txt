@@ -2,8 +2,9 @@ TODO:
 -----
 
 HH- TelephonyListener is killed? detached?
-
 H- Check list:isFull condition!
+
+H- Add more info on popup (at least for debug!)
 
 M- email content provider
 M- When opening Contact page, pressing back shows the list of all Dialer app! cumbersome

@@ -22,7 +22,7 @@ public class SmsDao extends ContentResolverTemplate {
 
 	}
 
-	protected void extractEvent(EventListBuilder builder, Cursor messageCursor) {
+	protected long extractEvent(EventListBuilder builder, Cursor messageCursor) {
 
 		String address = messageCursor.getString(2);
 
@@ -42,10 +42,17 @@ public class SmsDao extends ContentResolverTemplate {
 			builder.add(personId, null, address, RecentEvent.TYPE_SMS,
 					RecentEvent.SUBTYPE_INCOMING, date);
 		}
+
+		return date;
 	}
 
 	@Override
 	public boolean supports(String intentAction) {
 		return RecentWidgetUtils.ACTION_UPDATE_SMS.equals(intentAction);
+	}
+
+	@Override
+	protected int getTargetType() {
+		return RecentEvent.TYPE_SMS;
 	}
 }
