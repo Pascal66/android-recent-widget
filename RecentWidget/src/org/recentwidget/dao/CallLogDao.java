@@ -54,7 +54,9 @@ public class CallLogDao extends ContentResolverTemplate {
 
 	@Override
 	public boolean supports(String intentAction) {
-		return RecentWidgetUtils.ACTION_UPDATE_TELEPHONY.equals(intentAction);
+		// return
+		// RecentWidgetUtils.ACTION_UPDATE_TELEPHONY.equals(intentAction);
+		return RecentWidgetUtils.ACTION_UPDATE_CALL.equals(intentAction);
 	}
 
 	@Override

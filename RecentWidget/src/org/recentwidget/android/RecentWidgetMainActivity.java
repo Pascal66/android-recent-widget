@@ -2,16 +2,11 @@ package org.recentwidget.android;
 
 import org.recentwidget.R;
 import org.recentwidget.RecentWidgetUtils;
-import org.recentwidget.R.id;
-import org.recentwidget.R.layout;
 
 import android.app.Activity;
 import android.appwidget.AppWidgetManager;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.telephony.PhoneStateListener;
-import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
 
@@ -77,44 +72,13 @@ public class RecentWidgetMainActivity extends Activity {
 
 			// TODO: No configuration so skip this activity!
 
-			bindTelephonyListener();
+			// Buggy because process can be killed, use a broadcast receiver
+			// instead.
+			// bindTelephonyListener();
+
 			finish();
 		}
 	}
-
-	PhoneStateListener phoneListener = new PhoneStateListener() {
-
-		private static final String TAG = "RecentWidgetMainActivity:phoneListener";
-
-		@Override
-		public void onCallStateChanged(int state, String incomingNumber) {
-
-			// Let the parent do its thing first (to avoid lag?)
-
-			super.onCallStateChanged(state, incomingNumber);
-
-			switch (state) {
-			case TelephonyManager.CALL_STATE_IDLE:
-				// Actually listen when telephone is back to normal -> means a
-				// call was in/outgoing
-				Log.d(TAG, "Listened to phone state change");
-				broadcastTelephonyUpdate();
-				break;
-			default:
-				Log.d(TAG, "Ignoring phone state change");
-				break;
-			}
-
-		}
-
-		public void broadcastTelephonyUpdate() {
-			Intent intent = new Intent(
-					RecentWidgetUtils.ACTION_UPDATE_TELEPHONY);
-			Log.d(TAG, "Broadcasting ACTION_UPDATE_TELEPHONY");
-			sendBroadcast(intent);
-		}
-
-	};
 
 	View.OnClickListener mOnClickListener = new View.OnClickListener() {
 
@@ -122,26 +86,13 @@ public class RecentWidgetMainActivity extends Activity {
 
 		public void onClick(View v) {
 
-			Log.d(TAG, "Saving configuration and binding listener");
+			Log.d(TAG, "Saving configuration");
 
-			bindTelephonyListener();
+			// bindTelephonyListener();
 
 			finish();
 		}
 
 	};
-
-	private void bindTelephonyListener() {
-		final Context context = RecentWidgetMainActivity.this;
-
-		Log.d(TAG, "Binding telephony listener");
-
-		// Set the listeners (might have more listeners later...)
-
-		TelephonyManager telManager = (TelephonyManager) context
-				.getSystemService(Context.TELEPHONY_SERVICE);
-		telManager.listen(phoneListener, PhoneStateListener.LISTEN_CALL_STATE);
-
-	}
 
 }

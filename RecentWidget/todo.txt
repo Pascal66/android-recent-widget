@@ -1,7 +1,6 @@
 TODO:
 -----
 
-HH- TelephonyListener is killed? detached?
 H- Check list:isFull condition!
 
 H- Add more info on popup (at least for debug!)
@@ -9,6 +8,9 @@ H- Add more info on popup (at least for debug!)
 M- email content provider
 M- When opening Contact page, pressing back shows the list of all Dialer app! cumbersome
 M- Override long-press on search?
+M- CPU: 
+	- android.intent.action.PHONE_STATE actually listened twice... observer.supports should also take the intent
+		- get new phoneState extra
 
 L- If showing contact on button press, the missed call notification does not go away
 L- Why double-initialization on widget creation?
@@ -23,6 +25,7 @@ test: M- SmsDao just retrieves inbox?
 test: M- List is shown in reverse order -> builder adds at beginning but query is sort descending
 test: HH- When rebuilding list, the personId = 0 !!!
 test: HH- personId/fullName, ... should be fetched elsewhere (info is lost when process is killed)
+test: HH- TelephonyListener is killed? detached?
 
 NOTES:
 ------
