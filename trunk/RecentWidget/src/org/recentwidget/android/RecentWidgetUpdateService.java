@@ -6,44 +6,70 @@ import org.recentwidget.dao.EventObserver;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
+import android.util.Log;
 
 // Doc: WordWidget$UpdateService
 public class RecentWidgetUpdateService extends Service {
 
+	private static final String TAG = "RW:UpdateService";
+
 	public static final String ORIGINAL_ACTION = "ORIGINAL_ACTION";
+	public static final String ORIGINAL_INTENT = "ORIGINAL_INTENT";
 
 	@Override
 	public void onStart(Intent intent, int startId) {
 
-		String originalAction = intent.getStringExtra(ORIGINAL_ACTION);
+		String originalAction;
+
+		if (intent.getParcelableExtra(ORIGINAL_INTENT) != null) {
+			intent = intent.getParcelableExtra(ORIGINAL_INTENT);
+			originalAction = intent.getAction();
+		} else {
+			originalAction = intent.getStringExtra(ORIGINAL_ACTION);
+		}
+
+		if (originalAction == null) {
+			Log.d(TAG, "Could not handle intent.");
+		}
+
+		boolean updateWidget = false;
 
 		if (RecentWidgetUtils.ACTION_UPDATE_ALL.equals(originalAction)) {
 
-			// Shortcut intent for rebuilding the list
+			// Shortcut intent for rebuilding the whole list
 
 			RecentWidgetHolder.rebuildRecentEvents(this.getContentResolver());
-			RecentWidgetHolder.updateWidgetLabels(this);
 
-			return;
-		}
+			updateWidget = true;
 
-		for (EventObserver observer : RecentWidgetProvider.eventObservers) {
-			if (observer.supports(originalAction)) {
+		} else {
 
-				// Update the recent events
+			for (EventObserver observer : RecentWidgetProvider.eventObservers) {
+				if (observer.supports(originalAction)) {
 
-				RecentWidgetHolder.recentContacts = observer.update(
-						RecentWidgetHolder.recentContacts, intent, this
-								.getContentResolver());
+					// Update the recent events
 
-				// Only support 1 observer for a given action
-				break;
+					Log.d(TAG, "Handling intent: " + intent);
+
+					RecentWidgetHolder.recentContacts = observer.update(
+							RecentWidgetHolder.recentContacts, intent, this
+									.getContentResolver());
+
+					updateWidget = true;
+
+					// Only support 1 observer for a given action, so break
+
+					break;
+				}
 			}
+
 		}
 
 		// Update the widget
 
-		RecentWidgetHolder.updateWidgetLabels(this);
+		if (updateWidget) {
+			RecentWidgetHolder.updateWidgetLabels(this);
+		}
 
 	}
 

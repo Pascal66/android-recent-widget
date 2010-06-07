@@ -55,7 +55,15 @@ public class RecentWidgetProvider extends AppWidgetProvider {
 
 		if (!RecentWidgetHolder.isAlive()) {
 			Log.d(TAG, "Holder was empty. Rebuild the list.");
-			startUpdateService(context, RecentWidgetUtils.ACTION_UPDATE_ALL);
+
+			Intent serviceIntent = new Intent(context,
+					RecentWidgetUpdateService.class);
+
+			serviceIntent.putExtra(RecentWidgetUpdateService.ORIGINAL_ACTION,
+					RecentWidgetUtils.ACTION_UPDATE_ALL);
+
+			context.startService(serviceIntent);
+
 		} else {
 			Log.d(TAG, "Holder still filled.");
 		}
@@ -74,7 +82,13 @@ public class RecentWidgetProvider extends AppWidgetProvider {
 
 			if (acceptedAction.equals(action)) {
 
-				startUpdateService(context, action);
+				Intent serviceIntent = new Intent(context,
+						RecentWidgetUpdateService.class);
+
+				serviceIntent.putExtra(
+						RecentWidgetUpdateService.ORIGINAL_INTENT, intent);
+
+				context.startService(serviceIntent);
 
 				return;
 
@@ -85,17 +99,6 @@ public class RecentWidgetProvider extends AppWidgetProvider {
 		// http://groups.google.com/group/android-developers/msg/e405ca19df2170e2?pli=1
 
 		super.onReceive(context, intent);
-	}
-
-	private void startUpdateService(Context context, String action) {
-
-		Intent serviceIntent = new Intent(context,
-				RecentWidgetUpdateService.class);
-
-		serviceIntent.putExtra(RecentWidgetUpdateService.ORIGINAL_ACTION,
-				action);
-
-		context.startService(serviceIntent);
 	}
 
 }
