@@ -22,6 +22,15 @@ public class RecentEvent implements Serializable {
 	private int type = TYPE_UNKNOWN;
 	private int subType = SUBTYPE_UNKNOWN;
 	private long date;
+	private Long id;
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
 
 	public long getDate() {
 		return date;
@@ -51,6 +60,34 @@ public class RecentEvent implements Serializable {
 	public String toString() {
 		return "RecentEvent [date=" + date + ", subType=" + subType + ", type="
 				+ type + "]";
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + (int) (date ^ (date >>> 32));
+		result = prime * result + subType;
+		result = prime * result + type;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		RecentEvent other = (RecentEvent) obj;
+		if (date != other.date)
+			return false;
+		if (subType != other.subType)
+			return false;
+		if (type != other.type)
+			return false;
+		return true;
 	}
 
 }

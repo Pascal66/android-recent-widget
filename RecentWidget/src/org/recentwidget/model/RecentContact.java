@@ -135,4 +135,18 @@ public class RecentContact implements Serializable {
 				+ mostRecentDate + ", " + recentEvents.size() + " event(s)]";
 	}
 
+	public RecentEvent getMostRecentEvent(int type) {
+		// TODO: Since it's a list, the first one is always the most recent one?
+		long mostRecentDate = 0;
+		RecentEvent mostRecentEvent = null;
+		for (RecentEvent recentEvent : recentEvents) {
+			if (recentEvent.getType() == type
+					&& recentEvent.getDate() > mostRecentDate) {
+				mostRecentDate = recentEvent.getDate();
+				mostRecentEvent = recentEvent;
+			}
+		}
+		return mostRecentEvent;
+	}
+
 }

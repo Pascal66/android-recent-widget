@@ -16,8 +16,8 @@ public class CallLogDao extends ContentResolverTemplate {
 		super();
 
 		contentUri = Calls.CONTENT_URI;
-		projection = new String[] { Calls.CACHED_NAME, Calls.NUMBER, Calls.NEW,
-				Calls.TYPE, Calls.DATE };
+		projection = new String[] { Calls._ID, Calls.CACHED_NAME, Calls.NUMBER,
+				Calls.NEW, Calls.TYPE, Calls.DATE };
 		sortOrder = Calls.DEFAULT_SORT_ORDER;
 
 	}
@@ -31,6 +31,10 @@ public class CallLogDao extends ContentResolverTemplate {
 
 		String number = callsCursor.getString(callsCursor
 				.getColumnIndex(Calls.NUMBER));
+
+		// The unique CallLog id
+
+		long id = callsCursor.getLong(callsCursor.getColumnIndex(Calls._ID));
 
 		// The type of the call (incoming, outgoing or missed).
 
@@ -47,7 +51,7 @@ public class CallLogDao extends ContentResolverTemplate {
 
 		Log.v(TAG, "Fetched telephony recent event");
 
-		builder.add(null, name, number, RecentEvent.TYPE_CALL, type, date);
+		builder.add(null, name, number, id, RecentEvent.TYPE_CALL, type, date);
 
 		return date;
 	}

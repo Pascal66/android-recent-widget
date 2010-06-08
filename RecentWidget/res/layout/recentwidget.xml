@@ -22,7 +22,7 @@
 
 	<!-- TODO: create onPressed drawables for better visual -->
 
-	<AbsoluteLayout android:layout_width="wrap_content"
+	<AbsoluteLayout android:layout_width="fill_parent"
 		android:layout_weight="25" android:layout_height="fill_parent">
 
 		<!-- ImageView for displaying contact pic -->
@@ -36,7 +36,7 @@
 
 	</AbsoluteLayout>
 
-	<AbsoluteLayout android:layout_width="wrap_content"
+	<AbsoluteLayout android:layout_width="fill_parent"
 		android:layout_weight="25" android:layout_height="fill_parent">
 
 		<!-- ImageView for displaying contact pic -->
@@ -50,7 +50,7 @@
 
 	</AbsoluteLayout>
 
-	<AbsoluteLayout android:layout_width="wrap_content"
+	<AbsoluteLayout android:layout_width="fill_parent"
 		android:layout_weight="25" android:layout_height="fill_parent">
 
 		<!-- ImageView for displaying contact pic -->
@@ -64,7 +64,7 @@
 
 	</AbsoluteLayout>
 
-	<AbsoluteLayout android:layout_width="wrap_content"
+	<AbsoluteLayout android:layout_width="fill_parent"
 		android:layout_weight="25" android:layout_height="fill_parent">
 
 		<!-- ImageView for displaying contact pic -->
