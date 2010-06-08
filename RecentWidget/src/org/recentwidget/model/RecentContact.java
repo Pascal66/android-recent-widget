@@ -17,6 +17,11 @@ public class RecentContact implements Serializable {
 	 */
 	private long mostRecentDate;
 
+	/**
+	 * The least recent event date for this contact.
+	 */
+	public long oldestEventDate = Long.MAX_VALUE;
+
 	// Are arrays more appropriate for mobile development?
 	private List<RecentEvent> recentEvents = new ArrayList<RecentEvent>();
 
@@ -30,6 +35,9 @@ public class RecentContact implements Serializable {
 			recentEvents.add(event);
 			if (event.getDate() > mostRecentDate) {
 				mostRecentDate = event.getDate();
+			}
+			if (event.getDate() < oldestEventDate) {
+				oldestEventDate = event.getDate();
 			}
 			return true;
 		}
@@ -127,31 +135,4 @@ public class RecentContact implements Serializable {
 				+ mostRecentDate + ", " + recentEvents.size() + " event(s)]";
 	}
 
-	public RecentEvent getOldestEvent(int type) {
-
-		if (recentEvents != null) {
-
-			long minDate = Long.MAX_VALUE;
-			int minIndex = 0;
-
-			for (int i = 0; i < recentEvents.size(); i++) {
-
-				RecentEvent recentEvent = recentEvents.get(i);
-
-				if (recentEvent.getType() == type
-						&& recentEvent.getDate() < minDate) {
-					minDate = recentEvent.getDate();
-					minIndex = i;
-				}
-
-			}
-
-			if (minDate != Long.MAX_VALUE) {
-				return recentEvents.get(minIndex);
-			}
-
-		}
-
-		return null;
-	}
 }

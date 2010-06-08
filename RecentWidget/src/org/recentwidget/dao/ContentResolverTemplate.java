@@ -34,7 +34,7 @@ public abstract class ContentResolverTemplate implements EventObserver {
 	public List<RecentContact> update(List<RecentContact> recentContacts,
 			Intent intent, ContentResolver contentResolver) {
 
-		if (Log.isLoggable(TAG, Log.DEBUG)) {
+		if (intent != null) {
 			Log.d(TAG, "Received broadcasted " + intent.getAction());
 		}
 
@@ -76,11 +76,6 @@ public abstract class ContentResolverTemplate implements EventObserver {
 			if (cursor.moveToFirst()) {
 
 				while (!cursor.isAfterLast()) {
-
-					// TODO: Wrong condition: should stop when the date of the
-					// fetched event is smaller than the small date in the
-					// builder
-					// list...
 
 					long eventDate = extractEvent(builder, cursor);
 
