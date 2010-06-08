@@ -1,20 +1,25 @@
 TODO:
 -----
 
-H- Check list:isFull condition!
-
-H- Add more info on popup (at least for debug!)
+M- When opening Contact page, pressing back shows the list of all Dialer app! cumbersome
+	- New task on showing Activity Popup
+		- activity popup should be forgotten has soon as possible
+	- Intent from Activity Popup should have the popup in its affinity
+		-> will not be grouped with the actual target application
 
 M- email content provider
-M- When opening Contact page, pressing back shows the list of all Dialer app! cumbersome
 M- Override long-press on search?
 M- CPU: 
 	- android.intent.action.PHONE_STATE actually listened twice... observer.supports should also take the intent
 		- get new phoneState extra
+M- Use AsyncTask to draw the ActivityPopup
+M- layoutopt the views
 
+L- Use Bundle to save the state when Holder is killed... how?
 L- If showing contact on button press, the missed call notification does not go away
 L- Why double-initialization on widget creation?
 L- Find other way to handle PopupActivity intent (works for now, but might not work with multiple widgets on screen << might have several list of recent events)
+L- Make sure content providers are disposed
 
 KINDA FIXED / TO TEST / KINDA UGLY:
 -------------------------
@@ -26,6 +31,8 @@ test: M- List is shown in reverse order -> builder adds at beginning but query i
 test: HH- When rebuilding list, the personId = 0 !!!
 test: HH- personId/fullName, ... should be fetched elsewhere (info is lost when process is killed)
 test: HH- TelephonyListener is killed? detached?
+test: H- Check list:isFull condition!
+test: H- Add more info on popup (at least for debug!)
 
 NOTES:
 ------

@@ -105,6 +105,8 @@ public class EventListBuilder {
 	}
 
 	/**
+	 * Presumes that the events are added in inverse chronological order.
+	 * 
 	 * @param type
 	 * @param eventDate
 	 * @return Whether the list is already full (i.e. do we need to fetch more
@@ -114,29 +116,29 @@ public class EventListBuilder {
 
 		if (contacts.size() < maxRetrieved) {
 
-			Log.d(TAG, "List not full yet.");
+			Log.d(TAG, "List has not reached max size yet.");
 			return false;
 
 		} else {
 
 			// Check whether the timestamp of the newly added event is older
-			// than the older event in the list; for a given type.
+			// than the oldest event in the list.
+
+			boolean hasOlderEvent = false;
 
 			for (RecentContact contact : contacts) {
-				RecentEvent oldestEvent = contact.getOldestEvent(type);
-				if (oldestEvent != null && oldestEvent.getDate() < eventDate) {
-
-					// WRONG!!! There's never an older event of the same type!
-
-					Log.d(TAG, "Found an older event, continue building.");
-					return false;
+				// TODO: If the event relates to a contact in the list, then
+				// allow more...
+				if (contact.oldestEventDate < eventDate) {
+					hasOlderEvent = true;
+					break;
 				}
 			}
+
+			// If no older event, the list must be full.
+
+			return !hasOlderEvent;
 		}
-
-		// Could not find an older event... List must be full.
-
-		return true;
 	}
 
 }
