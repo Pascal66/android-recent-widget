@@ -95,6 +95,8 @@ public class EventPopupActivity extends Activity {
 
 		for (RecentEvent recentEvent : recentContact.getRecentEvents()) {
 
+			Log.d(TAG, "Drawing event: " + recentEvent);
+
 			DateFormat dateFormat = SimpleDateFormat
 					.getDateInstance(DateFormat.FULL);
 			String date = dateFormat.format(new Date(recentEvent.getDate()));
