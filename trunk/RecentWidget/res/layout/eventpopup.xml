@@ -13,6 +13,7 @@
 		<TextView android:id="@+id/popupText" android:gravity="center_vertical"
 			android:layout_width="wrap_content" android:layout_height="wrap_content"
 			android:text="@string/loading" />
+
 		<ImageButton android:id="@+id/popupAction"
 			android:layout_width="wrap_content" android:layout_height="wrap_content"
 			android:src="@drawable/icon" />
@@ -24,26 +25,54 @@
 		template?
 	-->
 
-	<ScrollView android:layout_width="fill_parent" android:layout_height="fill_parent" android:fillViewport="true">
-	
-		<LinearLayout android:orientation="vertical" android:id="@+id/tables" android:isScrollContainer="true"
-			android:layout_width="fill_parent" android:layout_height="wrap_content">
+	<ScrollView android:layout_width="fill_parent"
+		android:layout_height="fill_parent" android:fillViewport="true">
+
+		<LinearLayout android:orientation="vertical" android:id="@+id/tables"
+			android:isScrollContainer="true" android:layout_width="fill_parent"
+			android:layout_height="wrap_content">
+
+			<LinearLayout android:gravity="top" android:orientation="horizontal"
+				android:layout_width="fill_parent" android:layout_height="wrap_content">
+
+				<ImageButton android:id="@+id/popupTableAction1"
+					android:layout_width="wrap_content" android:layout_height="wrap_content"
+					android:src="@android:drawable/ic_menu_call" />
+
+				<TableLayout android:id="@+id/popupTable1"
+					android:layout_width="fill_parent" android:layout_height="wrap_content">
+
+					<TextView android:text="@string/popup_telephone"
+						android:textStyle="bold" android:layout_width="wrap_content"
+						android:layout_height="wrap_content" />
+
+					<!-- Sample 
+				<TextView android:text="Test" />
+				-->
+
+				</TableLayout>
+
+			</LinearLayout>
+
+			<LinearLayout android:gravity="top" android:orientation="horizontal"
+				android:layout_width="fill_parent" android:layout_height="wrap_content">
+
+				<ImageButton android:id="@+id/popupTableAction2"
+					android:layout_width="wrap_content" android:layout_height="wrap_content"
+					android:src="@android:drawable/sym_action_chat" />
+
+				<TableLayout android:id="@+id/popupTable2"
+					android:layout_width="fill_parent" android:layout_height="wrap_content">
+
+					<TextView android:text="@string/popup_sms"
+						android:textStyle="bold" android:layout_width="wrap_content"
+						android:layout_height="wrap_content" />
+
+				</TableLayout>
+
+			</LinearLayout>
 			
-			<TableLayout android:id="@+id/popupTable1"
-				android:layout_width="fill_parent" android:layout_height="wrap_content">
-		
-				<TextView android:text="@string/popup_telephone" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
-		
-			</TableLayout>
-		
-			<TableLayout android:id="@+id/popupTable2"
-				android:layout_width="fill_parent" android:layout_height="wrap_content">
-		
-				<TextView android:text="@string/popup_sms" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
-		
-			</TableLayout>
-	
-		</LinearLayout>	
+		</LinearLayout>
 
 	</ScrollView>
 

@@ -50,7 +50,10 @@ public class RecentWidgetUpdateService extends Service {
 					// Update the recent events
 
 					Log.d(TAG, "Handling intent: " + intent);
-					Log.v(TAG, "Intent extras: " + intent.getExtras());
+					if (intent.getExtras() != null) {
+						Log.v(TAG, "Intent extras: "
+								+ intent.getExtras().keySet());
+					}
 
 					RecentWidgetHolder.recentContacts = observer.update(
 							RecentWidgetHolder.recentContacts, intent, this

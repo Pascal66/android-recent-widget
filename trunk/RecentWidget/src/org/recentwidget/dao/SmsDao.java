@@ -12,10 +12,13 @@ public class SmsDao extends ContentResolverTemplate {
 
 	private static final String TAG = "RW:SmsDao";
 
+	public static final Uri SMS_CONTENT_URI = Uri
+			.parse("content://mms-sms/conversations/");
+
 	public SmsDao() {
 		super();
 
-		contentUri = Uri.parse("content://mms-sms/conversations/");
+		contentUri = SMS_CONTENT_URI;
 		projection = new String[] { "_id", "thread_id", "address", "person",
 				"date", "body" };
 		sortOrder = "date DESC";
@@ -23,6 +26,8 @@ public class SmsDao extends ContentResolverTemplate {
 	}
 
 	protected long extractEvent(EventListBuilder builder, Cursor messageCursor) {
+
+		long threadId = messageCursor.getLong(1);
 
 		String address = messageCursor.getString(2);
 
@@ -36,11 +41,11 @@ public class SmsDao extends ContentResolverTemplate {
 		Log.v(TAG, "Fetched sms recent event");
 
 		if (personId == 0) {
-			builder.add(null, null, address, RecentEvent.TYPE_SMS,
+			builder.add(null, null, address, threadId, RecentEvent.TYPE_SMS,
 					RecentEvent.SUBTYPE_INCOMING, date);
 		} else {
-			builder.add(personId, null, address, RecentEvent.TYPE_SMS,
-					RecentEvent.SUBTYPE_INCOMING, date);
+			builder.add(personId, null, address, threadId,
+					RecentEvent.TYPE_SMS, RecentEvent.SUBTYPE_INCOMING, date);
 		}
 
 		return date;

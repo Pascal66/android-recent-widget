@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.recentwidget.R;
+import org.recentwidget.dao.SmsDao;
 import org.recentwidget.model.RecentContact;
 import org.recentwidget.model.RecentEvent;
 
@@ -13,6 +14,7 @@ import android.content.ContentUris;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.CallLog.Calls;
 import android.provider.Contacts.People;
 import android.util.Log;
 import android.view.View;
@@ -64,28 +66,36 @@ public class EventPopupActivity extends Activity {
 		TextView textView = (TextView) findViewById(R.id.popupText);
 		textView.setText(recentContact.getDisplayName());
 
-		ImageButton actionButton = (ImageButton) findViewById(R.id.popupAction);
-		final Intent actionIntent = new Intent(Intent.ACTION_VIEW);
-		actionIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
 		if (recentContact.hasContactInfo()) {
-			// Show the contact page
-			actionIntent.setData(ContentUris.withAppendedId(People.CONTENT_URI,
-					recentContact.getPersonId()));
+
+			// Contact button
+			bindIntentToButton(R.id.popupAction, ContentUris.withAppendedId(
+					People.CONTENT_URI, recentContact.getPersonId()));
+
 		} else {
+
 			// Bring up the dialer since no Contact registered
-			actionIntent.setData(Uri.parse("tel:" + recentContact.getNumber()));
+			bindIntentToButton(R.id.popupAction, Uri.parse("tel:"
+					+ recentContact.getNumber()));
 		}
 
-		actionButton.setOnClickListener(new OnClickListener() {
+		// Call Log button
 
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				startActivity(actionIntent);
-				finish();
-			}
-		});
+		RecentEvent callLogEvent = recentContact
+				.getMostRecentEvent(RecentEvent.TYPE_CALL);
+		if (callLogEvent != null) {
+			bindIntentToButton(R.id.popupTableAction1, ContentUris
+					.withAppendedId(Calls.CONTENT_URI, callLogEvent.getId()));
+		}
+
+		// SMS button
+
+		RecentEvent smsEvent = recentContact
+				.getMostRecentEvent(RecentEvent.TYPE_SMS);
+		if (smsEvent != null) {
+			bindIntentToButton(R.id.popupTableAction2, ContentUris
+					.withAppendedId(SmsDao.SMS_CONTENT_URI, smsEvent.getId()));
+		}
 
 		// Show the recent events
 		// TODO: Make it more dynamic... less magic-number based.
@@ -120,5 +130,25 @@ public class EventPopupActivity extends Activity {
 			}
 
 		}
+	}
+
+	private void bindIntentToButton(int buttonId, Uri contentUriData) {
+
+		final Intent actionIntent = new Intent(Intent.ACTION_VIEW);
+
+		actionIntent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+
+		actionIntent.setData(contentUriData);
+
+		((ImageButton) findViewById(buttonId))
+				.setOnClickListener(new OnClickListener() {
+
+					@Override
+					public void onClick(View v) {
+						// TODO Auto-generated method stub
+						startActivity(actionIntent);
+						finish();
+					}
+				});
 	}
 }
