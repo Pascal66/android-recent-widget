@@ -18,4 +18,6 @@ public class RecentWidgetUtils {
 			ACTION_UPDATE_CALL };
 
 	public static final String MESSAGE_SENT_ACTION = "com.android.mms.transaction.MESSAGE_SENT";
+
+	public static boolean contactsContractAvailable = false;
 }

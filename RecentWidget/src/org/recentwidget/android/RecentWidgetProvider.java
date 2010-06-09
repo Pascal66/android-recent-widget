@@ -21,7 +21,7 @@ public class RecentWidgetProvider extends AppWidgetProvider {
 
 	public static final String BUTTON_PRESSED = "org.recentwidget.BUTTON_PRESSED";
 
-	static final int defaultContactImage = android.R.drawable.picture_frame;
+	public static final int defaultContactImage = android.R.drawable.picture_frame;
 
 	static final EventObserver[] eventObservers = new EventObserver[] {
 			new SmsDao(), new CallLogDao() };

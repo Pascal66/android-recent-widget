@@ -2,8 +2,8 @@ TODO:
 -----
 
 H- Market:
-	- logo
-	- widget frame
+	x logo
+	x widget frame
 	- about page
 	- website
 	- popup design/info... missed calls icons, ...

@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.recentwidget.R;
 import org.recentwidget.RecentWidgetUtils;
+import org.recentwidget.compat.ContactAccessor;
 import org.recentwidget.dao.EventObserver;
 import org.recentwidget.model.RecentContact;
 
@@ -32,6 +33,16 @@ public class RecentWidgetHolder {
 	 * List of the Events to be displayed on the widget.
 	 */
 	static List<RecentContact> recentContacts;
+
+	/* establish whether the "new" class is available to us */
+	static {
+		try {
+			ContactAccessor.checkAvailable();
+			RecentWidgetUtils.contactsContractAvailable = true;
+		} catch (Throwable t) {
+			RecentWidgetUtils.contactsContractAvailable = false;
+		}
+	}
 
 	static final void updateWidgetLabels(Context context) {
 
@@ -111,10 +122,23 @@ public class RecentWidgetHolder {
 
 					// Also try to set the picture
 
-					Bitmap contactPhoto = People.loadContactPhoto(context,
-							ContentUris.withAppendedId(People.CONTENT_URI,
-									recentContact.getPersonId()),
-							RecentWidgetProvider.defaultContactImage, null);
+					Bitmap contactPhoto;
+
+					if (RecentWidgetUtils.contactsContractAvailable) {
+
+						contactPhoto = ContactAccessor.loadContactPhoto(
+								context, recentContact,
+								RecentWidgetProvider.defaultContactImage);
+
+					} else {
+
+						// ContactsContract not available
+
+						contactPhoto = People.loadContactPhoto(context,
+								ContentUris.withAppendedId(People.CONTENT_URI,
+										recentContact.getPersonId()),
+								RecentWidgetProvider.defaultContactImage, null);
+					}
 
 					views.setBitmap(RecentWidgetProvider.imageMap[i],
 							"setImageBitmap", contactPhoto);
