@@ -79,7 +79,7 @@
 
 		<!-- ImageView for displaying contact pic -->
 		<ImageView android:id="@+id/contactSrc04"
-			android:scaleType="centerInside"
+			android:scaleType="centerCrop"
 			android:layout_width="fill_parent" android:layout_height="fill_parent" />
 
 		<!-- Button for displaying name -->
