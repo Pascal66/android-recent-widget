@@ -29,10 +29,10 @@
 
 		<!--
 			usefull but unused attributes: android:clearTaskOnLaunch="true"
-			android:finishOnTaskLaunch="true"
+			android:finishOnTaskLaunch="true" android:noHistory="true" 
 		-->
 		<activity android:name=".android.EventPopupActivity"
-			android:noHistory="true" android:excludeFromRecents="true"
+			android:excludeFromRecents="true"
 			android:theme="@android:style/Theme.Dialog" android:label="@string/popup_title">
 			<intent-filter>
 				<action android:name="org.recentwidget.SHOW_POPUP" />
