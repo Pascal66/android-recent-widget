@@ -49,7 +49,8 @@ public class CallLogDao extends ContentResolverTemplate {
 		 * event.setNumber(number); event.setType(type);
 		 */
 
-		Log.v(TAG, "Fetched telephony recent event");
+		Log.v(TAG, "Fetched telephony recent event: " + name + " (" + date
+				+ ")");
 
 		builder.add(null, name, number, id, RecentEvent.TYPE_CALL, type, date);
 

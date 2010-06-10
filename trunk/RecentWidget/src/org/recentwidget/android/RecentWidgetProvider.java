@@ -21,7 +21,7 @@ public class RecentWidgetProvider extends AppWidgetProvider {
 
 	public static final String BUTTON_PRESSED = "org.recentwidget.BUTTON_PRESSED";
 
-	public static final int defaultContactImage = android.R.drawable.picture_frame;
+	public static final int defaultContactImage = R.drawable.ic_contacts_details;
 
 	static final EventObserver[] eventObservers = new EventObserver[] {
 			new SmsDao(), new CallLogDao() };
@@ -99,6 +99,18 @@ public class RecentWidgetProvider extends AppWidgetProvider {
 		// http://groups.google.com/group/android-developers/msg/e405ca19df2170e2?pli=1
 
 		super.onReceive(context, intent);
+	}
+
+	@Override
+	public void onDeleted(Context context, int[] appWidgetIds) {
+		RecentWidgetHolder.clean();
+		super.onDeleted(context, appWidgetIds);
+	}
+
+	@Override
+	public void onDisabled(Context context) {
+		RecentWidgetHolder.clean();
+		super.onDisabled(context);
 	}
 
 }

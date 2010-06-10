@@ -3,8 +3,13 @@
     <string name="configure_header">Hello there. No configuration yet. Just click on save.</string>
     <string name="app_name">RecentWidget</string>
     <string name="save_action">Save</string>
+    <string name="close_action">Close</string>
     <string name="loading">Loading...</string>
     <string name="popup_title">Recent Widget</string>
+    <string name="about_header">About "Recent Calls and Messages" Widget</string>
+    <string name="about_text">Thank you for trying out the Recent Call and Messages Widget.
+    To use it, please long-press on an empty place of your home screen, then select Widget. RecentWidget should appear on the list.
+    The widget is 4x1 sized: the whole width of your screen by 1 unit of height. Please see the Market page for email support and other links.</string>
     
     <string name="popup_telephone">Telephone</string>
     <string name="popup_sms">SMS</string>

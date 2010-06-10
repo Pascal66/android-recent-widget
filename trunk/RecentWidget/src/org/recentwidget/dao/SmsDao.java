@@ -38,7 +38,7 @@ public class SmsDao extends ContentResolverTemplate {
 		// String body = messageCursor.getString(5);
 		// Log.d(TAG, address + "--" + personId + "--" + date + "--" + body);
 
-		Log.v(TAG, "Fetched sms recent event");
+		Log.v(TAG, "Fetched sms recent event: " + address + " (" + date + ")");
 
 		if (personId == 0) {
 			builder.add(null, null, address, threadId, RecentEvent.TYPE_SMS,
