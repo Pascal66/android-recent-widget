@@ -5,10 +5,14 @@
 		formula, you should use 72 dp for a height of one cell, 294 dp and for
 		a width of four cells.
 	-->
+	<!-- 
+	No configuration yet
+	android:configure="org.recentwidget.android.RecentWidgetMainActivity"
+	-->
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
 
 	android:minWidth="294dp" android:minHeight="72dp"
-	android:updatePeriodMillis="3600000" android:initialLayout="@layout/recentwidget"
-	android:configure="org.recentwidget.android.RecentWidgetMainActivity">
+	android:updatePeriodMillis="3600000"
+	android:initialLayout="@layout/recentwidget">
 
 </appwidget-provider>

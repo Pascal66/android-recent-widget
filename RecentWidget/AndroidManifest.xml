@@ -22,17 +22,19 @@
 				<action android:name="android.intent.action.MAIN" />
 				<category android:name="android.intent.category.LAUNCHER" />
 			</intent-filter>
+			<!-- No configuration page yet... 
 			<intent-filter>
 				<action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
 			</intent-filter>
+			-->
 		</activity>
 
 		<!--
 			usefull but unused attributes: android:clearTaskOnLaunch="true"
-			android:finishOnTaskLaunch="true" android:noHistory="true" 
+			android:finishOnTaskLaunch="true" 
 		-->
 		<activity android:name=".android.EventPopupActivity"
-			android:excludeFromRecents="true"
+			android:noHistory="true" android:excludeFromRecents="true"
 			android:theme="@android:style/Theme.Dialog" android:label="@string/popup_title">
 			<intent-filter>
 				<action android:name="org.recentwidget.SHOW_POPUP" />

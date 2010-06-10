@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.recentwidget.R;
+import org.recentwidget.RecentWidgetUtils;
 import org.recentwidget.dao.SmsDao;
 import org.recentwidget.model.RecentContact;
 import org.recentwidget.model.RecentEvent;
@@ -12,6 +13,8 @@ import org.recentwidget.model.RecentEvent;
 import android.app.Activity;
 import android.content.ContentUris;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.CallLog.Calls;
@@ -36,6 +39,8 @@ public class EventPopupActivity extends Activity {
 
 		super.onCreate(savedInstanceState);
 
+		// Get the contact to be displayed
+
 		int buttonPressed = getIntent().getIntExtra(
 				RecentWidgetProvider.BUTTON_PRESSED, -1);
 		if (buttonPressed == -1) {
@@ -52,14 +57,24 @@ public class EventPopupActivity extends Activity {
 			finish();
 		}
 
+		// Setup the dialog window
+
 		requestWindowFeature(Window.FEATURE_LEFT_ICON);
 
 		setContentView(R.layout.eventpopup);
 
-		// Different possible icons: sym_call_incoming ic_dialog_info
+		if (recentContact.getPersonId() != null) {
+			Bitmap contactPhoto = RecentWidgetUtils.loadContactPhoto(this,
+					recentContact);
+			BitmapDrawable contactDrawable = new BitmapDrawable(contactPhoto);
 
-		getWindow().setFeatureDrawableResource(Window.FEATURE_LEFT_ICON,
-				android.R.drawable.ic_dialog_info);
+			getWindow().setFeatureDrawable(Window.FEATURE_LEFT_ICON,
+					contactDrawable);
+		} else {
+			// Display default icon
+			getWindow().setFeatureDrawableResource(Window.FEATURE_LEFT_ICON,
+					RecentWidgetProvider.defaultContactImage);
+		}
 
 		// Set the header content
 
@@ -71,12 +86,15 @@ public class EventPopupActivity extends Activity {
 			// Contact button
 			bindIntentToButton(R.id.popupAction, ContentUris.withAppendedId(
 					People.CONTENT_URI, recentContact.getPersonId()));
-
+			// Show the Contact Info icon
+			((ImageButton) findViewById(R.id.popupAction))
+					.setImageResource(R.drawable.ic_launcher_contacts);
 		} else {
 
 			// Bring up the dialer since no Contact registered
 			bindIntentToButton(R.id.popupAction, Uri.parse("tel:"
 					+ recentContact.getNumber()));
+			// The image is already the dialer icon
 		}
 
 		// Call Log button

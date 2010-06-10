@@ -13,13 +13,11 @@ import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.ContentResolver;
-import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.provider.Contacts;
-import android.provider.Contacts.People;
 import android.provider.Contacts.Phones;
 import android.util.Log;
 import android.widget.RemoteViews;
@@ -122,23 +120,8 @@ public class RecentWidgetHolder {
 
 					// Also try to set the picture
 
-					Bitmap contactPhoto;
-
-					if (RecentWidgetUtils.contactsContractAvailable) {
-
-						contactPhoto = ContactAccessor.loadContactPhoto(
-								context, recentContact,
-								RecentWidgetProvider.defaultContactImage);
-
-					} else {
-
-						// ContactsContract not available
-
-						contactPhoto = People.loadContactPhoto(context,
-								ContentUris.withAppendedId(People.CONTENT_URI,
-										recentContact.getPersonId()),
-								RecentWidgetProvider.defaultContactImage, null);
-					}
+					Bitmap contactPhoto = RecentWidgetUtils.loadContactPhoto(
+							context, recentContact);
 
 					views.setBitmap(RecentWidgetProvider.imageMap[i],
 							"setImageBitmap", contactPhoto);
@@ -249,5 +232,11 @@ public class RecentWidgetHolder {
 
 	public static boolean isAlive() {
 		return recentContacts != null;
+	}
+
+	public static void clean() {
+		// Just delete cache
+		Log.v(TAG, "Clearing cached contacts");
+		recentContacts = null;
 	}
 }

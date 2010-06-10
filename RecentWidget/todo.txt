@@ -1,12 +1,14 @@
 TODO:
 -----
 
+H- Bug on N1: no default pic on contact with no picture
 H- Market:
 	x logo
 	x widget frame
-	- about page
+	x about page
 	- website
-	- popup design/info... missed calls icons, ...
+	x popup design/info... missed calls icons, ...
+H- Empty SMS button should go to compose window?
 
 M- email content provider
 M- Override long-press on search?
@@ -41,11 +43,15 @@ test: HH- TelephonyListener is killed? detached?
 test: H- Check list:isFull condition!
 test: H- Add more info on popup (at least for debug!)
 test: M- When opening Contact page, pressing back shows the list of all Dialer app! cumbersome
-	- New task on showing Activity Popup
-		- activity popup should be forgotten has soon as possible
-	- Intent from Activity Popup should have the popup in its affinity
-		-> will not be grouped with the actual target application
 test: H- Duplicate events in list...
 
 NOTES:
 ------
+
+Notes on tasks and activities:
+
+	- New task on showing Activity Popup
+		- activity popup should be forgotten has soon as possible
+		- BUT what if we want the back button (eg. from dialer) to return to the popup?
+	- Intent from Activity Popup should have the popup in its affinity
+		-> will not be grouped with the actual target application

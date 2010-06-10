@@ -1,5 +1,13 @@
 package org.recentwidget;
 
+import org.recentwidget.android.RecentWidgetProvider;
+import org.recentwidget.model.RecentContact;
+
+import android.content.ContentUris;
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.provider.Contacts.People;
+
 public class RecentWidgetUtils {
 
 	// Some constants
@@ -20,4 +28,27 @@ public class RecentWidgetUtils {
 	public static final String MESSAGE_SENT_ACTION = "com.android.mms.transaction.MESSAGE_SENT";
 
 	public static boolean contactsContractAvailable = false;
+
+	public static Bitmap loadContactPhoto(Context context,
+			RecentContact recentContact) {
+
+		/* Do not use ContactsContract until we actually have a purpose for it
+		 * Or else, desynchronization with IDs...
+
+			contactPhoto = ContactAccessor.loadContactPhoto(
+					context, recentContact,
+					RecentWidgetProvider.defaultContactImage);
+		 */
+
+		if (recentContact != null && recentContact.hasContactInfo()) {
+
+			return People.loadContactPhoto(context, ContentUris.withAppendedId(
+					People.CONTENT_URI, recentContact.getPersonId()),
+					RecentWidgetProvider.defaultContactImage, null);
+		} else {
+
+			return null;
+		}
+
+	}
 }
