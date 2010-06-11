@@ -2,6 +2,7 @@ TODO:
 -----
 
 H- Bug on N1: no default pic on contact with no picture
+	- default pic shows on number without contact...
 H- Market:
 	x logo
 	x widget frame
@@ -17,14 +18,16 @@ M- CPU:
 		- get new phoneState extra
 	- Why double-initialization on widget creation?
 M- Use AsyncTask to draw the ActivityPopup
-M- layoutopt the views
+M- layoutopt the views (does not work!?)
 M- Possible preferences
 	- Only show incoming and/or outgoing and/or missed calls
 	- Only show sent and/or received sms
 	- Popup may show events historically rather than by type
 	- Custom Messaging/Dialer app launched from popup
 	- Clear Missed Call / SMS notification on popup?
-	
+M- Swipe on popup -> next/previous recent contact?
+M- Call event on popup: "30 minutes ago..." "yesterday 8:20pm"
+
 L- Use Bundle to save the state when Holder is killed... how?
 L- Find other way to handle PopupActivity intent:onKeyPress (works for now, but might not work with multiple widgets on screen << might have several list of recent events)
 L- Make sure content providers are disposed
