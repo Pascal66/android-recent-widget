@@ -6,6 +6,7 @@ import org.recentwidget.model.RecentContact;
 import android.content.ContentUris;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.provider.Contacts.People;
 
 public class RecentWidgetUtils {
@@ -47,7 +48,9 @@ public class RecentWidgetUtils {
 					RecentWidgetProvider.defaultContactImage, null);
 		} else {
 
-			return null;
+			return BitmapFactory.decodeResource(context.getResources(),
+					RecentWidgetProvider.defaultContactImage);
+
 		}
 
 	}

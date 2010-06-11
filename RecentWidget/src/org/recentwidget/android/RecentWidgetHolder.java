@@ -116,20 +116,14 @@ public class RecentWidgetHolder {
 				views.setCharSequence(RecentWidgetProvider.buttonMap[i],
 						"setText", label);
 
-				if (recentContact.hasContactInfo()) {
+				// Also try to set the picture
 
-					// Also try to set the picture
+				Bitmap contactPhoto = RecentWidgetUtils.loadContactPhoto(
+						context, recentContact);
 
-					Bitmap contactPhoto = RecentWidgetUtils.loadContactPhoto(
-							context, recentContact);
+				views.setBitmap(RecentWidgetProvider.imageMap[i],
+						"setImageBitmap", contactPhoto);
 
-					views.setBitmap(RecentWidgetProvider.imageMap[i],
-							"setImageBitmap", contactPhoto);
-				} else {
-					views.setImageViewResource(
-							RecentWidgetProvider.imageMap[i],
-							RecentWidgetProvider.defaultContactImage);
-				}
 			}
 
 			// Push update for this widget to the home screen

@@ -1,9 +1,5 @@
 package org.recentwidget.android;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import org.recentwidget.R;
 import org.recentwidget.RecentWidgetUtils;
 import org.recentwidget.dao.SmsDao;
@@ -19,12 +15,16 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.CallLog.Calls;
 import android.provider.Contacts.People;
+import android.text.format.DateFormat;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 
 public class EventPopupActivity extends Activity {
@@ -125,23 +125,44 @@ public class EventPopupActivity extends Activity {
 
 			Log.d(TAG, "Drawing event: " + recentEvent);
 
-			DateFormat dateFormat = SimpleDateFormat
-					.getDateInstance(DateFormat.FULL);
-			String date = dateFormat.format(new Date(recentEvent.getDate()));
+			CharSequence date = DateFormat.format("MMM dd, h:mmaa", recentEvent
+					.getDate());
 
-			// No buttons yet, so we can just add a TextView instead of a
-			// TextRow...
+			TableRow row = new TableRow(this);
+			row.setGravity(Gravity.CENTER_VERTICAL);
 
 			TextView eventText = new TextView(this);
-			eventText.setText("Event: " + date + " (type "
-					+ recentEvent.getSubType() + ")");
+			eventText.setText(date);
+
+			row.addView(eventText);
+
+			Integer subtypeIconRef = null;
 
 			switch (recentEvent.getType()) {
 			case RecentEvent.TYPE_CALL:
-				telLayout.addView(eventText);
+				switch (recentEvent.getSubType()) {
+				case RecentEvent.SUBTYPE_INCOMING:
+					subtypeIconRef = R.drawable.ic_incoming_call;
+					break;
+				case RecentEvent.SUBTYPE_MISSED:
+					subtypeIconRef = R.drawable.ic_missed_call;
+					break;
+				case RecentEvent.SUBTYPE_OUTGOING:
+					subtypeIconRef = R.drawable.ic_outgoing_call;
+					break;
+				default:
+					break;
+				}
+				if (subtypeIconRef != null) {
+					ImageView subtypeIcon = new ImageView(this);
+					subtypeIcon.setPadding(3, 0, 0, 0);
+					subtypeIcon.setImageResource(subtypeIconRef);
+					row.addView(subtypeIcon);
+				}
+				telLayout.addView(row);
 				break;
 			case RecentEvent.TYPE_SMS:
-				smsLayout.addView(eventText);
+				smsLayout.addView(row);
 				break;
 			default:
 				break;
