@@ -4,7 +4,7 @@
     <string name="short_app_name">Recent Contacts</string>
     
     <!-- About -->
-    <string name="about_header">About "Recent Calls and Messages" Widget</string>
+    <string name="about_header">About the Recent Contacts Widget</string>
     <string name="about_text">Thank you for trying out the Recent Contacts Widget.
     To use it, please long-press on an empty place of your home screen, 
     select Widget, then the Recent Contacts Widget should appear on the list.

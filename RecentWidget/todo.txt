@@ -3,6 +3,7 @@ TODO:
 
 H- Bug on N1: no default pic on contact with no picture
 	- default pic shows on number without contact...
+	-> workaround: put default image in layout?
 H- Market:
 	x logo
 	x widget frame
@@ -27,6 +28,7 @@ M- Possible preferences
 	- Clear Missed Call / SMS notification on popup?
 M- Swipe on popup -> next/previous recent contact?
 M- Call event on popup: "30 minutes ago..." "yesterday 8:20pm"
+M- Add event info on popup: Home, Mobile, ...
 
 L- Use Bundle to save the state when Holder is killed... how?
 L- Find other way to handle PopupActivity intent:onKeyPress (works for now, but might not work with multiple widgets on screen << might have several list of recent events)
