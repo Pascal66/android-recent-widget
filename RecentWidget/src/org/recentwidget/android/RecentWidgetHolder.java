@@ -32,6 +32,12 @@ public class RecentWidgetHolder {
 	 */
 	static List<RecentContact> recentContacts;
 
+	/**
+	 * 0-based index of the page of contacts to be displayed.
+	 */
+	private static int currentPage;
+	private static int maxPage;
+
 	/* establish whether the "new" class is available to us */
 	static {
 		try {
@@ -60,7 +66,11 @@ public class RecentWidgetHolder {
 
 			RemoteViews views = buildWidgetView(context);
 
-			for (int i = 0; i < recentContacts.size(); i++) {
+			int i = currentPage * RecentWidgetProvider.numContactsDisplayed;
+			// End index not included
+			int endIndex = i + RecentWidgetProvider.numContactsDisplayed;
+
+			for (; i < recentContacts.size() && i < endIndex; i++) {
 
 				RecentContact recentContact = recentContacts.get(i);
 
@@ -113,7 +123,8 @@ public class RecentWidgetHolder {
 
 				contactCursor.close();
 
-				views.setCharSequence(RecentWidgetProvider.buttonMap[i],
+				views.setCharSequence(RecentWidgetProvider.buttonMap[i
+						% RecentWidgetProvider.numContactsDisplayed],
 						"setText", label);
 
 				// Also try to set the picture
@@ -121,7 +132,8 @@ public class RecentWidgetHolder {
 				Bitmap contactPhoto = RecentWidgetUtils.loadContactPhoto(
 						context, recentContact);
 
-				views.setBitmap(RecentWidgetProvider.imageMap[i],
+				views.setBitmap(RecentWidgetProvider.imageMap[i
+						% RecentWidgetProvider.numContactsDisplayed],
 						"setImageBitmap", contactPhoto);
 
 			}
@@ -181,6 +193,23 @@ public class RecentWidgetHolder {
 
 		}
 
+		// The Next button
+
+		Intent defineIntent = new Intent(RecentWidgetUtils.ACTION_NEXT_CONTACTS);
+
+		PendingIntent pendingIntent = PendingIntent.getBroadcast(context, -1 // requestCode
+				, defineIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+		views.setOnClickPendingIntent(R.id.nextButton, pendingIntent);
+
+		// Pager info
+
+		int maxPageShown = maxPage + 1;
+		int currentPageShown = (currentPage % maxPageShown) + 1;
+
+		views.setTextViewText(R.id.widgetPager, currentPageShown + "/"
+				+ maxPageShown);
+
 		return views;
 
 	}
@@ -191,13 +220,29 @@ public class RecentWidgetHolder {
 		boolean found = false;
 		int index = 0;
 
-		for (index = 0; index < RecentWidgetProvider.buttonMap.length; index++) {
+		// First find which button was pressed
+
+		for (index = 0; index < RecentWidgetProvider.numContactsDisplayed; index++) {
 			if (RecentWidgetProvider.buttonMap[index] == buttonPressed) {
 				found = true;
 				break;
 			}
 		}
 
+		resetIfKilled(context);
+
+		// Find which contact by shifting with the current paging
+
+		index += currentPage * RecentWidgetProvider.numContactsDisplayed;
+		if (found && index < recentContacts.size()) {
+			return recentContacts.get(index);
+		} else {
+			Log.e(TAG, "Button pressed but no corresponding recent events.");
+			return null;
+		}
+	}
+
+	private static void resetIfKilled(Context context) {
 		if (!isAlive()) {
 
 			// Button pressed but no recentEvent attached! Surely
@@ -205,13 +250,6 @@ public class RecentWidgetHolder {
 
 			rebuildRecentEvents(context.getContentResolver());
 			updateWidgetLabels(context);
-		}
-
-		if (found && recentContacts.size() - 1 >= index) {
-			return recentContacts.get(index);
-		} else {
-			Log.e(TAG, "Button pressed but no corresponding recent events.");
-			return null;
 		}
 	}
 
@@ -222,6 +260,8 @@ public class RecentWidgetHolder {
 			recentContacts = observer.update(recentContacts, null,
 					contentResolver);
 		}
+
+		updatePager();
 	}
 
 	public static boolean isAlive() {
@@ -232,5 +272,30 @@ public class RecentWidgetHolder {
 		// Just delete cache
 		Log.v(TAG, "Clearing cached contacts");
 		recentContacts = null;
+	}
+
+	private static void updatePager() {
+
+		maxPage = (int) Math.floor(((double) recentContacts.size() - 1) / 3);
+
+		// Just check if we are on an existing page
+
+		if (currentPage > maxPage) {
+			currentPage = 0;
+		}
+	}
+
+	public static void nextPage(Context context) {
+
+		resetIfKilled(context);
+
+		if (recentContacts == null || recentContacts.size() == 0) {
+			currentPage = 0;
+			maxPage = 0;
+		} else {
+			currentPage++;
+			updatePager();
+		}
+
 	}
 }

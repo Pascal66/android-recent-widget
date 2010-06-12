@@ -20,6 +20,9 @@
     <string name="popup_telephone">Telephone</string>
     <string name="popup_sms">SMS</string>
 
+	<!-- Widget -->
+    <string name="nextButtonText">Next</string>
+
 	<!-- Unused -->
     <string name="configure_header">Hello there. No configuration yet. Just click on save.</string>
 </resources>
