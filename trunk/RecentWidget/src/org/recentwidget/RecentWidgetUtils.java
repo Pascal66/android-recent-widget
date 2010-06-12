@@ -16,6 +16,7 @@ public class RecentWidgetUtils {
 	public static final String ACTION_SHOW_POPUP = "org.recentwidget.SHOW_POPUP";
 	public static final String ACTION_UPDATE_ALL = "org.recentwidget.UPDATE_ALL";
 	public static final String ACTION_UPDATE_TELEPHONY = "org.recentwidget.UPDATE_TELEPHONY";
+	public static final String ACTION_NEXT_CONTACTS = "org.recentwidget.NEXT_CONTACTS";
 
 	// Android constants
 
@@ -24,7 +25,7 @@ public class RecentWidgetUtils {
 
 	public static final String[] ACTION_UPDATE_TYPES = new String[] {
 			ACTION_UPDATE_ALL, ACTION_UPDATE_TELEPHONY, ACTION_UPDATE_SMS,
-			ACTION_UPDATE_CALL };
+			ACTION_UPDATE_CALL, ACTION_NEXT_CONTACTS };
 
 	public static final String MESSAGE_SENT_ACTION = "com.android.mms.transaction.MESSAGE_SENT";
 

@@ -42,6 +42,14 @@ public class RecentWidgetUpdateService extends Service {
 
 			updateWidget = true;
 
+		} else if (RecentWidgetUtils.ACTION_NEXT_CONTACTS
+				.equals(originalAction)) {
+
+			// Show the next page of contacts
+
+			RecentWidgetHolder.nextPage(this);
+			updateWidget = true;
+
 		} else {
 
 			for (EventObserver observer : RecentWidgetProvider.eventObservers) {

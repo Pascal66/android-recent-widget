@@ -30,13 +30,15 @@ public class RecentWidgetProvider extends AppWidgetProvider {
 	 * The buttons available on the widget.
 	 */
 	static int[] buttonMap = new int[] { R.id.contactButton01,
-			R.id.contactButton02, R.id.contactButton03, R.id.contactButton04 };
+			R.id.contactButton02, R.id.contactButton03 };
 
 	/**
 	 * The contact images available on the widget.
 	 */
 	static int[] imageMap = new int[] { R.id.contactSrc01, R.id.contactSrc02,
-			R.id.contactSrc03, R.id.contactSrc04 };
+			R.id.contactSrc03 };
+
+	static int numContactsDisplayed = imageMap.length;
 
 	@Override
 	// Note: not called when using a ConfigurationActivity

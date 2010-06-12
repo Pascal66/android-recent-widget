@@ -1,9 +1,11 @@
 TODO:
 -----
 
+H- PERF of rebuild list!!!
 H- Bug on N1: no default pic on contact with no picture
 	- default pic shows on number without contact...
 	-> workaround: put default image in layout?
+H- Bug on N1: unknown number shown as "-1"
 H- Market:
 	x logo
 	x widget frame
@@ -11,12 +13,16 @@ H- Market:
 	- website
 	x popup design/info... missed calls icons, ...
 H- Empty SMS button should go to compose window?
+H- Merged contacts show as 2 separate contacts
+H- Number with/without prefix are shown as 2 separate contacts?
 
 M- email content provider
 M- Override long-press on search?
 M- CPU: 
 	- android.intent.action.PHONE_STATE actually listened twice... observer.supports should also take the intent
 		- get new phoneState extra
+		+ phone log is not always updated right away
+	- SMS seems ok though
 	- Why double-initialization on widget creation?
 M- Use AsyncTask to draw the ActivityPopup
 M- layoutopt the views (does not work!?)
@@ -60,3 +66,6 @@ Notes on tasks and activities:
 		- BUT what if we want the back button (eg. from dialer) to return to the popup?
 	- Intent from Activity Popup should have the popup in its affinity
 		-> will not be grouped with the actual target application
+
+market://search?q=pname:org.recentwidget
+
