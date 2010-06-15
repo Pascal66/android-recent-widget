@@ -9,9 +9,9 @@
 		AnalogClock,Button,Chronometer,ImageButton,ImageView,ProgressBar,TextView
 	-->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:background="@drawable/widget_background"
-	android:orientation="horizontal" android:layout_width="fill_parent"
-	android:layout_height="fill_parent" android:paddingLeft="14dp">
+	android:background="@drawable/widget_background" android:orientation="horizontal"
+	android:layout_width="fill_parent" android:layout_height="fill_parent"
+	android:paddingLeft="14dp">
 
 	<!-- TODO: Add a default "initializing" message... -->
 
@@ -23,11 +23,11 @@
 	<!-- TODO: create onPressed drawables for better visual -->
 
 	<AbsoluteLayout android:layout_width="fill_parent"
-		android:padding="10dip" android:layout_weight="25"
+		android:padding="10dip" android:layout_weight="1"
 		android:layout_height="fill_parent">
 
 		<!-- ImageView for displaying contact pic -->
-		<ImageView android:id="@+id/contactSrc01" android:scaleType="centerCrop"
+		<ImageView android:id="@+id/contactSrc01" android:scaleType="fitCenter"
 			android:layout_width="fill_parent" android:layout_height="fill_parent" />
 
 		<!-- Button for displaying name -->
@@ -38,11 +38,11 @@
 	</AbsoluteLayout>
 
 	<AbsoluteLayout android:layout_width="fill_parent"
-		android:padding="10dip" android:layout_weight="25"
+		android:padding="10dip" android:layout_weight="1"
 		android:layout_height="fill_parent">
 
 		<!-- ImageView for displaying contact pic -->
-		<ImageView android:id="@+id/contactSrc02" android:scaleType="centerCrop"
+		<ImageView android:id="@+id/contactSrc02" android:scaleType="fitCenter"
 			android:layout_width="fill_parent" android:layout_height="fill_parent" />
 
 		<!-- Button for displaying name -->
@@ -53,11 +53,11 @@
 	</AbsoluteLayout>
 
 	<AbsoluteLayout android:layout_width="fill_parent"
-		android:padding="10dip" android:layout_weight="25"
+		android:padding="10dip" android:layout_weight="1"
 		android:layout_height="fill_parent">
 
 		<!-- ImageView for displaying contact pic -->
-		<ImageView android:id="@+id/contactSrc03" android:scaleType="centerCrop"
+		<ImageView android:id="@+id/contactSrc03" android:scaleType="fitCenter"
 			android:layout_width="fill_parent" android:layout_height="fill_parent" />
 
 		<!-- Button for displaying name -->
@@ -68,20 +68,23 @@
 	</AbsoluteLayout>
 
 	<!-- "Next contacts" button -->
-	<LinearLayout android:layout_width="fill_parent"
-		android:padding="10dip" android:orientation="vertical"
-		android:gravity="center_vertical" android:layout_weight="25"
+	<AbsoluteLayout android:layout_width="fill_parent"
+		android:padding="10dip" android:layout_weight="1.025"
 		android:layout_height="fill_parent">
 
-		<TextView android:id="@+id/widgetPager" android:layout_width="fill_parent"
-			android:gravity="center_vertical|center_horizontal"
-			android:textColor="#000000" android:layout_height="wrap_content" />
-
 		<!-- Button for displaying the next contacts -->
-		<Button android:text="@string/nextButtonText"
+		<Button android:text="@string/nextButtonText" android:textSize="12dip"
+			android:textColor="#ffffff" android:paddingBottom="10dip"
+			android:background="@android:color/transparent"
 			android:layout_width="fill_parent" android:layout_height="fill_parent"
 			android:gravity="center_vertical|center_horizontal" android:id="@+id/nextButton" />
 
-	</LinearLayout>
+		<TextView android:id="@+id/widgetPager" android:layout_width="fill_parent"
+			android:textSize="10dip" android:text="./."
+			android:paddingTop="15dip"
+			android:gravity="center_vertical|center_horizontal"
+			android:textColor="#ffffff" android:layout_height="fill_parent" />
+
+	</AbsoluteLayout>
 
 </LinearLayout>
