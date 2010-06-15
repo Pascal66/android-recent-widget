@@ -104,6 +104,10 @@ public class EventPopupActivity extends Activity {
 		if (callLogEvent != null) {
 			bindIntentToButton(R.id.popupTableAction1, ContentUris
 					.withAppendedId(Calls.CONTENT_URI, callLogEvent.getId()));
+		} else if (recentContact.getNumber() != null) {
+			// Provide a way to dial anyways
+			bindIntentToButton(R.id.popupTableAction1, Uri.parse("tel:"
+					+ recentContact.getNumber()));
 		}
 
 		// SMS button
@@ -113,6 +117,10 @@ public class EventPopupActivity extends Activity {
 		if (smsEvent != null) {
 			bindIntentToButton(R.id.popupTableAction2, ContentUris
 					.withAppendedId(SmsDao.SMS_CONTENT_URI, smsEvent.getId()));
+		} else if (recentContact.getNumber() != null) {
+			// Provide a way to compose a new message
+			bindIntentToButton(R.id.popupTableAction2, Uri.parse("sms:"
+					+ recentContact.getNumber()));
 		}
 
 		// Show the recent events

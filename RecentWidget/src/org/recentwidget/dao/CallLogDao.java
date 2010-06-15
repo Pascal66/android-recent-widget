@@ -36,7 +36,7 @@ public class CallLogDao extends ContentResolverTemplate {
 
 		// Handle unknown numbers
 
-		if (number.equals("-1") || name.equals("-1")) {
+		if ("-1".equals(number) || "-1".equals(name)) {
 			name = context.getString(R.string.unknownNumber);
 		}
 
