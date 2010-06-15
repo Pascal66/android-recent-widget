@@ -1,15 +1,14 @@
 package org.recentwidget;
 
-import org.recentwidget.android.RecentWidgetProvider;
-import org.recentwidget.model.RecentContact;
+import org.recentwidget.compat.AbstractContactAccessor;
+import org.recentwidget.compat.ContactsContractAccessor;
+import org.recentwidget.compat.PeopleAccessor;
 
-import android.content.ContentUris;
-import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.provider.Contacts.People;
+import android.util.Log;
 
 public class RecentWidgetUtils {
+
+	private static final String TAG = "RW:Utils";
 
 	// Some constants
 
@@ -29,30 +28,21 @@ public class RecentWidgetUtils {
 
 	public static final String MESSAGE_SENT_ACTION = "com.android.mms.transaction.MESSAGE_SENT";
 
-	public static boolean contactsContractAvailable = false;
-
-	public static Bitmap loadContactPhoto(Context context,
-			RecentContact recentContact) {
-
-		/* Do not use ContactsContract until we actually have a purpose for it
-		 * Or else, desynchronization with IDs...
-
-			contactPhoto = ContactAccessor.loadContactPhoto(
-					context, recentContact,
-					RecentWidgetProvider.defaultContactImage);
-		 */
-
-		if (recentContact != null && recentContact.hasContactInfo()) {
-
-			return People.loadContactPhoto(context, ContentUris.withAppendedId(
-					People.CONTENT_URI, recentContact.getPersonId()),
-					RecentWidgetProvider.defaultContactImage, null);
-		} else {
-
-			return BitmapFactory.decodeResource(context.getResources(),
-					RecentWidgetProvider.defaultContactImage);
-
+	/* ContactsAccessor; depends on SDK version.
+	 * First establish whether the "new" class is available to us: */
+	static {
+		try {
+			Class.forName("android.provider.ContactsContract");
+			CONTACTS_API = new ContactsContractAccessor();
+			Log.d(TAG, "ContactsContract available");
+		} catch (Throwable e) {
+			// Unfortunately not using API 5
+			CONTACTS_API = new PeopleAccessor();
+			Log.d(TAG, "ContactsContract not available");
 		}
-
 	}
+
+	// public static boolean contactsContractAvailable = false;
+
+	public static AbstractContactAccessor CONTACTS_API;
 }

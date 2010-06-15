@@ -14,7 +14,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.CallLog.Calls;
-import android.provider.Contacts.People;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.Gravity;
@@ -64,8 +63,8 @@ public class EventPopupActivity extends Activity {
 		setContentView(R.layout.eventpopup);
 
 		if (recentContact.getPersonId() != null) {
-			Bitmap contactPhoto = RecentWidgetUtils.loadContactPhoto(this,
-					recentContact);
+			Bitmap contactPhoto = RecentWidgetUtils.CONTACTS_API
+					.loadContactPhoto(this, recentContact);
 			BitmapDrawable contactDrawable = new BitmapDrawable(contactPhoto);
 
 			getWindow().setFeatureDrawable(Window.FEATURE_LEFT_ICON,
@@ -85,7 +84,8 @@ public class EventPopupActivity extends Activity {
 
 			// Contact button
 			bindIntentToButton(R.id.popupAction, ContentUris.withAppendedId(
-					People.CONTENT_URI, recentContact.getPersonId()));
+					RecentWidgetUtils.CONTACTS_API.contentUri, recentContact
+							.getPersonId()));
 			// Show the Contact Info icon
 			((ImageButton) findViewById(R.id.popupAction))
 					.setImageResource(R.drawable.ic_launcher_contacts);

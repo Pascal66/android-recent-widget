@@ -23,7 +23,7 @@ public class RecentContact implements Serializable {
 	public long oldestEventDate = Long.MAX_VALUE;
 
 	// Are arrays more appropriate for mobile development?
-	private List<RecentEvent> recentEvents = new ArrayList<RecentEvent>();
+	private final List<RecentEvent> recentEvents = new ArrayList<RecentEvent>();
 
 	/**
 	 * @param event
@@ -93,17 +93,9 @@ public class RecentContact implements Serializable {
 	}
 
 	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((number == null) ? 0 : number.hashCode());
-		result = prime * result
-				+ ((personId == null) ? 0 : personId.hashCode());
-		return result;
-	}
-
-	@Override
 	public boolean equals(Object obj) {
+		// No hashcode possible because we might only have 1 of those 3
+		// information.
 		if (this == obj)
 			return true;
 		if (obj == null)
@@ -111,15 +103,11 @@ public class RecentContact implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		RecentContact other = (RecentContact) obj;
-		if (number == null) {
-			if (other.number != null)
-				return false;
-		} else if (!number.equals(other.number))
-			return false;
-		if (number.equals(other.number)) {
+		if (number != null && other.number != null)
 			// Shortcut: both numbers equal -> true
-			return true;
-		}
+			return number.equals(other.number);
+		if (person != null && other.person != null)
+			return person.equals(other.person);
 		if (personId == null) {
 			if (other.personId != null)
 				return false;

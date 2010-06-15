@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-	<!-- 
-	 android:debuggable="true"
-	 -->
+
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
 	android:debuggable="true" package="org.recentwidget"
-	android:versionCode="1" android:versionName="0.4 [better layout, next button, ...]">
+	android:versionCode="1" android:versionName="0.4 [layout, 9 contacts displayed, dupes]">
 
 	<uses-permission android:name="android.permission.READ_PHONE_STATE" />
 	<uses-permission android:name="android.permission.READ_CONTACTS" />
