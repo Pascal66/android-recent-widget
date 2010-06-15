@@ -19,6 +19,7 @@
 	<!-- Providers -->    
     <string name="popup_telephone">Telephone</string>
     <string name="popup_sms">SMS</string>
+    <string name="unknownNumber">Unknown</string>
 
 	<!-- Widget -->
     <string name="nextButtonText">Next</string>

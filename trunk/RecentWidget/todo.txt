@@ -7,7 +7,6 @@ H- PERF of rebuild list!!!
 	- create debug log with stats/summaries
 
 H- Bug: if list is not finished, remainder of previous page is still displayed
-H- Bug on N1: unknown number shown as "-1"
 H- Merged contacts show as 2 separate contacts
 	- must get id on dao access
 
@@ -61,6 +60,7 @@ test: H- Add more info on popup (at least for debug!)
 test: M- When opening Contact page, pressing back shows the list of all Dialer app! cumbersome
 test: H- Duplicate events in list...
 test: H- Bug on N1: no default pic on contact with no picture
+test: H- Bug on N1: unknown number shown as "-1"
 
 NOTES:
 ------

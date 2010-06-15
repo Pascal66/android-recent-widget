@@ -1,6 +1,7 @@
 package org.recentwidget.dao;
 
 import org.recentwidget.EventListBuilder;
+import org.recentwidget.R;
 import org.recentwidget.RecentWidgetUtils;
 import org.recentwidget.model.RecentEvent;
 
@@ -22,6 +23,7 @@ public class CallLogDao extends ContentResolverTemplate {
 
 	}
 
+	@Override
 	protected long extractEvent(EventListBuilder builder, Cursor callsCursor) {
 
 		// Cached name, may not be the name as in the Contacts
@@ -31,6 +33,12 @@ public class CallLogDao extends ContentResolverTemplate {
 
 		String number = callsCursor.getString(callsCursor
 				.getColumnIndex(Calls.NUMBER));
+
+		// Handle unknown numbers
+
+		if (number.equals("-1") || name.equals("-1")) {
+			name = context.getString(R.string.unknownNumber);
+		}
 
 		// The unique CallLog id
 
