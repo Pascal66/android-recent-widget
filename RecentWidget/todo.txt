@@ -1,11 +1,16 @@
 TODO:
 -----
 
+Change description with wording "Direct access to..."
+
 H- PERF of rebuild list!!!
-H- Bug on N1: no default pic on contact with no picture
-	- default pic shows on number without contact...
-	-> workaround: put default image in layout?
+	- create debug log with stats/summaries
+
+H- Bug: if list is not finished, remainder of previous page is still displayed
 H- Bug on N1: unknown number shown as "-1"
+H- Merged contacts show as 2 separate contacts
+	- must get id on dao access
+
 H- Market:
 	x logo
 	x widget frame
@@ -13,9 +18,9 @@ H- Market:
 	- website
 	x popup design/info... missed calls icons, ...
 H- Empty SMS button should go to compose window?
-H- Merged contacts show as 2 separate contacts
 H- Number with/without prefix are shown as 2 separate contacts?
 
+M- add links, etc on about page
 M- email content provider
 M- Override long-press on search?
 M- CPU: 
@@ -55,6 +60,7 @@ test: H- Check list:isFull condition!
 test: H- Add more info on popup (at least for debug!)
 test: M- When opening Contact page, pressing back shows the list of all Dialer app! cumbersome
 test: H- Duplicate events in list...
+test: H- Bug on N1: no default pic on contact with no picture
 
 NOTES:
 ------

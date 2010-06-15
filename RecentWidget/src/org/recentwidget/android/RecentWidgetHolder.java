@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.recentwidget.R;
 import org.recentwidget.RecentWidgetUtils;
-import org.recentwidget.compat.ContactAccessor;
 import org.recentwidget.dao.EventObserver;
 import org.recentwidget.model.RecentContact;
 
@@ -17,8 +16,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.provider.Contacts;
-import android.provider.Contacts.Phones;
 import android.util.Log;
 import android.widget.RemoteViews;
 
@@ -38,25 +35,13 @@ public class RecentWidgetHolder {
 	private static int currentPage;
 	private static int maxPage;
 
-	/* establish whether the "new" class is available to us */
-	static {
-		try {
-			ContactAccessor.checkAvailable();
-			RecentWidgetUtils.contactsContractAvailable = true;
-		} catch (Throwable t) {
-			RecentWidgetUtils.contactsContractAvailable = false;
-		}
-	}
-
 	static final void updateWidgetLabels(Context context) {
 
 		if (recentContacts == null) {
 			return;
 		}
 
-		// Update labels on widget
-
-		// Note: Labels/Photos are better handled using ContactsContract (API-5)
+		// Update labels/text/photos on widget
 
 		if (recentContacts.size() > 0) {
 
@@ -74,15 +59,13 @@ public class RecentWidgetHolder {
 
 				RecentContact recentContact = recentContacts.get(i);
 
-				// Try to fetch the Contact
-				// TODO: Skip it if we already have the info!
+				// Try to fetch the Contact with the given number and/or ID
 
-				ContentResolver resolver = context.getContentResolver();
-				Cursor contactCursor = resolver.query(
-						Contacts.Phones.CONTENT_URI, new String[] {
-								Phones.PERSON_ID, Phones.DISPLAY_NAME },
-						Phones.NUMBER + " = ?", new String[] { recentContact
-								.getNumber() }, Phones.DEFAULT_SORT_ORDER);
+				// TODO: Skip it if we already have the info! We can directly
+				// display it instead of making queries.
+
+				Cursor contactCursor = RecentWidgetUtils.CONTACTS_API
+						.getContactCursor(context, recentContact);
 
 				if (contactCursor.getCount() >= 1) {
 
@@ -91,26 +74,20 @@ public class RecentWidgetHolder {
 
 					contactCursor.moveToFirst();
 
-					label = contactCursor.getString(contactCursor
-							.getColumnIndex(Phones.DISPLAY_NAME));
+					label = RecentWidgetUtils.CONTACTS_API
+							.getDisplayName(contactCursor);
 
 					// Set it, so next time we might not need to repeat this
 					// query...
 
 					recentContact.setPerson(label);
 
-					String personIdAsString = contactCursor
-							.getString(contactCursor
-									.getColumnIndex(Phones.PERSON_ID));
+					Long personId = RecentWidgetUtils.CONTACTS_API
+							.getPersonId(contactCursor);
 
-					recentContact.setPersonId(Long.parseLong(personIdAsString));
+					recentContact.setPersonId(personId);
 
 				} else {
-
-					// Make sure that we flag the contact as having no contact
-					// info. TODO: UGLY! Fix real cause.
-
-					recentContact.setPersonId(null);
 
 					// Defaults to the basic info we got
 
@@ -119,6 +96,7 @@ public class RecentWidgetHolder {
 					} else if (recentContact.getNumber() != null) {
 						label = recentContact.getNumber();
 					}
+
 				}
 
 				contactCursor.close();
@@ -129,12 +107,32 @@ public class RecentWidgetHolder {
 
 				// Also try to set the picture
 
-				Bitmap contactPhoto = RecentWidgetUtils.loadContactPhoto(
-						context, recentContact);
+				Bitmap contactPhoto = null;
 
-				views.setBitmap(RecentWidgetProvider.imageMap[i
-						% RecentWidgetProvider.numContactsDisplayed],
-						"setImageBitmap", contactPhoto);
+				if (recentContact != null && recentContact.hasContactInfo()) {
+
+					contactPhoto = RecentWidgetUtils.CONTACTS_API
+							.loadContactPhoto(context, recentContact);
+
+				}
+
+				if (contactPhoto != null) {
+
+					views.setImageViewBitmap(RecentWidgetProvider.imageMap[i
+							% RecentWidgetProvider.numContactsDisplayed],
+							contactPhoto);
+				} else {
+
+					// No photo found or no contact associated
+
+					// Note that we cannot create bitmap from R.drawable.* and
+					// display it on widget. Maybe a matter of classloader or
+					// things like that. So we need to create a view resource...
+
+					views.setImageViewResource(RecentWidgetProvider.imageMap[i
+							% RecentWidgetProvider.numContactsDisplayed],
+							RecentWidgetProvider.defaultContactImage);
+				}
 
 			}
 
