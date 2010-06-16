@@ -35,8 +35,13 @@ public class RecentWidgetProvider extends AppWidgetProvider {
 	/**
 	 * The contact images available on the widget.
 	 */
-	static int[] imageMap = new int[] { R.id.contactSrc01, R.id.contactSrc02,
-			R.id.contactSrc03 };
+	static int[] imageMap = buttonMap;
+
+	/**
+	 * The text views holding the contact name labels.
+	 */
+	static int[] labelMap = new int[] { R.id.contactLabel01,
+			R.id.contactLabel02, R.id.contactLabel03 };
 
 	static int numContactsDisplayed = imageMap.length;
 
