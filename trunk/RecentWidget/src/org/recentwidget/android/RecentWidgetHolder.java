@@ -101,7 +101,7 @@ public class RecentWidgetHolder {
 
 				contactCursor.close();
 
-				views.setCharSequence(RecentWidgetProvider.buttonMap[i
+				views.setCharSequence(RecentWidgetProvider.labelMap[i
 						% RecentWidgetProvider.numContactsDisplayed],
 						"setText", label);
 

@@ -13,25 +13,26 @@ H- Market:
 	x about page
 	- website
 	x popup design/info... missed calls icons, ...
-H- Empty SMS button should go to compose window?
 H- Number with/without prefix are shown as 2 separate contacts?
-
-M- gTalk provider?
-M- show last SMS content from contact?
-M- Bug: if list is not finished, remainder of previous page is still displayed
-M- Merged contacts show as 2 separate contacts
-	- must get id on dao access
-M- Call event on popup: "30 minutes ago..." "yesterday 8:20pm"
-M- Add event info on popup: Home, Mobile, ...
-M- add links, etc on about page
-M- email content provider
-M- CPU: 
+H- CPU: 
 	- android.intent.action.PHONE_STATE actually listened twice... observer.supports should also take the intent
 		- get new phoneState extra
 		+ phone log is not always updated right away
 		-> use timer?
 	- SMS seems ok though
 	- Why double-initialization on widget creation?
+
+M- Swipe on popup -> next/previous recent contact?
+M- Change absoluteLayout in recentwidget.xml to frameLayout
+M- gTalk provider?
+M- show last SMS content from contact?
+M- Bug: if list is not finished, remainder of previous page is still displayed
+M- Merged contacts show as 2 separate contacts
+	- must get id on dao access
+	M- Add event info on popup: Home, Mobile, ...
+M- Call event on popup: "30 minutes ago..." "yesterday 8:20pm"
+M- add links, etc on about page
+M- email content provider
 M- Use AsyncTask to draw the ActivityPopup
 M- layoutopt the views (does not work!?)
 M- Possible preferences
@@ -40,7 +41,6 @@ M- Possible preferences
 	- Popup may show events historically rather than by type
 	- Custom Messaging/Dialer app launched from popup
 	- Clear Missed Call / SMS notification on popup?
-M- Swipe on popup -> next/previous recent contact?
 
 L- Use Bundle to save the state when Holder is killed... how?
 L- Find other way to handle PopupActivity intent:onKeyPress (works for now, but might not work with multiple widgets on screen << might have several list of recent events)
@@ -65,6 +65,8 @@ test: M- When opening Contact page, pressing back shows the list of all Dialer a
 test: H- Duplicate events in list...
 test: H- Bug on N1: no default pic on contact with no picture
 test: H- Bug on N1: unknown number shown as "-1"
+test: H- Empty SMS button should go to compose window?
+
 
 NOTES:
 ------
