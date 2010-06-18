@@ -4,7 +4,9 @@ import org.recentwidget.RecentWidgetUtils;
 import org.recentwidget.dao.EventObserver;
 
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
+import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
 
@@ -15,6 +17,14 @@ public class RecentWidgetUpdateService extends Service {
 
 	public static final String ORIGINAL_ACTION = "ORIGINAL_ACTION";
 	public static final String ORIGINAL_INTENT = "ORIGINAL_INTENT";
+
+	private static final long OBSERVER_DELAY_MILIS = 2000;
+
+	private final Handler observerHandler = new Handler();
+
+	private EventObserver triggerObserver;
+	private Intent triggerIntent;
+	private Context originalContext;
 
 	@Override
 	public void onStart(Intent intent, int startId) {
@@ -63,10 +73,16 @@ public class RecentWidgetUpdateService extends Service {
 								+ intent.getExtras().keySet());
 					}
 
-					RecentWidgetHolder.recentContacts = observer.update(
-							RecentWidgetHolder.recentContacts, intent, this);
+					// Need to delay the update because the CallLog for example
+					// takes time to be updated.
 
-					updateWidget = true;
+					triggerIntent = intent;
+					triggerObserver = observer;
+					originalContext = this;
+
+					observerHandler.removeCallbacks(observerUpdate);
+					observerHandler.postDelayed(observerUpdate,
+							OBSERVER_DELAY_MILIS);
 
 					// Only support 1 observer for a given action, so break
 
@@ -90,4 +106,17 @@ public class RecentWidgetUpdateService extends Service {
 		return null;
 	}
 
+	private final Runnable observerUpdate = new Runnable() {
+
+		@Override
+		public void run() {
+			// Do the actual list building, etc...
+
+			RecentWidgetHolder.recentContacts = triggerObserver.update(
+					RecentWidgetHolder.recentContacts, triggerIntent,
+					originalContext);
+
+			RecentWidgetHolder.updateWidgetLabels(originalContext);
+		}
+	};
 }
