@@ -24,7 +24,7 @@
 	<!-- TODO: create onPressed drawables for better visual -->
 
 	<FrameLayout android:layout_width="fill_parent"
-		android:padding="10dip" android:layout_weight="1"
+		android:padding="5dip" android:layout_weight="1"
 		android:layout_height="fill_parent">
 
 		<!--
@@ -32,8 +32,9 @@
 			it.
 		-->
 
-		<ImageButton android:id="@+id/contactButton01"
+		<ImageButton android:id="@+id/contactButton01" android:layout_margin="3dip"
 			android:scaleType="fitCenter" android:layout_width="fill_parent"
+			android:layout_gravity="center_horizontal|center_vertical"
 			android:layout_height="fill_parent" android:background="@android:color/transparent" />
 
 		<!-- Name of the contact -->
@@ -48,7 +49,7 @@
 	</FrameLayout>
 
 	<FrameLayout android:layout_width="fill_parent"
-		android:padding="10dip" android:layout_weight="1"
+		android:padding="5dip" android:layout_weight="1"
 		android:layout_height="fill_parent">
 
 		<!--
@@ -56,8 +57,9 @@
 			it.
 		-->
 
-		<ImageButton android:id="@+id/contactButton02"
+		<ImageButton android:id="@+id/contactButton02" android:layout_margin="3dip"
 			android:scaleType="fitCenter" android:layout_width="fill_parent"
+			android:layout_gravity="center_horizontal|center_vertical"
 			android:layout_height="fill_parent" android:background="@android:color/transparent" />
 
 		<!-- Name of the contact -->
@@ -72,7 +74,7 @@
 	</FrameLayout>
 
 	<FrameLayout android:layout_width="fill_parent"
-		android:padding="10dip" android:layout_weight="1"
+		android:padding="5dip" android:layout_weight="1"
 		android:layout_height="fill_parent">
 
 		<!--
@@ -80,8 +82,9 @@
 			it.
 		-->
 
-		<ImageButton android:id="@+id/contactButton03"
+		<ImageButton android:id="@+id/contactButton03" android:layout_margin="3dip"
 			android:scaleType="fitCenter" android:layout_width="fill_parent"
+			android:layout_gravity="center_horizontal|center_vertical"
 			android:layout_height="fill_parent" android:background="@android:color/transparent" />
 
 		<!-- Name of the contact -->
@@ -96,8 +99,8 @@
 	</FrameLayout>
 
 	<!-- "Next contacts" button -->
-	<AbsoluteLayout android:layout_width="fill_parent"
-		android:padding="10dip" android:layout_weight="1.025"
+	<FrameLayout android:layout_width="fill_parent"
+		android:padding="5dip" android:layout_weight="1.025"
 		android:layout_height="fill_parent">
 
 		<!-- Button for displaying the next contacts -->
@@ -112,6 +115,6 @@
 			android:gravity="center_vertical|center_horizontal"
 			android:textColor="#ffffff" android:layout_height="fill_parent" />
 
-	</AbsoluteLayout>
+	</FrameLayout>
 
 </LinearLayout>
