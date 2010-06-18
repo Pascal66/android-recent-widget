@@ -74,6 +74,9 @@ test: M- When opening Contact page, pressing back shows the list of all Dialer a
 NOTES:
 ------
 
+Rel 0.3: +/- 11/06
+Rel 0.4:
+
 Notes on tasks and activities:
 
 	- New task on showing Activity Popup
