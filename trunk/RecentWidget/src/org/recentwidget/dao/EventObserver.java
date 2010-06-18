@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.recentwidget.model.RecentContact;
 
-import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
 
 public interface EventObserver {
@@ -12,6 +12,6 @@ public interface EventObserver {
 	boolean supports(String intentAction);
 
 	List<RecentContact> update(List<RecentContact> recentContacts,
-			Intent intent, ContentResolver contentResolver);
+			Intent intent, Context context);
 
 }

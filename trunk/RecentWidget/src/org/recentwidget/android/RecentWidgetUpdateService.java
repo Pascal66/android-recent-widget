@@ -38,7 +38,7 @@ public class RecentWidgetUpdateService extends Service {
 
 			// Shortcut intent for rebuilding the whole list
 
-			RecentWidgetHolder.rebuildRecentEvents(this.getContentResolver());
+			RecentWidgetHolder.rebuildRecentEvents(this);
 
 			updateWidget = true;
 
@@ -64,8 +64,7 @@ public class RecentWidgetUpdateService extends Service {
 					}
 
 					RecentWidgetHolder.recentContacts = observer.update(
-							RecentWidgetHolder.recentContacts, intent, this
-									.getContentResolver());
+							RecentWidgetHolder.recentContacts, intent, this);
 
 					updateWidget = true;
 
