@@ -60,6 +60,11 @@ public class RecentWidgetUpdateService extends Service {
 			RecentWidgetHolder.nextPage(this);
 			updateWidget = true;
 
+		} else if (RecentWidgetUtils.ACTION_REFRESH_DISPLAY
+				.equals(originalAction)) {
+
+			updateWidget = true;
+
 		} else {
 
 			for (EventObserver observer : RecentWidgetProvider.eventObservers) {

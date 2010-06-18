@@ -50,15 +50,11 @@ public class RecentWidgetProvider extends AppWidgetProvider {
 	public void onUpdate(Context context, AppWidgetManager appWidgetManager,
 			int[] appWidgetIds) {
 
-		// Nothing to do. If everything is correct, the widget always displays
-		// the right information; i.e. the events are always pushed to the
-		// widget.
-
 		Log.d(TAG, "Called onUpdate");
 
 		// Still, check that process was not killed and update everything...
-		// (use AlarmManager
-		// instead?)
+		// (use AlarmManager instead? maybe less resources used than widget
+		// timer?)
 
 		if (!RecentWidgetHolder.isAlive()) {
 			Log.d(TAG, "Holder was empty. Rebuild the list.");
@@ -73,6 +69,22 @@ public class RecentWidgetProvider extends AppWidgetProvider {
 
 		} else {
 			Log.d(TAG, "Holder still filled.");
+
+			// Nothing to do. If everything is correct, the widget always
+			// displays the right information; i.e. the events are always pushed
+			// to the widget.
+
+			// BUT maybe it's the first time we display the widget, so update
+			// the graphics
+
+			Intent serviceIntent = new Intent(context,
+					RecentWidgetUpdateService.class);
+
+			serviceIntent.putExtra(RecentWidgetUpdateService.ORIGINAL_ACTION,
+					RecentWidgetUtils.ACTION_REFRESH_DISPLAY);
+
+			context.startService(serviceIntent);
+
 		}
 
 	}
