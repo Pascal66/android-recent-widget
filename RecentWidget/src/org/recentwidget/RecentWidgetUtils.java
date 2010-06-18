@@ -14,6 +14,7 @@ public class RecentWidgetUtils {
 
 	public static final String ACTION_SHOW_POPUP = "org.recentwidget.SHOW_POPUP";
 	public static final String ACTION_UPDATE_ALL = "org.recentwidget.UPDATE_ALL";
+	public static final String ACTION_REFRESH_DISPLAY = "org.recentwidget.REFRESH_DISPLAY";
 	public static final String ACTION_UPDATE_TELEPHONY = "org.recentwidget.UPDATE_TELEPHONY";
 	public static final String ACTION_NEXT_CONTACTS = "org.recentwidget.NEXT_CONTACTS";
 

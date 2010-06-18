@@ -62,12 +62,13 @@ test: HH- TelephonyListener is killed? detached?
 test: H- Check list:isFull condition!
 test: H- Add more info on popup (at least for debug!)
 test: M- When opening Contact page, pressing back shows the list of all Dialer app! cumbersome
-test: H- Duplicate events in list...
-test: H- Bug on N1: no default pic on contact with no picture
-test: H- Bug on N1: unknown number shown as "-1"
-test: H- Empty SMS button should go to compose window?
-test: M- Change absoluteLayout in recentwidget.xml to frameLayout
-test: H- phone log is not always updated right away	-> use timer?
+0.4: H- Duplicate events in list...
+0.4: H- Bug on N1: no default pic on contact with no picture
+0.4: H- Bug on N1: unknown number shown as "-1"
+0.4: H- Empty SMS button should go to compose window?
+0.4: M- Change absoluteLayout in recentwidget.xml to frameLayout
+0.4: H- phone log is not always updated right away	-> use timer?
+0.4: H- bugfix: list might display empty when first creating the widget
 
 
 NOTES:
