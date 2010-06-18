@@ -11,7 +11,6 @@ import org.recentwidget.model.RecentContact;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -246,17 +245,16 @@ public class RecentWidgetHolder {
 			// Button pressed but no recentEvent attached! Surely
 			// garbage-collected so let's create a new list...
 
-			rebuildRecentEvents(context.getContentResolver());
+			rebuildRecentEvents(context);
 			updateWidgetLabels(context);
 		}
 	}
 
-	public static void rebuildRecentEvents(ContentResolver contentResolver) {
+	public static void rebuildRecentEvents(Context context) {
 		recentContacts = new ArrayList<RecentContact>();
 
 		for (EventObserver observer : RecentWidgetProvider.eventObservers) {
-			recentContacts = observer.update(recentContacts, null,
-					contentResolver);
+			recentContacts = observer.update(recentContacts, null, context);
 		}
 
 		updatePager();

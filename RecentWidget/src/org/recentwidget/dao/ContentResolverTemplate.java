@@ -32,7 +32,7 @@ public abstract class ContentResolverTemplate implements EventObserver {
 
 	@Override
 	public List<RecentContact> update(List<RecentContact> recentContacts,
-			Intent intent, ContentResolver contentResolver) {
+			Intent intent, Context context) {
 
 		if (intent != null) {
 			Log.d(TAG, "Received broadcasted " + intent.getAction());
@@ -43,7 +43,8 @@ public abstract class ContentResolverTemplate implements EventObserver {
 		// Note: Make sure no unnecessary ArrayLists created in all those
 		// params/returns.
 
-		setContentResolver(contentResolver);
+		this.context = context;
+		this.contentResolver = context.getContentResolver();
 
 		return fetchEvents(recentContacts);
 	}
@@ -98,11 +99,9 @@ public abstract class ContentResolverTemplate implements EventObserver {
 		// http://www.curious-creature.org/2008/12/18/avoid-memory-leaks-on-android/
 
 		contentResolver = null;
+		context = null;
 
 		return builder.build();
 	}
 
-	public void setContentResolver(ContentResolver contentResolver) {
-		this.contentResolver = contentResolver;
-	}
 }

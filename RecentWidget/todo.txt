@@ -11,9 +11,13 @@ H- Market:
 	x logo
 	x widget frame
 	x about page
+		- add links, etc (make a web view?)
 	- website
 	x popup design/info... missed calls icons, ...
+
 H- Number with/without prefix are shown as 2 separate contacts?
+	- at calllogdao time, find by cached name instead of number?
+
 H- CPU: 
 	- android.intent.action.PHONE_STATE actually listened twice... observer.supports should also take the intent
 		- get new phoneState extra
@@ -23,7 +27,6 @@ H- CPU:
 	- Why double-initialization on widget creation?
 
 M- Swipe on popup -> next/previous recent contact?
-M- Change absoluteLayout in recentwidget.xml to frameLayout
 M- gTalk provider?
 M- show last SMS content from contact?
 M- Bug: if list is not finished, remainder of previous page is still displayed
@@ -31,7 +34,6 @@ M- Merged contacts show as 2 separate contacts
 	- must get id on dao access
 	M- Add event info on popup: Home, Mobile, ...
 M- Call event on popup: "30 minutes ago..." "yesterday 8:20pm"
-M- add links, etc on about page
 M- email content provider
 M- Use AsyncTask to draw the ActivityPopup
 M- layoutopt the views (does not work!?)
@@ -66,6 +68,7 @@ test: H- Duplicate events in list...
 test: H- Bug on N1: no default pic on contact with no picture
 test: H- Bug on N1: unknown number shown as "-1"
 test: H- Empty SMS button should go to compose window?
+test: M- Change absoluteLayout in recentwidget.xml to frameLayout
 
 
 NOTES:
