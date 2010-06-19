@@ -2,7 +2,7 @@
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
 	android:debuggable="true" package="org.recentwidget"
-	android:versionCode="1" android:versionName="0.4 [layout, 9 contacts displayed, bugfix]">
+	android:versionCode="2" android:versionName="0.4 [layout, 9 contacts displayed, bugfix]">
 
 	<uses-permission android:name="android.permission.READ_PHONE_STATE" />
 	<uses-permission android:name="android.permission.READ_CONTACTS" />
