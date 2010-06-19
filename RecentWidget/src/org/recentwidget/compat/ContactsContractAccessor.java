@@ -60,6 +60,10 @@ public class ContactsContractAccessor extends AbstractContactAccessor {
 
 			// Search by number by default
 
+			// Maybe use:
+			// http://developer.android.com/reference/android/provider/ContactsContract.PhoneLookup.html
+			// but it cannot return the person ID?
+
 			return resolver.query(
 					ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
 					new String[] { personIdColumn, displayNameColumn },
