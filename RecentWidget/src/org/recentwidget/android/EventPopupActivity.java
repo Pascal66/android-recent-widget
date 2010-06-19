@@ -16,10 +16,14 @@ import android.os.Bundle;
 import android.provider.CallLog.Calls;
 import android.text.format.DateFormat;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
+import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TableLayout;
@@ -30,8 +34,9 @@ public class EventPopupActivity extends Activity {
 
 	private static final String TAG = "RW:EventPopupActivity";
 
-	// private static final double WIDTH_RATIO = 0.9;
-	// private static final int MAX_WIDTH = 640;
+	private GestureDetector gestureDetector;
+
+	private int buttonPressed;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -40,8 +45,9 @@ public class EventPopupActivity extends Activity {
 
 		// Get the contact to be displayed
 
-		int buttonPressed = getIntent().getIntExtra(
+		buttonPressed = getIntent().getIntExtra(
 				RecentWidgetProvider.BUTTON_PRESSED, -1);
+
 		if (buttonPressed == -1) {
 			Log.w(TAG,
 					"Started EventPopupActivity without ButtonPressed extra!");
@@ -177,6 +183,73 @@ public class EventPopupActivity extends Activity {
 			}
 
 		}
+
+		// Fling detector
+
+		gestureDetector = new GestureDetector(new SimpleOnGestureListener() {
+
+			@Override
+			public boolean onFling(MotionEvent e1, MotionEvent e2,
+					float velocityX, float velocityY) {
+
+				if (Math.abs(velocityX) > Math.abs(velocityY)) {
+					int offset = 0;
+					// Horizontal fling
+					if (velocityX > 0) {
+						// right fling (show previous)
+						offset = -1;
+					} else {
+						// left fling (show next)
+						offset = +1;
+					}
+
+					int simulatedButtonPosition = RecentWidgetProvider
+							.getButtonPosition(buttonPressed);
+
+					simulatedButtonPosition = (simulatedButtonPosition + offset)
+							% RecentWidgetProvider.numContactsDisplayed;
+
+					Intent intent = new Intent(
+							RecentWidgetUtils.ACTION_SHOW_POPUP);
+					intent
+							.putExtra(
+									RecentWidgetProvider.BUTTON_PRESSED,
+									RecentWidgetProvider.buttonMap[simulatedButtonPosition]);
+					startActivity(intent);
+
+					finish();
+
+					return true;
+				}
+
+				return false;
+			}
+		});
+
+		// Also set fling listener on the Data View
+
+		findViewById(R.id.eventPopupDataView).setOnTouchListener(
+				new OnTouchListener() {
+
+					@Override
+					public boolean onTouch(View v, MotionEvent event) {
+						// Same as activity.onTouchEvent...
+						if (gestureDetector.onTouchEvent(event)) {
+							return true;
+						} else {
+							return false;
+						}
+					}
+				});
+	}
+
+	@Override
+	public boolean onTouchEvent(MotionEvent event) {
+		if (gestureDetector.onTouchEvent(event)) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	private void bindIntentToButton(int buttonId, Uri contentUriData) {
@@ -198,4 +271,5 @@ public class EventPopupActivity extends Activity {
 					}
 				});
 	}
+
 }

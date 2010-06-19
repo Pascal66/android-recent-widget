@@ -43,7 +43,7 @@ public class RecentWidgetProvider extends AppWidgetProvider {
 	static int[] labelMap = new int[] { R.id.contactLabel01,
 			R.id.contactLabel02, R.id.contactLabel03 };
 
-	static int numContactsDisplayed = imageMap.length;
+	static int numContactsDisplayed = buttonMap.length;
 
 	@Override
 	// Note: not called when using a ConfigurationActivity
@@ -132,4 +132,12 @@ public class RecentWidgetProvider extends AppWidgetProvider {
 		super.onDisabled(context);
 	}
 
+	public static int getButtonPosition(int buttonId) {
+		for (int index = 0; index < numContactsDisplayed; index++) {
+			if (buttonMap[index] == buttonId) {
+				return index;
+			}
+		}
+		return -1;
+	}
 }

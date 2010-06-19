@@ -5,7 +5,7 @@ Change description with wording "Direct access to..."
 
 H- PERF of rebuild list!!!
 	- create debug log with stats/summaries
-
+H- Some queries on SMS events do not return associated contact
 
 H- Market:
 	x logo
@@ -20,29 +20,36 @@ H- CPU:
 	- android.intent.action.PHONE_STATE actually listened twice... observer.supports should also take the intent
 		- get new phoneState extra
 	- Why double-initialization on widget creation?
-
-M- Swipe on popup -> next/previous recent contact?
-M- gTalk provider?
 M- show last SMS content from contact?
-M- Bug: if list is not finished, remainder of previous page is still displayed
+M- Swipe on popup -> next/previous recent contact?
+M- Call event on popup: "30 minutes ago..." "yesterday 8:20pm"
+
+M- Widget display
+	- show whether sms was read or not
+	- show if call missed for given contact
 M- Merged contacts show as 2 separate contacts
 	- must get id on dao access
-	M- Add event info on popup: Home, Mobile, ...
-M- Call event on popup: "30 minutes ago..." "yesterday 8:20pm"
+M- Add event info on popup: Home, Mobile, ...
+M- gTalk provider?
 M- email content provider
-M- Use AsyncTask to draw the ActivityPopup
-M- layoutopt the views (does not work!?)
+M- Facebook provider?
+	- show button even if no notif
+M- Bug: if list is not finished, remainder of previous page is still displayed
 M- Possible preferences
 	- Only show incoming and/or outgoing and/or missed calls
 	- Only show sent and/or received sms
 	- Popup may show events historically rather than by type
 	- Custom Messaging/Dialer app launched from popup
 	- Clear Missed Call / SMS notification on popup?
-M- If caller unknown, do not let SMS/Call actions to be clicked
-	- remove icon to make sure people don't click or use toast to warn?
+	- Only show on widget if contact exists (ignore unknown contacts and unknown numbers?)
+M- Button to add number without contact to directory
 M- Landscape: icons are not aligned with home icons
 M- inactivity brings page cursor to 1?
+M- layoutopt the views (does not work!?)
+M- If caller unknown, do not let SMS/Call actions to be clicked
+	- remove icon to make sure people don't click or use toast to warn?
 
+L- Use AsyncTask to draw the ActivityPopup
 L- Use Bundle to save the state when Holder is killed... how?
 L- Find other way to handle PopupActivity intent:onKeyPress (works for now, but might not work with multiple widgets on screen << might have several list of recent events)
 L- Make sure content providers are disposed

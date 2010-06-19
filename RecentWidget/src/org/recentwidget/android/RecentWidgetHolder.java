@@ -179,27 +179,25 @@ public class RecentWidgetHolder {
 	protected static RecentContact getRecentEventPressed(int buttonPressed,
 			Context context) {
 
-		boolean found = false;
-		int index = 0;
-
 		// First find which button was pressed
 
-		for (index = 0; index < RecentWidgetProvider.numContactsDisplayed; index++) {
-			if (RecentWidgetProvider.buttonMap[index] == buttonPressed) {
-				found = true;
-				break;
-			}
-		}
+		int index = RecentWidgetProvider.getButtonPosition(buttonPressed);
 
 		resetIfKilled(context);
 
 		// Find which contact by shifting with the current paging
 
-		index += currentPage * RecentWidgetProvider.numContactsDisplayed;
-		if (found && index < recentContacts.size()) {
-			return recentContacts.get(index);
+		if (index >= 0) {
+			index += currentPage * RecentWidgetProvider.numContactsDisplayed;
+			if (index < recentContacts.size()) {
+				return recentContacts.get(index);
+			} else {
+				Log.e(TAG, "Button pressed but "
+						+ "no corresponding recent events.");
+				return null;
+			}
 		} else {
-			Log.e(TAG, "Button pressed but no corresponding recent events.");
+			Log.e(TAG, "No button with given id.");
 			return null;
 		}
 	}
