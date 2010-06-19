@@ -31,7 +31,7 @@
 		template?
 	-->
 
-	<ScrollView android:layout_width="fill_parent"
+	<ScrollView android:layout_width="fill_parent" android:id="@+id/eventPopupDataView"
 		android:layout_height="fill_parent" android:fillViewport="true">
 
 		<LinearLayout android:orientation="vertical" android:id="@+id/tables"

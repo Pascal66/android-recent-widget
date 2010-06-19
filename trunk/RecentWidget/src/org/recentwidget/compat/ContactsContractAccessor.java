@@ -88,6 +88,10 @@ public class ContactsContractAccessor extends AbstractContactAccessor {
 	@Override
 	public Bitmap loadContactPhoto(Context context, RecentContact recentContact) {
 
+		// ?! tested with no result (for facebook pic)
+		// http://stackoverflow.com/questions/2610786/contacts-quey-with-name-and-picture-uri
+		// http://developer.android.com/reference/android/provider/ContactsContract.Contacts.Photo.html
+
 		Uri contactUri = ContentUris.withAppendedId(contentUri, recentContact
 				.getPersonId());
 
