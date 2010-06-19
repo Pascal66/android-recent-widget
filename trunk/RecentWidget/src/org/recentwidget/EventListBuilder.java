@@ -6,6 +6,7 @@ import java.util.List;
 import org.recentwidget.model.RecentContact;
 import org.recentwidget.model.RecentEvent;
 
+import android.content.Context;
 import android.util.Log;
 
 public class EventListBuilder {
@@ -29,8 +30,8 @@ public class EventListBuilder {
 		}
 	}
 
-	public void add(Long personId, String name, String number, Long id,
-			int type, int subtype, long date) {
+	public void add(Context context, Long personId, String name, String number,
+			Long id, int type, int subtype, long date) {
 
 		// Unnecessary object creation?!?
 
@@ -39,14 +40,22 @@ public class EventListBuilder {
 		contact.setPerson(name);
 		contact.setPersonId(personId);
 
+		// Fetch more information, so we can group events on a given contact and
+		// so we have all the info to be displayed later on.
+
+		contact = RecentWidgetUtils.CONTACTS_API.fetchContactInfo(context,
+				contact);
+
 		// i = index of the contact to be removed/added
 
 		int i = contacts.indexOf(contact);
 
 		if (i >= 0) {
 			contact = contacts.remove(i);
+
 			// Contact removed might have less information than the info given
-			// as parameters. Merge them
+			// as parameters. Merge them.
+
 			if (contact.getNumber() == null && number != null) {
 				contact.setNumber(number);
 			}

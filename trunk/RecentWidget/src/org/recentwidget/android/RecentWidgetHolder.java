@@ -13,7 +13,6 @@ import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.util.Log;
 import android.widget.RemoteViews;
@@ -37,6 +36,8 @@ public class RecentWidgetHolder {
 	static final void updateWidgetLabels(Context context) {
 
 		if (recentContacts == null) {
+			Log.e(TAG, "Trying to update widget without recentContacts! "
+					+ "Skipping updateWidgetLabels.");
 			return;
 		}
 
@@ -58,47 +59,11 @@ public class RecentWidgetHolder {
 
 				RecentContact recentContact = recentContacts.get(i);
 
-				// Try to fetch the Contact with the given number and/or ID
+				// Set the button label on widget
 
-				// TODO: Skip it if we already have the info! We can directly
-				// display it instead of making queries.
-
-				Cursor contactCursor = RecentWidgetUtils.CONTACTS_API
-						.getContactCursor(context, recentContact);
-
-				if (contactCursor.getCount() >= 1) {
-
-					// Just take the 1st result even if there are several
-					// matches
-
-					contactCursor.moveToFirst();
-
-					label = RecentWidgetUtils.CONTACTS_API
-							.getDisplayName(contactCursor);
-
-					// Set it, so next time we might not need to repeat this
-					// query...
-
-					recentContact.setPerson(label);
-
-					Long personId = RecentWidgetUtils.CONTACTS_API
-							.getPersonId(contactCursor);
-
-					recentContact.setPersonId(personId);
-
-				} else {
-
-					// Defaults to the basic info we got
-
-					if (recentContact.getPerson() != null) {
-						label = recentContact.getPerson();
-					} else if (recentContact.getNumber() != null) {
-						label = recentContact.getNumber();
-					}
-
+				if (recentContact.getDisplayName() != null) {
+					label = recentContact.getDisplayName();
 				}
-
-				contactCursor.close();
 
 				views.setCharSequence(RecentWidgetProvider.labelMap[i
 						% RecentWidgetProvider.numContactsDisplayed],
@@ -126,7 +91,7 @@ public class RecentWidgetHolder {
 
 					// Note that we cannot create bitmap from R.drawable.* and
 					// display it on widget. Maybe a matter of classloader or
-					// things like that. So we need to create a view resource...
+					// things like that. So we need to use a ViewResource...
 
 					views.setImageViewResource(RecentWidgetProvider.imageMap[i
 							% RecentWidgetProvider.numContactsDisplayed],

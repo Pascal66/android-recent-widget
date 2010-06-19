@@ -28,17 +28,57 @@ public class ContactsContractAccessor extends AbstractContactAccessor {
 	}
 
 	@Override
-	public Cursor getContactCursor(Context context, RecentContact recentContact) {
+	public Cursor getContactCursorBySearch(Context context,
+			RecentContact recentContact) {
 
+		ContentResolver resolver = context.getContentResolver();
+
+		if (recentContact.getNumber() != null
+				&& recentContact.getPerson() != null) {
+
+			// Search by name and number
+
+			return resolver.query(
+					ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+					new String[] { personIdColumn, displayNameColumn },
+					ContactsContract.CommonDataKinds.Phone.NUMBER + " = ? OR "
+							+ displayNameColumn + " = ?", new String[] {
+							recentContact.getNumber(),
+							recentContact.getPerson() }, null);
+
+		} else if (recentContact.getPerson() != null) {
+
+			// Search by name
+
+			return resolver.query(
+					ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+					new String[] { personIdColumn, displayNameColumn },
+					displayNameColumn + " = ?", new String[] { recentContact
+							.getPerson() }, null);
+
+		} else {
+
+			// Search by number by default
+
+			return resolver.query(
+					ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+					new String[] { personIdColumn, displayNameColumn },
+					ContactsContract.CommonDataKinds.Phone.NUMBER + " = ?",
+					new String[] { recentContact.getNumber() }, null);
+
+		}
+	}
+
+	@Override
+	public Cursor getContactCursorById(Context context,
+			RecentContact recentContact) {
 		ContentResolver resolver = context.getContentResolver();
 
 		return resolver.query(
 				ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
-				new String[] {
-						ContactsContract.CommonDataKinds.Phone.CONTACT_ID,
-						ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME },
-				ContactsContract.CommonDataKinds.Phone.NUMBER + " = ? ",
-				new String[] { recentContact.getNumber() }, null);
+				new String[] { personIdColumn, displayNameColumn },
+				personIdColumn + " = ? ", new String[] { recentContact
+						.getPersonId().toString() }, null);
 	}
 
 	@Override

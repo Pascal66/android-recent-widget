@@ -16,9 +16,6 @@ H- Market:
 		- add screenshots
 	x popup design/info... missed calls icons, ...
 
-H- Number with/without prefix are shown as 2 separate contacts?
-	- at calllogdao time, find by cached name instead of number?
-
 H- CPU: 
 	- android.intent.action.PHONE_STATE actually listened twice... observer.supports should also take the intent
 		- get new phoneState extra
@@ -41,11 +38,16 @@ M- Possible preferences
 	- Popup may show events historically rather than by type
 	- Custom Messaging/Dialer app launched from popup
 	- Clear Missed Call / SMS notification on popup?
+M- If caller unknown, do not let SMS/Call actions to be clicked
+	- remove icon to make sure people don't click or use toast to warn?
+M- Landscape: icons are not aligned with home icons
+M- inactivity brings page cursor to 1?
 
 L- Use Bundle to save the state when Holder is killed... how?
 L- Find other way to handle PopupActivity intent:onKeyPress (works for now, but might not work with multiple widgets on screen << might have several list of recent events)
 L- Make sure content providers are disposed
 L- Close popup when clicking outside popup window
+L- When just added a custom number, refresh the widget also?
 
 ?- Override long-press on search?
 
@@ -69,6 +71,8 @@ test: M- When opening Contact page, pressing back shows the list of all Dialer a
 0.4: M- Change absoluteLayout in recentwidget.xml to frameLayout
 0.4: H- phone log is not always updated right away	-> use timer?
 0.4: H- bugfix: list might display empty when first creating the widget
+0.4: H- Number with/without prefix are shown as 2 separate contacts? at calllogdao time, find by cached name instead of number?
+
 
 
 NOTES:

@@ -25,6 +25,7 @@ public class SmsDao extends ContentResolverTemplate {
 
 	}
 
+	@Override
 	protected long extractEvent(EventListBuilder builder, Cursor messageCursor) {
 
 		long threadId = messageCursor.getLong(1);
@@ -40,11 +41,13 @@ public class SmsDao extends ContentResolverTemplate {
 
 		Log.v(TAG, "Fetched sms recent event: " + address + " (" + date + ")");
 
+		// TODO: How to know if it's incoming or outgoing?
+
 		if (personId == 0) {
-			builder.add(null, null, address, threadId, RecentEvent.TYPE_SMS,
-					RecentEvent.SUBTYPE_INCOMING, date);
+			builder.add(context, null, null, address, threadId,
+					RecentEvent.TYPE_SMS, RecentEvent.SUBTYPE_INCOMING, date);
 		} else {
-			builder.add(personId, null, address, threadId,
+			builder.add(context, personId, null, address, threadId,
 					RecentEvent.TYPE_SMS, RecentEvent.SUBTYPE_INCOMING, date);
 		}
 

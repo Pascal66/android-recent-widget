@@ -87,8 +87,10 @@ public class RecentContact implements Serializable {
 	public String getDisplayName() {
 		if (person != null) {
 			return person;
-		} else {
+		} else if (number != null) {
 			return number;
+		} else {
+			return null;
 		}
 	}
 
