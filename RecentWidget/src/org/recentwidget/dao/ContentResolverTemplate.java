@@ -68,20 +68,19 @@ public abstract class ContentResolverTemplate implements EventObserver {
 		Cursor cursor = contentResolver.query(contentUri, projection, null,
 				null, sortOrder);
 
-		// Note: we might not want to retrieve all the maxRetrieved events
-		// (maybe just the last one is enough?)... depends on the current
-		// state of the recentEvents list -> the builder will tell...
-
 		try {
 
 			if (cursor.moveToFirst()) {
 
 				while (!cursor.isAfterLast()) {
 
+					// "extract" actually adds to the list
+
 					long eventDate = extractEvent(builder, cursor);
 
 					// At this point, the event was already added. Just check if
-					// next event pertains to the list.
+					// next event should be fetched; or do we have enough events
+					// already.
 
 					if (builder.isFull(eventDate, getTargetType())) {
 						break;

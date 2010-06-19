@@ -52,15 +52,11 @@ public class CallLogDao extends ContentResolverTemplate {
 
 		long date = callsCursor.getLong(callsCursor.getColumnIndex(Calls.DATE));
 
-		/*
-		 * RecentEvent event = new RecentEvent(); event.setPerson(name);
-		 * event.setNumber(number); event.setType(type);
-		 */
-
 		Log.v(TAG, "Fetched telephony recent event: " + name + " (" + date
 				+ ")");
 
-		builder.add(null, name, number, id, RecentEvent.TYPE_CALL, type, date);
+		builder.add(context, null, name, number, id, RecentEvent.TYPE_CALL,
+				type, date);
 
 		return date;
 	}

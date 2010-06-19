@@ -22,7 +22,40 @@ public class PeopleAccessor extends AbstractContactAccessor {
 	}
 
 	@Override
-	public Cursor getContactCursor(Context context, RecentContact recentContact) {
+	public Cursor getContactCursorBySearch(Context context,
+			RecentContact recentContact) {
+
+		ContentResolver resolver = context.getContentResolver();
+
+		if (recentContact.getNumber() != null
+				&& recentContact.getPerson() != null) {
+
+			return resolver.query(Contacts.Phones.CONTENT_URI, new String[] {
+					personIdColumn, displayNameColumn }, Phones.NUMBER
+					+ " = ? OR " + displayNameColumn + " = ?", new String[] {
+					recentContact.getNumber(), recentContact.getPerson() },
+					null);
+
+		} else if (recentContact.getPerson() != null) {
+
+			// Search by number by default
+			return resolver.query(Contacts.Phones.CONTENT_URI, new String[] {
+					personIdColumn, displayNameColumn }, displayNameColumn
+					+ " = ?", new String[] { recentContact.getPerson() }, null);
+
+		} else {
+
+			// Search by number by default
+			return resolver.query(Contacts.Phones.CONTENT_URI, new String[] {
+					personIdColumn, displayNameColumn },
+					Phones.NUMBER + " = ?", new String[] { recentContact
+							.getNumber() }, null);
+		}
+	}
+
+	@Override
+	public Cursor getContactCursorById(Context context,
+			RecentContact recentContact) {
 
 		ContentResolver resolver = context.getContentResolver();
 
