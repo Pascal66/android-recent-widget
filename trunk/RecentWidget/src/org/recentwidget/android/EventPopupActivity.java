@@ -216,6 +216,9 @@ public class EventPopupActivity extends Activity {
 						if (!RecentWidgetHolder.previousPage()) {
 							// Ignore if we are already on the first page
 							simulatedButtonPosition = -1;
+						} else {
+							// start from last
+							simulatedButtonPosition = RecentWidgetProvider.numContactsDisplayed - 1;
 						}
 
 						RecentWidgetHolder
@@ -227,6 +230,8 @@ public class EventPopupActivity extends Activity {
 
 						if (!RecentWidgetHolder.nextPage(null)) {
 							simulatedButtonPosition = -1;
+						} else {
+							simulatedButtonPosition = 0;
 						}
 
 						RecentWidgetHolder
