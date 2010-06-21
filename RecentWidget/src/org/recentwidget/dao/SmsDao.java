@@ -32,7 +32,8 @@ public class SmsDao extends ContentResolverTemplate {
 
 		String address = messageCursor.getString(2);
 
-		long personId = messageCursor.getLong(3);
+		long personId = 0; // BUG: not the right personId:
+							// messageCursor.getLong(3);
 
 		long date = messageCursor.getLong(4);
 
