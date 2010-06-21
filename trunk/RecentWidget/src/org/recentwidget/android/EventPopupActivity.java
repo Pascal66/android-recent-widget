@@ -148,6 +148,9 @@ public class EventPopupActivity extends Activity {
 
 			TextView eventText = new TextView(this);
 			eventText.setText(date);
+			if (recentEvent.getDetails() != null) {
+				eventText.append(": " + recentEvent.getDetails());
+			}
 
 			row.addView(eventText);
 
