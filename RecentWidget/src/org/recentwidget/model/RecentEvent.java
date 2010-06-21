@@ -24,6 +24,8 @@ public class RecentEvent implements Serializable {
 	private long date;
 	private Long id;
 
+	private String details;
+
 	public Long getId() {
 		return id;
 	}
@@ -90,4 +92,13 @@ public class RecentEvent implements Serializable {
 		return true;
 	}
 
+	public void setDetails(String details) {
+		if (details != null && details.trim().length() > 0) {
+			this.details = details;
+		}
+	}
+
+	public String getDetails() {
+		return details;
+	}
 }

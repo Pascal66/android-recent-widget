@@ -31,7 +31,7 @@ public class EventListBuilder {
 	}
 
 	public void add(Context context, Long personId, String name, String number,
-			Long id, int type, int subtype, long date) {
+			RecentEvent newEvent) {
 
 		// Unnecessary object creation?!?
 
@@ -68,12 +68,6 @@ public class EventListBuilder {
 		}
 
 		// Add the event, if needed
-
-		RecentEvent newEvent = new RecentEvent();
-		newEvent.setId(id); // Might be null
-		newEvent.setDate(date);
-		newEvent.setType(type);
-		newEvent.setSubType(subtype);
 
 		contact.addEvent(newEvent);
 
