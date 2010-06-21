@@ -35,6 +35,7 @@ M- email content provider
 M- Facebook provider?
 	- show button even if no notif
 M- Bug: if list is not finished, remainder of previous page is still displayed
+M- bothering: if compose sms activity was called, clicking on a contact goes back to that compose activity
 M- Possible preferences
 	- Only show incoming and/or outgoing and/or missed calls
 	- Only show sent and/or received sms

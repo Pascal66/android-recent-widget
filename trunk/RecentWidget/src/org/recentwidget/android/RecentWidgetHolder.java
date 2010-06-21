@@ -233,28 +233,54 @@ public class RecentWidgetHolder {
 		recentContacts = null;
 	}
 
-	private static void updatePager() {
+	private static boolean updatePager() {
 
 		maxPage = (int) Math.floor(((double) recentContacts.size() - 1) / 3);
 
 		// Just check if we are on an existing page
 
-		if (currentPage > maxPage) {
+		if (currentPage > maxPage || currentPage < 0) {
 			currentPage = 0;
+			return false;
+		} else {
+			return true;
 		}
 	}
 
-	public static void nextPage(Context context) {
+	/**
+	 * Go to next page. Rebuild the contact list if it was killed.
+	 * 
+	 * @return Whether there is actually a next page and we are cycling through
+	 *         the page.
+	 */
+	public static boolean nextPage(Context context) {
 
-		resetIfKilled(context);
+		if (context != null) {
+			resetIfKilled(context);
+		}
 
 		if (recentContacts == null || recentContacts.size() == 0) {
 			currentPage = 0;
 			maxPage = 0;
+			return false;
 		} else {
 			currentPage++;
-			updatePager();
+			return updatePager();
 		}
 
+	}
+
+	public static boolean previousPage() {
+		// No parameter as nextPage because we never call it where there might
+		// not
+
+		if (recentContacts == null || recentContacts.size() == 0) {
+			currentPage = 0;
+			maxPage = 0;
+			return false;
+		} else {
+			currentPage--;
+			return updatePager();
+		}
 	}
 }

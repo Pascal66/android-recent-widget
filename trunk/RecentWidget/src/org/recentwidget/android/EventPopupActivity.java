@@ -60,6 +60,7 @@ public class EventPopupActivity extends Activity {
 		if (recentContact == null) {
 			Log.w(TAG, "ButtonPressed extra correspond to no RecentEvent!");
 			finish();
+			return;
 		}
 
 		// Setup the dialog window
@@ -204,20 +205,49 @@ public class EventPopupActivity extends Activity {
 					}
 
 					int simulatedButtonPosition = RecentWidgetProvider
-							.getButtonPosition(buttonPressed);
+							.getButtonPosition(buttonPressed)
+							+ offset;
 
-					simulatedButtonPosition = (simulatedButtonPosition + offset)
-							% RecentWidgetProvider.numContactsDisplayed;
+					if (simulatedButtonPosition < 0) {
 
-					Intent intent = new Intent(
-							RecentWidgetUtils.ACTION_SHOW_POPUP);
-					intent
-							.putExtra(
-									RecentWidgetProvider.BUTTON_PRESSED,
-									RecentWidgetProvider.buttonMap[simulatedButtonPosition]);
-					startActivity(intent);
+						// If touched on first in the list, we need to decrease
+						// the page
+
+						if (!RecentWidgetHolder.previousPage()) {
+							// Ignore if we are already on the first page
+							simulatedButtonPosition = -1;
+						}
+
+						RecentWidgetHolder
+								.updateWidgetLabels(getApplicationContext());
+
+					} else if (simulatedButtonPosition >= RecentWidgetProvider.numContactsDisplayed) {
+
+						// If touching the last one, next page please.
+
+						if (!RecentWidgetHolder.nextPage(null)) {
+							simulatedButtonPosition = -1;
+						}
+
+						RecentWidgetHolder
+								.updateWidgetLabels(getApplicationContext());
+					}
 
 					finish();
+
+					if (simulatedButtonPosition != -1) {
+
+						simulatedButtonPosition %= RecentWidgetProvider.numContactsDisplayed;
+
+						Intent intent = new Intent(
+								RecentWidgetUtils.ACTION_SHOW_POPUP);
+						intent
+								.putExtra(
+										RecentWidgetProvider.BUTTON_PRESSED,
+										RecentWidgetProvider.buttonMap[simulatedButtonPosition]);
+						startActivity(intent);
+
+					}
 
 					return true;
 				}
