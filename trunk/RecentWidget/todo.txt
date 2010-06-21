@@ -5,7 +5,6 @@ Change description with wording "Direct access to..."
 
 H- PERF of rebuild list!!!
 	- create debug log with stats/summaries
-H- Some queries on SMS events do not return associated contact
 
 H- Market:
 	x logo
@@ -30,6 +29,7 @@ M- Sent sms process not caught to update the widget?
 M- Popup: show quick contacts 
 	(+ Use relative layout in Popup screen, instead of table?!)
 	-> actually, all table layout can be relative layouts
+M- Use AsyncTask to draw the ActivityPopup
 M- Widget display
 	- show whether sms was read or not
 	- show if call missed for given contact
@@ -53,16 +53,13 @@ M- Button to add number without contact to directory
 M- Landscape: icons are not aligned with home icons
 M- inactivity brings page cursor to 1?
 M- layoutopt the views (does not work!?)
-M- If caller unknown, do not let SMS/Call actions to be clicked
-	- remove icon to make sure people don't click or use toast to warn?
 M- traduction française?
 
-L- Use AsyncTask to draw the ActivityPopup
 L- Use Bundle to save the state when Holder is killed... how?
 L- Find other way to handle PopupActivity intent:onKeyPress (works for now, but might not work with multiple widgets on screen << might have several list of recent events)
 L- Make sure content providers are disposed
 L- Close popup when clicking outside popup window
-L- When just added a custom number, refresh the widget also?
+L- When just added a custom number / new contact, refresh the widget also?
 L- Add treshold on fling?
 
 ?- Override long-press on search?
@@ -90,6 +87,7 @@ test: M- When opening Contact page, pressing back shows the list of all Dialer a
 0.4: H- Number with/without prefix are shown as 2 separate contacts? at calllogdao time, find by cached name instead of number?
 0.4.1: M- Swipe on popup -> next/previous recent contact?
 0.4.1: M- Merged contacts show as 2 separate contacts; must get id on dao access
+0.4.1: H- Some queries on SMS events do not return associated contact
 
 
 NOTES:
