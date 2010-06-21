@@ -16,6 +16,7 @@ H- Market:
 		- add screenshots
 	x popup design/info... missed calls icons, ...
 
+H- add arrow to educate on possible fling gesture
 H- CPU: 
 	- android.intent.action.PHONE_STATE actually listened twice... observer.supports should also take the intent
 		- get new phoneState extra

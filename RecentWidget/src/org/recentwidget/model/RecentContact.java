@@ -105,17 +105,17 @@ public class RecentContact implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		RecentContact other = (RecentContact) obj;
-		if (number != null && other.number != null)
+		if (personId != null && other.personId != null) {
+			return personId.equals(other.personId);
+		}
+		if (number != null && other.number != null) {
 			// Shortcut: both numbers equal -> true
 			return number.equals(other.number);
-		if (person != null && other.person != null)
+		}
+		if (person != null && other.person != null) {
 			return person.equals(other.person);
-		if (personId == null) {
-			if (other.personId != null)
-				return false;
-		} else if (!personId.equals(other.personId))
-			return false;
-		return true;
+		}
+		return false;
 	}
 
 	@Override
