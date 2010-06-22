@@ -10,6 +10,8 @@ public class RecentWidgetUtils {
 
 	private static final String TAG = "RW:Utils";
 
+	public static final boolean DEBUG = true;
+
 	// Some constants
 
 	public static final String ACTION_SHOW_POPUP = "org.recentwidget.SHOW_POPUP";
