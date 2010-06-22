@@ -11,6 +11,7 @@ import android.graphics.Bitmap;
 import android.provider.Contacts;
 import android.provider.Contacts.People;
 import android.provider.Contacts.Phones;
+import android.util.Log;
 
 @SuppressWarnings("deprecation")
 public class PeopleAccessor extends AbstractContactAccessor {
@@ -22,47 +23,73 @@ public class PeopleAccessor extends AbstractContactAccessor {
 	}
 
 	@Override
-	public Cursor getContactCursorBySearch(Context context,
+	public RecentContact getContactCursorBySearch(Context context,
 			RecentContact recentContact) {
 
 		ContentResolver resolver = context.getContentResolver();
+		Cursor lookupCursor = null;
 
 		if (recentContact.getNumber() != null
 				&& recentContact.getPerson() != null) {
 
-			return resolver.query(Contacts.Phones.CONTENT_URI, new String[] {
-					personIdColumn, displayNameColumn }, Phones.NUMBER
-					+ " = ? OR " + displayNameColumn + " = ?", new String[] {
-					recentContact.getNumber(), recentContact.getPerson() },
-					null);
+			lookupCursor = resolver.query(Contacts.Phones.CONTENT_URI,
+					new String[] { personIdColumn, displayNameColumn },
+					Phones.NUMBER + " = ? OR " + displayNameColumn + " = ?",
+					new String[] { recentContact.getNumber(),
+							recentContact.getPerson() }, null);
 
 		} else if (recentContact.getPerson() != null) {
 
-			// Search by number by default
-			return resolver.query(Contacts.Phones.CONTENT_URI, new String[] {
-					personIdColumn, displayNameColumn }, displayNameColumn
-					+ " = ?", new String[] { recentContact.getPerson() }, null);
+			// Search by contact name
+
+			lookupCursor = resolver.query(Contacts.Phones.CONTENT_URI,
+					new String[] { personIdColumn, displayNameColumn },
+					displayNameColumn + " = ?", new String[] { recentContact
+							.getPerson() }, null);
 
 		} else {
 
 			// Search by number by default
-			return resolver.query(Contacts.Phones.CONTENT_URI, new String[] {
-					personIdColumn, displayNameColumn },
+
+			lookupCursor = resolver.query(Contacts.Phones.CONTENT_URI,
+					new String[] { personIdColumn, displayNameColumn },
 					Phones.NUMBER + " = ?", new String[] { recentContact
 							.getNumber() }, null);
 		}
+
+		if (lookupCursor != null && lookupCursor.getCount() >= 1) {
+			try {
+				if (lookupCursor.moveToFirst()) {
+
+					initContactFromCursor(recentContact, lookupCursor);
+
+					return recentContact;
+
+				}
+			} finally {
+				lookupCursor.close();
+			}
+		}
+
+		Log.d(TAG, "No contact found for " + recentContact);
+
+		return recentContact;
 	}
 
 	@Override
-	public Cursor getContactCursorById(Context context,
+	public RecentContact getContactCursorById(Context context,
 			RecentContact recentContact) {
 
 		ContentResolver resolver = context.getContentResolver();
 
-		return resolver.query(Contacts.Phones.CONTENT_URI, new String[] {
-				personIdColumn, displayNameColumn }, Phones.NUMBER + " = ?",
-				new String[] { recentContact.getNumber() }, null);
+		Cursor cursor = resolver.query(Contacts.Phones.CONTENT_URI,
+				new String[] { personIdColumn, displayNameColumn },
+				Phones.NUMBER + " = ?", new String[] { recentContact
+						.getNumber() }, null);
 
+		initContactFromCursor(recentContact, cursor);
+
+		return recentContact;
 	}
 
 	@Override
@@ -85,4 +112,17 @@ public class PeopleAccessor extends AbstractContactAccessor {
 				People.CONTENT_URI, recentContact.getPersonId()),
 				RecentWidgetProvider.defaultContactImage, null);
 	}
+
+	protected void initContactFromCursor(RecentContact recentContact,
+			Cursor lookupCursor) {
+
+		recentContact.setPerson(lookupCursor.getString(lookupCursor
+				.getColumnIndex(displayNameColumn)));
+
+		String personIdAsString = lookupCursor.getString(lookupCursor
+				.getColumnIndex(personIdColumn));
+
+		recentContact.setPersonId(Long.parseLong(personIdAsString));
+	}
+
 }

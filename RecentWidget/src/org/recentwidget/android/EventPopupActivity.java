@@ -279,6 +279,15 @@ public class EventPopupActivity extends Activity {
 						}
 					}
 				});
+
+		if (RecentWidgetUtils.DEBUG) {
+
+			String debugString = RecentWidgetUtils.CONTACTS_API.debugLookup(
+					getContentResolver(), recentContact);
+
+			textView.append(debugString);
+		}
+
 	}
 
 	@Override

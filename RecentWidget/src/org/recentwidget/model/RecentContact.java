@@ -11,6 +11,7 @@ public class RecentContact implements Serializable {
 	private String person;
 	private String number;
 	private Long personId = null;
+	private String lookupKey;
 
 	/**
 	 * The most recent event date for this contact.
@@ -81,7 +82,7 @@ public class RecentContact implements Serializable {
 	 *         number).
 	 */
 	public boolean hasContactInfo() {
-		return personId != null && personId > 0;
+		return (personId != null && personId > 0) || lookupKey != null;
 	}
 
 	public String getDisplayName() {
@@ -107,6 +108,9 @@ public class RecentContact implements Serializable {
 		RecentContact other = (RecentContact) obj;
 		if (personId != null && other.personId != null) {
 			return personId.equals(other.personId);
+		}
+		if (lookupKey != null && other.lookupKey != null) {
+			return lookupKey.equals(other.lookupKey);
 		}
 		if (number != null && other.number != null) {
 			// Shortcut: both numbers equal -> true
@@ -137,6 +141,14 @@ public class RecentContact implements Serializable {
 			}
 		}
 		return mostRecentEvent;
+	}
+
+	public void setPersonKey(String lookupKey) {
+		this.lookupKey = lookupKey;
+	}
+
+	public String getLookupKey() {
+		return lookupKey;
 	}
 
 }
