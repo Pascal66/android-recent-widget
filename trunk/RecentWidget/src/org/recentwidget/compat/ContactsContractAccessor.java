@@ -132,7 +132,7 @@ public class ContactsContractAccessor extends AbstractContactAccessor {
 		} else {
 			badge.assignContactFromPhone(recentContact.getNumber(), false);
 		}
-		badge.setMode(QuickContact.MODE_MEDIUM);
+		badge.setMode(QuickContact.MODE_LARGE);
 		badge.setBackgroundResource(android.R.drawable.btn_default);
 		return badge;
 	}
