@@ -9,6 +9,7 @@
 	android:paddingLeft="5dip" android:paddingRight="5dip" android:paddingBottom="5dip">
 
 	<LinearLayout android:layout_gravity="center_horizontal" android:orientation="horizontal"
+		android:paddingBottom="5dip" android:paddingTop="5dip"
 		android:id="@+id/popupHeader"
 		android:layout_width="fill_parent"
 		android:layout_height="fill_parent">
