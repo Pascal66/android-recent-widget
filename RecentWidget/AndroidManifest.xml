@@ -2,7 +2,7 @@
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
 	android:debuggable="true" package="org.recentwidget"
-	android:versionCode="3" android:versionName="0.4.1 [fling on popup, dupes, wrong contact] [layout, 9 contacts displayed]">
+	android:versionCode="4" android:versionName="0.4.2 [fling on popup, dupes, wrong contacts]">
 
 	<uses-permission android:name="android.permission.READ_PHONE_STATE" />
 	<uses-permission android:name="android.permission.READ_CONTACTS" />
