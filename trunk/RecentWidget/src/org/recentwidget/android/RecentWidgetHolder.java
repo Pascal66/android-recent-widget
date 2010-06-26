@@ -15,6 +15,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.util.Log;
+import android.view.View;
 import android.widget.RemoteViews;
 
 // Holds the recent events to be displayed
@@ -96,6 +97,25 @@ public class RecentWidgetHolder {
 					views.setImageViewResource(RecentWidgetProvider.imageMap[i
 							% RecentWidgetProvider.numContactsDisplayed],
 							RecentWidgetProvider.defaultContactImage);
+				}
+
+				// Set the last event for this contact
+
+				for (EventObserver observer : RecentWidgetProvider.eventObservers) {
+					Integer resource = observer
+							.getResourceForWidget(recentContact);
+					if (resource != null) {
+						views.setImageViewResource(observer.getWidgetLabels()[i
+								% RecentWidgetProvider.numContactsDisplayed],
+								resource);
+						views.setViewVisibility(observer.getWidgetLabels()[i
+								% RecentWidgetProvider.numContactsDisplayed],
+								View.VISIBLE);
+					} else {
+						views.setViewVisibility(observer.getWidgetLabels()[i
+								% RecentWidgetProvider.numContactsDisplayed],
+								View.INVISIBLE);
+					}
 				}
 
 			}

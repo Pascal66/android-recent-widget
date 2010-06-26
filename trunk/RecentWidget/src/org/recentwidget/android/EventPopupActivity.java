@@ -14,6 +14,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.CallLog.Calls;
+import android.text.TextUtils.TruncateAt;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -168,19 +169,23 @@ public class EventPopupActivity extends Activity {
 
 			Log.d(TAG, "Drawing event: " + recentEvent);
 
-			CharSequence date = DateFormat.format("MMM dd, h:mmaa", recentEvent
-					.getDate());
-
 			TableRow row = new TableRow(this);
 			row.setGravity(Gravity.CENTER_VERTICAL);
 
+			CharSequence date = DateFormat.format("MMM dd, h:mmaa", recentEvent
+					.getDate());
+
 			TextView eventText = new TextView(this);
 			eventText.setText(date);
+			eventText.setMaxLines(3);
+			eventText.setEllipsize(TruncateAt.END);
 			if (recentEvent.getDetails() != null) {
 				eventText.append(": " + recentEvent.getDetails());
 			}
 
-			row.addView(eventText);
+			row.addView(eventText, new android.widget.TableRow.LayoutParams(
+					android.widget.TableRow.LayoutParams.WRAP_CONTENT,
+					android.widget.TableRow.LayoutParams.WRAP_CONTENT));
 
 			Integer subtypeIconRef = null;
 

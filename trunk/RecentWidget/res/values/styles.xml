@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <style name="WidgetEventImage">
+    	<item name="android:layout_gravity">top|right</item>
+    	<item name="android:layout_width">15dip</item>
+    	<item name="android:layout_height">15dip</item>
+    	<item name="android:layout_marginTop">8dip</item>
+    </style>
+
+	<style name="WidgetEventImage1" parent="WidgetEventImage">
+    	<item name="android:layout_marginRight">2dip</item>
+	</style>    
+
+	<style name="WidgetEventImage2" parent="WidgetEventImage">
+    	<item name="android:layout_marginRight">17dip</item>
+	</style>    
+
+</resources>

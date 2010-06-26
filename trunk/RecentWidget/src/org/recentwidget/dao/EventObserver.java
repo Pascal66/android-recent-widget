@@ -14,4 +14,8 @@ public interface EventObserver {
 	List<RecentContact> update(List<RecentContact> recentContacts,
 			Intent intent, Context context);
 
+	Integer getResourceForWidget(RecentContact contact);
+
+	int[] getWidgetLabels();
+
 }

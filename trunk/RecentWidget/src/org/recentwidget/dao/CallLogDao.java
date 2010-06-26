@@ -3,6 +3,7 @@ package org.recentwidget.dao;
 import org.recentwidget.EventListBuilder;
 import org.recentwidget.R;
 import org.recentwidget.RecentWidgetUtils;
+import org.recentwidget.model.RecentContact;
 import org.recentwidget.model.RecentEvent;
 
 import android.database.Cursor;
@@ -12,6 +13,12 @@ import android.util.Log;
 public class CallLogDao extends ContentResolverTemplate {
 
 	private static final String TAG = "RW:CallLogDao";
+
+	/**
+	 * The image views holding the CallLog icons.
+	 */
+	static int[] contactCallMap = new int[] { R.id.contactEventLabel01_0,
+			R.id.contactEventLabel02_0, R.id.contactEventLabel03_0 };
 
 	public CallLogDao() {
 		super();
@@ -67,6 +74,27 @@ public class CallLogDao extends ContentResolverTemplate {
 	}
 
 	@Override
+	public Integer getResourceForWidget(RecentContact contact) {
+		// Just show the last event
+		RecentEvent recentEvent = contact
+				.getMostRecentEvent(RecentEvent.TYPE_CALL);
+		if (recentEvent != null) {
+			switch (recentEvent.getSubType()) {
+			case RecentEvent.SUBTYPE_INCOMING:
+				return R.drawable.ic_incoming_call;
+			case RecentEvent.SUBTYPE_MISSED:
+				return R.drawable.ic_missed_call;
+			case RecentEvent.SUBTYPE_OUTGOING:
+				return R.drawable.ic_outgoing_call;
+			default:
+				return R.drawable.ic_incoming_call;
+			}
+		} else {
+			return null;
+		}
+	}
+
+	@Override
 	public boolean supports(String intentAction) {
 		// return
 		// RecentWidgetUtils.ACTION_UPDATE_TELEPHONY.equals(intentAction);
@@ -76,5 +104,10 @@ public class CallLogDao extends ContentResolverTemplate {
 	@Override
 	protected int getTargetType() {
 		return RecentEvent.TYPE_CALL;
+	}
+
+	@Override
+	public int[] getWidgetLabels() {
+		return contactCallMap;
 	}
 }
