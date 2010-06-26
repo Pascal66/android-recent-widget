@@ -1,7 +1,9 @@
 package org.recentwidget.compat;
 
+import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
+import org.recentwidget.android.RecentWidgetProvider;
 import org.recentwidget.model.RecentContact;
 
 import android.content.ContentResolver;
@@ -12,8 +14,12 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.provider.ContactsContract;
+import android.provider.ContactsContract.Contacts;
 import android.provider.ContactsContract.PhoneLookup;
+import android.provider.ContactsContract.QuickContact;
 import android.util.Log;
+import android.widget.ImageView;
+import android.widget.QuickContactBadge;
 
 // Inspired from file:///C:/KV/dev/android/android-sdk-windows-1.6_r1/docs/resources/articles/backward-compatibility.html
 // but does not embed an class instance.
@@ -117,6 +123,21 @@ public class ContactsContractAccessor extends AbstractContactAccessor {
 	}
 
 	@Override
+	public ImageView createPopupBadge(Context context,
+			RecentContact recentContact) {
+		QuickContactBadge badge = new QuickContactBadge(context);
+		if (recentContact.getPersonId() != null
+				&& recentContact.getLookupKey() != null) {
+			badge.assignContactUri(Contacts.getLookupUri(recentContact
+					.getPersonId(), recentContact.getLookupKey()));
+		} else {
+			badge.assignContactFromPhone(recentContact.getNumber(), false);
+		}
+		badge.setMode(QuickContact.MODE_LARGE);
+		return badge;
+	}
+
+	@Override
 	public Bitmap loadContactPhoto(Context context, RecentContact recentContact) {
 
 		// ?! tested with no result (for facebook pic)
@@ -195,7 +216,8 @@ public class ContactsContractAccessor extends AbstractContactAccessor {
 
 		} else {
 
-			return null;
+			return BitmapFactory.decodeResource(context.getResources(),
+					RecentWidgetProvider.defaultContactImage);
 
 		}
 
@@ -236,10 +258,87 @@ public class ContactsContractAccessor extends AbstractContactAccessor {
 			debugString += " :: ";
 			debugString += phoneLookup.getString(0) + " : ";
 			debugString += phoneLookup.getString(1) + " : ";
-			debugString += phoneLookup.getString(2);
+			debugString += phoneLookup.getString(2) + " : ";
 			debugString += phoneLookup.getString(3);
 		}
 
 		return debugString;
 	}
+
+	/**
+	 * Returns an InputStream for the person's photo
+	 * 
+	 * Credits:
+	 * http://android-smspopup.googlecode.com/svn-history/trunk/SMSPopup
+	 * /src/net/everythingandroid/smspopup/wrappers/ContactWrapper.java
+	 * 
+	 * @param id
+	 *            the id of the person
+	 */
+	public InputStream openContactPhotoInputStream(ContentResolver cr, String id) {
+		if (id == null)
+			return null;
+		if ("0".equals(id))
+			return null;
+
+		Cursor cursor;
+
+		/*
+		 * User is using Eclair or beyond
+		 */
+
+		try {
+			InputStream photoStream = ContactsContract.Contacts
+					.openContactPhotoInputStream(cr, Uri.withAppendedPath(
+							contentUri, id));
+
+			return photoStream;
+			/*
+			    if (photoStream != null) {
+			      if (Log.DEBUG) Log.v("openContactPhotoInputStream(): contact photo found using Eclair SDK");
+			      return photoStream;
+			    }
+			 */
+		} catch (IllegalArgumentException e) {
+			Log.e(TAG, "Unable to fetch contact photo using Anroid 2.0+ SDK: "
+					+ e.toString());
+		}
+
+		// This tries to look for other contact photos directly in the
+		// contacts database
+
+		Log.v(TAG, "Looking for contact photo in Data table");
+		cursor = cr.query(ContactsContract.Data.CONTENT_URI,
+		// new String[] {ContactsContract.CommonDataKinds.Photo.PHOTO,
+				// ContactsContract.Data.MIMETYPE},
+				// ContactsContract.Data.MIMETYPE + "== '" +
+				// ContactsContract.CommonDataKinds.Photo.CONTENT_ITEM_TYPE +
+				// "' AND " +
+				// ContactsContract.Data.CONTACT_ID + " == " + id, null, null);
+				new String[] { "data15", "mimetype" }, "mimetype" + "== '"
+						+ "vnd.android.cursor.item/photo" + "' AND "
+						+ "contact_id" + " == " + id, null, null);
+		if (cursor == null)
+			return null;
+
+		try {
+			Log.v(TAG, "CURSOR COUNT = " + cursor.getCount());
+			while (cursor.moveToNext()) {
+				byte[] data = cursor.getBlob(0);
+				if (data != null) {
+					Log
+							.v(TAG,
+									"openContactPhotoInputStream(): contact photo found using Data table");
+					return new ByteArrayInputStream(data);
+				} else {
+					Log.v(TAG, "PHOTO DATA WAS NULL");
+				}
+			}
+		} finally {
+			cursor.close();
+		}
+
+		return null;
+	}
+
 }

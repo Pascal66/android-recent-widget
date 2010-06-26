@@ -20,10 +20,12 @@ import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TableLayout;
@@ -65,55 +67,73 @@ public class EventPopupActivity extends Activity {
 
 		// Setup the dialog window
 
-		requestWindowFeature(Window.FEATURE_LEFT_ICON);
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
 
 		setContentView(R.layout.eventpopup);
 
+		// Contact badge
+
+		ViewGroup header = (ViewGroup) findViewById(R.id.popupHeader);
+
+		ImageView badge = RecentWidgetUtils.CONTACTS_API.createPopupBadge(this,
+				recentContact);
+
+		// Set image
+
 		if (recentContact.getPersonId() != null) {
+
 			Bitmap contactPhoto = RecentWidgetUtils.CONTACTS_API
 					.loadContactPhoto(this, recentContact);
 			BitmapDrawable contactDrawable = new BitmapDrawable(contactPhoto);
+			badge.setImageDrawable(contactDrawable);
 
-			getWindow().setFeatureDrawable(Window.FEATURE_LEFT_ICON,
-					contactDrawable);
 		} else {
 			// Display default icon
-			getWindow().setFeatureDrawableResource(Window.FEATURE_LEFT_ICON,
-					RecentWidgetProvider.defaultContactImage);
+			badge.setImageResource(RecentWidgetProvider.defaultContactImage);
 		}
 
-		// Set the header content
+		// If not using QuickContactBadge:
+
+		if (badge instanceof ImageButton) {
+
+			// Set button (cannot be done before because we need references to
+			// the activity
+
+			if (recentContact.hasContactInfo()) {
+
+				// Contact button
+				bindIntentToButton(badge, ContentUris.withAppendedId(
+						RecentWidgetUtils.CONTACTS_API.contentUri,
+						recentContact.getPersonId()));
+
+			} else {
+
+				// Bring up the dialer since no Contact registered
+				bindIntentToButton(badge, Uri.parse("tel:"
+						+ recentContact.getNumber()));
+			}
+
+		}
+
+		header.addView(badge, 0, new LayoutParams(LayoutParams.WRAP_CONTENT,
+				LayoutParams.WRAP_CONTENT));
+
+		// Set the display name in header
 
 		TextView textView = (TextView) findViewById(R.id.popupText);
 		textView.setText(recentContact.getDisplayName());
-
-		if (recentContact.hasContactInfo()) {
-
-			// Contact button
-			bindIntentToButton(R.id.popupAction, ContentUris.withAppendedId(
-					RecentWidgetUtils.CONTACTS_API.contentUri, recentContact
-							.getPersonId()));
-			// Show the Contact Info icon
-			((ImageButton) findViewById(R.id.popupAction))
-					.setImageResource(R.drawable.ic_launcher_contacts);
-		} else {
-
-			// Bring up the dialer since no Contact registered
-			bindIntentToButton(R.id.popupAction, Uri.parse("tel:"
-					+ recentContact.getNumber()));
-			// The image is already the dialer icon
-		}
 
 		// Call Log button
 
 		RecentEvent callLogEvent = recentContact
 				.getMostRecentEvent(RecentEvent.TYPE_CALL);
+		View callButton = findViewById(R.id.popupTableAction1);
 		if (callLogEvent != null) {
-			bindIntentToButton(R.id.popupTableAction1, ContentUris
-					.withAppendedId(Calls.CONTENT_URI, callLogEvent.getId()));
+			bindIntentToButton(callButton, ContentUris.withAppendedId(
+					Calls.CONTENT_URI, callLogEvent.getId()));
 		} else if (recentContact.getNumber() != null) {
 			// Provide a way to dial anyways
-			bindIntentToButton(R.id.popupTableAction1, Uri.parse("tel:"
+			bindIntentToButton(callButton, Uri.parse("tel:"
 					+ recentContact.getNumber()));
 		}
 
@@ -121,12 +141,13 @@ public class EventPopupActivity extends Activity {
 
 		RecentEvent smsEvent = recentContact
 				.getMostRecentEvent(RecentEvent.TYPE_SMS);
+		View smsButton = findViewById(R.id.popupTableAction2);
 		if (smsEvent != null) {
-			bindIntentToButton(R.id.popupTableAction2, ContentUris
-					.withAppendedId(SmsDao.SMS_CONTENT_URI, smsEvent.getId()));
+			bindIntentToButton(smsButton, ContentUris.withAppendedId(
+					SmsDao.SMS_CONTENT_URI, smsEvent.getId()));
 		} else if (recentContact.getNumber() != null) {
 			// Provide a way to compose a new message
-			bindIntentToButton(R.id.popupTableAction2, Uri.parse("sms:"
+			bindIntentToButton(smsButton, Uri.parse("sms:"
 					+ recentContact.getNumber()));
 		}
 
@@ -299,7 +320,7 @@ public class EventPopupActivity extends Activity {
 		}
 	}
 
-	private void bindIntentToButton(int buttonId, Uri contentUriData) {
+	private void bindIntentToButton(View button, Uri contentUriData) {
 
 		final Intent actionIntent = new Intent(Intent.ACTION_VIEW);
 
@@ -307,16 +328,15 @@ public class EventPopupActivity extends Activity {
 
 		actionIntent.setData(contentUriData);
 
-		((ImageButton) findViewById(buttonId))
-				.setOnClickListener(new OnClickListener() {
+		button.setOnClickListener(new OnClickListener() {
 
-					@Override
-					public void onClick(View v) {
-						// TODO Auto-generated method stub
-						startActivity(actionIntent);
-						finish();
-					}
-				});
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				startActivity(actionIntent);
+				finish();
+			}
+		});
 	}
 
 }

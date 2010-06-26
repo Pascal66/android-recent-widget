@@ -8,23 +8,20 @@
 	android:orientation="vertical" android:layout_weight="80"
 	android:paddingLeft="5dip" android:paddingRight="5dip" android:paddingBottom="5dip">
 
-	<ImageView android:src="@android:drawable/divider_horizontal_dim_dark"
-		android:paddingBottom="5dip"
-		android:layout_width="fill_parent" android:layout_height="wrap_content" />
-
 	<LinearLayout android:layout_gravity="center_horizontal" android:orientation="horizontal"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content">
-
-		<ImageButton android:id="@+id/popupAction"
-			android:layout_width="wrap_content" android:layout_height="wrap_content"
-			android:src="@android:drawable/ic_dialog_dialer" />
+		android:id="@+id/popupHeader"
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent">
 
 		<TextView android:id="@+id/popupText" android:gravity="center_vertical"
-			android:layout_width="wrap_content" android:layout_height="fill_parent"
+			android:layout_width="wrap_content" android:layout_height="wrap_content"
 			android:text="@string/loading" />
 
 	</LinearLayout>
+
+	<ImageView android:src="@android:drawable/divider_horizontal_dim_dark"
+		android:paddingBottom="5dip"
+		android:layout_width="fill_parent" android:layout_height="wrap_content" />
 
 	<!--
 		TODO: Create those table layout dynamically? Use an existing xml as a
