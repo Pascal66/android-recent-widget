@@ -14,6 +14,7 @@ import android.provider.Contacts.Phones;
 import android.util.Log;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ImageView.ScaleType;
 
 @SuppressWarnings("deprecation")
 public class PeopleAccessor extends AbstractContactAccessor {
@@ -99,6 +100,7 @@ public class PeopleAccessor extends AbstractContactAccessor {
 			RecentContact recentContact) {
 
 		ImageButton badge = new ImageButton(context);
+		badge.setScaleType(ScaleType.FIT_CENTER);
 
 		// onClick can only be set by the client...
 		return badge;

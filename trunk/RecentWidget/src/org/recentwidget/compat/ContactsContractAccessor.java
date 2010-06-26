@@ -3,7 +3,6 @@ package org.recentwidget.compat;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
-import org.recentwidget.android.RecentWidgetProvider;
 import org.recentwidget.model.RecentContact;
 
 import android.content.ContentResolver;
@@ -133,7 +132,8 @@ public class ContactsContractAccessor extends AbstractContactAccessor {
 		} else {
 			badge.assignContactFromPhone(recentContact.getNumber(), false);
 		}
-		badge.setMode(QuickContact.MODE_LARGE);
+		badge.setMode(QuickContact.MODE_MEDIUM);
+		badge.setBackgroundResource(android.R.drawable.btn_default);
 		return badge;
 	}
 
@@ -216,8 +216,9 @@ public class ContactsContractAccessor extends AbstractContactAccessor {
 
 		} else {
 
-			return BitmapFactory.decodeResource(context.getResources(),
-					RecentWidgetProvider.defaultContactImage);
+			// Must return null instead of the default photo. Widget cannot
+			// directly use this BitmapFactory otherwise.
+			return null;
 
 		}
 

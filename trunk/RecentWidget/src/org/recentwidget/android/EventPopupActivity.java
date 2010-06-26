@@ -80,14 +80,22 @@ public class EventPopupActivity extends Activity {
 
 		// Set image
 
+		Bitmap contactPhoto = null;
+
 		if (recentContact.getPersonId() != null) {
 
-			Bitmap contactPhoto = RecentWidgetUtils.CONTACTS_API
-					.loadContactPhoto(this, recentContact);
-			BitmapDrawable contactDrawable = new BitmapDrawable(contactPhoto);
-			badge.setImageDrawable(contactDrawable);
+			contactPhoto = RecentWidgetUtils.CONTACTS_API.loadContactPhoto(
+					this, recentContact);
 
-		} else {
+			if (contactPhoto != null) {
+				BitmapDrawable contactDrawable = new BitmapDrawable(
+						contactPhoto);
+				badge.setImageDrawable(contactDrawable);
+			}
+
+		}
+
+		if (contactPhoto == null) {
 			// Display default icon
 			badge.setImageResource(RecentWidgetProvider.defaultContactImage);
 		}
@@ -115,8 +123,7 @@ public class EventPopupActivity extends Activity {
 
 		}
 
-		header.addView(badge, 0, new LayoutParams(LayoutParams.WRAP_CONTENT,
-				LayoutParams.WRAP_CONTENT));
+		header.addView(badge, 0, new LayoutParams(50, 50));
 
 		// Set the display name in header
 
