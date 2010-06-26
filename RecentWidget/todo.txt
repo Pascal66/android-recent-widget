@@ -26,9 +26,8 @@ M- Call event on popup: "30 minutes ago..." "yesterday 8:20pm"
 M- Show call duration
 
 M- Sent sms process not caught to update the widget?
-M- Popup: show quick contacts 
-	+ ContactsContract.StatusUpdates
-	(+ Use relative layout in Popup screen, instead of table?!)
+M- ContactsContract.StatusUpdates
+L- Use relative layout in Popup screen, instead of table?!
 	-> actually, all table layout can be relative layouts
 M- Use AsyncTask to draw the ActivityPopup
 M- Widget display
@@ -50,7 +49,6 @@ M- Possible preferences
 	- Custom Messaging/Dialer app launched from popup
 	- Clear Missed Call / SMS notification on popup?
 	- Only show on widget if contact exists (ignore unknown contacts and unknown numbers?)
-M- Button to add number without contact to directory
 M- Landscape: icons are not aligned with home icons
 M- inactivity brings page cursor to 1?
 M- layoutopt the views (does not work!?)
@@ -89,7 +87,8 @@ test: M- When opening Contact page, pressing back shows the list of all Dialer a
 0.4.1: M- Swipe on popup -> next/previous recent contact?
 0.4.1: M- Merged contacts show as 2 separate contacts; must get id on dao access
 0.4.1: H- Some queries on SMS events do not return associated contact
-
+0.4.2: M- Popup: show quick contacts 
+0.4.2: M- Button to add number without contact to directory
 
 NOTES:
 ------
