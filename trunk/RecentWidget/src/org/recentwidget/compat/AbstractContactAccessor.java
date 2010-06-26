@@ -7,6 +7,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.util.Log;
+import android.widget.ImageView;
 
 /**
  * Accessors are actually stateless. But since we need to instance one (the one
@@ -65,5 +66,8 @@ public abstract class AbstractContactAccessor {
 			RecentContact recentContact) {
 		return "";
 	}
+
+	public abstract ImageView createPopupBadge(Context context,
+			RecentContact recentContact);
 
 }

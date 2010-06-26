@@ -12,6 +12,8 @@ import android.provider.Contacts;
 import android.provider.Contacts.People;
 import android.provider.Contacts.Phones;
 import android.util.Log;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 
 @SuppressWarnings("deprecation")
 public class PeopleAccessor extends AbstractContactAccessor {
@@ -90,6 +92,16 @@ public class PeopleAccessor extends AbstractContactAccessor {
 		initContactFromCursor(recentContact, cursor);
 
 		return recentContact;
+	}
+
+	@Override
+	public ImageView createPopupBadge(Context context,
+			RecentContact recentContact) {
+
+		ImageButton badge = new ImageButton(context);
+
+		// onClick can only be set by the client...
+		return badge;
 	}
 
 	@Override
