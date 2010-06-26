@@ -21,7 +21,6 @@ H- CPU:
 	- android.intent.action.PHONE_STATE actually listened twice... observer.supports should also take the intent
 		- get new phoneState extra
 	- Why double-initialization on widget creation?
-M- show last SMS content from contact?
 M- Call event on popup: "30 minutes ago..." "yesterday 8:20pm"
 M- Show call duration
 
@@ -30,9 +29,6 @@ M- ContactsContract.StatusUpdates
 L- Use relative layout in Popup screen, instead of table?!
 	-> actually, all table layout can be relative layouts
 M- Use AsyncTask to draw the ActivityPopup
-M- Widget display
-	- show whether sms was read or not
-	- show if call missed for given contact
 M- Add event info on popup: Home, Mobile, ...
 M- gTalk provider?
 M- email content provider
@@ -54,6 +50,7 @@ M- inactivity brings page cursor to 1?
 M- layoutopt the views (does not work!?)
 M- traduction française?
 
+L- Event widget icon: different icon if sms was not read?
 L- Use Bundle to save the state when Holder is killed... how?
 L- Find other way to handle PopupActivity intent:onKeyPress (works for now, but might not work with multiple widgets on screen << might have several list of recent events)
 L- Make sure content providers are disposed
@@ -89,6 +86,8 @@ test: M- When opening Contact page, pressing back shows the list of all Dialer a
 0.4.1: H- Some queries on SMS events do not return associated contact
 0.4.2: M- Popup: show quick contacts 
 0.4.2: M- Button to add number without contact to directory
+0.4.3: M- show last SMS content from contact?
+0.4.3: M- Widget display (show whether sms was read or not, if call missed for given contact)
 
 NOTES:
 ------

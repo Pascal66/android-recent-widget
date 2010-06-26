@@ -21,6 +21,9 @@
     <string name="popup_sms">SMS</string>
     <string name="unknownNumber">Unknown</string>
 
+	<!-- Popup Activity -->
+    <string name="popup_fling_text">Please swipe left or right to view another contact.</string>
+
 	<!-- Widget -->
     <string name="nextButtonText">Next</string>
 

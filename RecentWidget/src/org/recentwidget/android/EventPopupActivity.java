@@ -26,12 +26,13 @@ import android.view.Window;
 import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
-import android.view.ViewGroup.LayoutParams;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class EventPopupActivity extends Activity {
 
@@ -72,6 +73,18 @@ public class EventPopupActivity extends Activity {
 
 		setContentView(R.layout.eventpopup);
 
+		// Setup the fling/swipe info toast
+
+		((ImageButton) findViewById(R.id.flingIcon))
+				.setOnClickListener(new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						Toast toast = Toast.makeText(v.getContext(),
+								R.string.popup_fling_text, Toast.LENGTH_SHORT);
+						toast.show();
+					}
+				});
+
 		// Contact badge
 
 		ViewGroup header = (ViewGroup) findViewById(R.id.popupHeader);
@@ -99,6 +112,7 @@ public class EventPopupActivity extends Activity {
 		if (contactPhoto == null) {
 			// Display default icon
 			badge.setImageResource(RecentWidgetProvider.defaultContactImage);
+			badge.setBackgroundResource(android.R.drawable.btn_default);
 		}
 
 		// If not using QuickContactBadge:
@@ -124,7 +138,12 @@ public class EventPopupActivity extends Activity {
 
 		}
 
-		header.addView(badge, 0, new LayoutParams(50, 50));
+		RelativeLayout.LayoutParams badgeLayout = new RelativeLayout.LayoutParams(
+				50, 50);
+		badgeLayout.addRule(RelativeLayout.LEFT_OF, R.id.popupText);
+		// badgeLayout.addRule(RelativeLayout.ALIGN_PARENT_LEFT,
+		// R.id.popupText);
+		header.addView(badge, 0, badgeLayout);
 
 		// Set the display name in header
 

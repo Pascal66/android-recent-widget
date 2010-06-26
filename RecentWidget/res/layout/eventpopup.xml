@@ -8,17 +8,23 @@
 	android:orientation="vertical" android:layout_weight="80"
 	android:paddingLeft="5dip" android:paddingRight="5dip" android:paddingBottom="5dip">
 
-	<LinearLayout android:layout_gravity="center_horizontal" android:orientation="horizontal"
+	<RelativeLayout
 		android:paddingBottom="5dip" android:paddingTop="5dip"
-		android:id="@+id/popupHeader"
+		android:id="@+id/popupHeader" android:gravity="center_vertical"
 		android:layout_width="fill_parent"
-		android:layout_height="fill_parent">
-
-		<TextView android:id="@+id/popupText" android:gravity="center_vertical"
+		android:layout_height="wrap_content">
+		
+		<TextView android:id="@+id/popupText" android:layout_centerInParent="true"
 			android:layout_width="wrap_content" android:layout_height="wrap_content"
-			android:text="@string/loading" />
+			android:text="@string/loading" android:textSize="20dip"
+			android:maxLines="3" android:ellipsize="end" />
 
-	</LinearLayout>
+		<ImageButton android:id="@+id/flingIcon"
+			android:layout_width="wrap_content" android:layout_height="wrap_content"
+			android:layout_alignParentRight="true" android:layout_centerVertical="true"
+			android:src="@drawable/media_seek_forward" android:background="@android:color/transparent" />
+
+	</RelativeLayout>
 
 	<ImageView android:src="@android:drawable/divider_horizontal_dim_dark"
 		android:paddingBottom="5dip"
