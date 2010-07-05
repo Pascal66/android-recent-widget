@@ -16,8 +16,6 @@ public abstract class ContentResolverTemplate implements EventObserver {
 
 	private static final String TAG = "RW:ContentResolverTplt";
 
-	protected Uri contentUri;
-
 	protected String[] projection;
 
 	protected String sortOrder;
@@ -29,6 +27,9 @@ public abstract class ContentResolverTemplate implements EventObserver {
 	protected abstract long extractEvent(EventListBuilder builder, Cursor cursor);
 
 	protected abstract int getTargetType();
+
+	// as a getter because we want to override it
+	protected abstract Uri getContentUri();
 
 	@Override
 	public List<RecentContact> update(List<RecentContact> recentContacts,
@@ -63,12 +64,14 @@ public abstract class ContentResolverTemplate implements EventObserver {
 
 		EventListBuilder builder = new EventListBuilder(recentContacts);
 
-		// Do not use managedQuery() because we will unload it ourselves
-
-		Cursor cursor = contentResolver.query(contentUri, projection, null,
-				null, sortOrder);
+		Cursor cursor = null;
 
 		try {
+
+			// Do not use managedQuery() because we will unload it ourselves
+
+			cursor = contentResolver.query(getContentUri(), projection,
+					getQuery(), null, sortOrder);
 
 			if (cursor.moveToFirst()) {
 
@@ -90,8 +93,13 @@ public abstract class ContentResolverTemplate implements EventObserver {
 				}
 			}
 
+		} catch (Exception e) {
+			// Let exception escape, so we have a functioning widget
+			Log.e(TAG, "Exception while querying " + getContentUri(), e);
 		} finally {
-			cursor.close();
+			if (cursor != null) {
+				cursor.close();
+			}
 		}
 
 		// Avoid memory leaks
@@ -101,6 +109,10 @@ public abstract class ContentResolverTemplate implements EventObserver {
 		context = null;
 
 		return builder.build();
+	}
+
+	protected String getQuery() {
+		return null;
 	}
 
 }

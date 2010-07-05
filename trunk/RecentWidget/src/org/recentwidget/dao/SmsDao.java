@@ -26,11 +26,15 @@ public class SmsDao extends ContentResolverTemplate {
 	public SmsDao() {
 		super();
 
-		contentUri = SMS_CONTENT_URI;
 		projection = new String[] { "_id", "thread_id", "address", "person",
 				"date", "body" };
 		sortOrder = "date DESC";
 
+	}
+
+	@Override
+	protected Uri getContentUri() {
+		return SMS_CONTENT_URI;
 	}
 
 	@Override

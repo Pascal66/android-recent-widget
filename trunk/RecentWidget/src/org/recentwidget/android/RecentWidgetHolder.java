@@ -99,7 +99,7 @@ public class RecentWidgetHolder {
 							RecentWidgetProvider.defaultContactImage);
 				}
 
-				// Set the last event for this contact
+				// Show each last event type for this contact
 
 				for (EventObserver observer : RecentWidgetProvider.eventObservers) {
 					Integer resource = observer

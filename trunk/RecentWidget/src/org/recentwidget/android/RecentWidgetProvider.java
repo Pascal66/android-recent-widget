@@ -7,6 +7,7 @@ import org.recentwidget.R;
 import org.recentwidget.RecentWidgetUtils;
 import org.recentwidget.dao.CallLogDao;
 import org.recentwidget.dao.EventObserver;
+import org.recentwidget.dao.GmailDao;
 import org.recentwidget.dao.SmsDao;
 
 import android.appwidget.AppWidgetManager;
@@ -24,7 +25,7 @@ public class RecentWidgetProvider extends AppWidgetProvider {
 	public static final int defaultContactImage = R.drawable.ic_contacts_details;
 
 	static final EventObserver[] eventObservers = new EventObserver[] {
-			new SmsDao(), new CallLogDao() };
+			new SmsDao(), new CallLogDao(), new GmailDao() };
 
 	/**
 	 * The buttons available on the widget.
