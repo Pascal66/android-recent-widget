@@ -7,6 +7,7 @@ import org.recentwidget.model.RecentContact;
 import org.recentwidget.model.RecentEvent;
 
 import android.database.Cursor;
+import android.net.Uri;
 import android.provider.CallLog.Calls;
 import android.util.Log;
 
@@ -23,11 +24,15 @@ public class CallLogDao extends ContentResolverTemplate {
 	public CallLogDao() {
 		super();
 
-		contentUri = Calls.CONTENT_URI;
 		projection = new String[] { Calls._ID, Calls.CACHED_NAME, Calls.NUMBER,
 				Calls.NEW, Calls.TYPE, Calls.DATE };
 		sortOrder = Calls.DEFAULT_SORT_ORDER;
 
+	}
+
+	@Override
+	protected Uri getContentUri() {
+		return Calls.CONTENT_URI;
 	}
 
 	@Override

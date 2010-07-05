@@ -11,12 +11,7 @@ H- Market:
 	x widget frame
 	x about page
 		- add links, etc (make a web view?)
-	- website
-		- add screenshots
-	x popup design/info... missed calls icons, ...
 
-H- add arrow to educate on possible fling gesture
-	- possibly show toast instead of finishing the activity
 H- CPU: 
 	- android.intent.action.PHONE_STATE actually listened twice... observer.supports should also take the intent
 		- get new phoneState extra
@@ -88,6 +83,7 @@ test: M- When opening Contact page, pressing back shows the list of all Dialer a
 0.4.2: M- Button to add number without contact to directory
 0.4.3: M- show last SMS content from contact?
 0.4.3: M- Widget display (show whether sms was read or not, if call missed for given contact)
+0.4.3: H- add arrow to educate on possible fling gesture
 
 NOTES:
 ------

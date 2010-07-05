@@ -13,6 +13,7 @@ public class RecentEvent implements Serializable {
 	public static final int TYPE_UNKNOWN = 0;
 	public static final int TYPE_SMS = 1;
 	public static final int TYPE_CALL = 2;
+	public static final int TYPE_EMAIL = 3;
 
 	public static final int SUBTYPE_UNKNOWN = 0;
 	public static final int SUBTYPE_INCOMING = CallLog.Calls.INCOMING_TYPE;
