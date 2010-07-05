@@ -21,7 +21,6 @@ import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.View.OnClickListener;
@@ -33,6 +32,7 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.RelativeLayout.LayoutParams;
 
 public class EventPopupActivity extends Activity {
 
@@ -87,10 +87,11 @@ public class EventPopupActivity extends Activity {
 
 		// Contact badge
 
-		ViewGroup header = (ViewGroup) findViewById(R.id.popupHeader);
+		RelativeLayout header = (RelativeLayout) findViewById(R.id.popupHeader);
 
 		ImageView badge = RecentWidgetUtils.CONTACTS_API.createPopupBadge(this,
 				recentContact);
+		badge.setId(4567);
 
 		// Set image
 
@@ -140,15 +141,22 @@ public class EventPopupActivity extends Activity {
 
 		RelativeLayout.LayoutParams badgeLayout = new RelativeLayout.LayoutParams(
 				50, 50);
-		badgeLayout.addRule(RelativeLayout.LEFT_OF, R.id.popupText);
-		// badgeLayout.addRule(RelativeLayout.ALIGN_PARENT_LEFT,
-		// R.id.popupText);
+		badgeLayout.addRule(RelativeLayout.ALIGN_PARENT_LEFT,
+				RelativeLayout.TRUE);
+		// badgeLayout.addRule(RelativeLayout.LEFT_OF, R.id.popupText);
 		header.addView(badge, 0, badgeLayout);
 
 		// Set the display name in header
 
 		TextView textView = (TextView) findViewById(R.id.popupText);
 		textView.setText(recentContact.getDisplayName());
+
+		RelativeLayout.LayoutParams textLayout = new RelativeLayout.LayoutParams(
+				LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+		textLayout.addRule(RelativeLayout.RIGHT_OF, badge.getId());
+		textLayout.addRule(RelativeLayout.LEFT_OF, R.id.flingIcon);
+
+		header.updateViewLayout(textView, textLayout);
 
 		// Call Log button
 
