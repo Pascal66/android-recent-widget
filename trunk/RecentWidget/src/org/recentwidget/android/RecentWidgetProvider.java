@@ -31,7 +31,6 @@ public class RecentWidgetProvider extends AppWidgetProvider {
 
 	static {
 		if (RecentWidgetUtils.HAS_ACCOUNT_MANAGER) {
-			// Check preference
 			eventObservers = new EventObserver[] { new SmsDao(),
 					new CallLogDao(), new GmailDao() };
 		} else {

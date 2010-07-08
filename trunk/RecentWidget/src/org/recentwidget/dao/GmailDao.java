@@ -1,8 +1,11 @@
 package org.recentwidget.dao;
 
+import java.util.List;
 import java.util.StringTokenizer;
 
 import org.recentwidget.EventListBuilder;
+import org.recentwidget.R;
+import org.recentwidget.android.WidgetPreferenceActivity;
 import org.recentwidget.compat.gmail.Gmail;
 import org.recentwidget.compat.gmail.Gmail.ConversationColumns;
 import org.recentwidget.compat.gmail.Gmail.MessageColumns;
@@ -11,9 +14,12 @@ import org.recentwidget.model.RecentEvent;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 public class GmailDao extends ContentResolverTemplate {
@@ -21,6 +27,12 @@ public class GmailDao extends ContentResolverTemplate {
 	private static final String GMAIL_ACCOUNT_TYPE = "com.google";
 
 	private static final String TAG = "RW:GmailDao";
+
+	/**
+	 * The image views holding the Gmail icons.
+	 */
+	static int[] contactGmailMap = new int[] { R.id.contactEventLabel01_2,
+			R.id.contactEventLabel02_2, R.id.contactEventLabel03_2 };
 
 	private static String accountName;
 	private static final boolean useConversations = true;
@@ -34,6 +46,26 @@ public class GmailDao extends ContentResolverTemplate {
 			projection = Gmail.MESSAGE_PROJECTION;
 		}
 		sortOrder = null; // MUST be empty
+	}
+
+	@Override
+	public List<RecentContact> update(List<RecentContact> recentContacts,
+			Intent intent, Context context) {
+
+		// Check with Preference first
+
+		SharedPreferences prefs = PreferenceManager
+				.getDefaultSharedPreferences(context);
+
+		if (prefs.getBoolean(WidgetPreferenceActivity.PREF_PROVIDER_GMAIL,
+				false)) {
+
+			return super.update(recentContacts, intent, context);
+
+		} else {
+			// Do nothing
+			return recentContacts;
+		}
 	}
 
 	@Override
@@ -171,14 +203,17 @@ public class GmailDao extends ContentResolverTemplate {
 
 	@Override
 	public Integer getResourceForWidget(RecentContact contact) {
-		// TODO Auto-generated method stub
-		return null;
+		// Just show an icon if there was an SMS conversation
+		RecentEvent event = contact.getMostRecentEvent(RecentEvent.TYPE_EMAIL);
+		if (event != null) {
+			return android.R.drawable.ic_dialog_email;
+		} else {
+			return null;
+		}
 	}
 
 	@Override
 	public int[] getWidgetLabels() {
-		// TODO Auto-generated method stub
-		// Steal from other DAO
-		return SmsDao.contactSmsMap;
+		return contactGmailMap;
 	}
 }
