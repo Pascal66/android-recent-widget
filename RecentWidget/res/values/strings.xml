@@ -4,13 +4,17 @@
     <string name="short_app_name">Recent Contacts</string>
     
     <!-- About -->
-    <string name="about_header">About the Recent Contacts Widget</string>
-    <string name="about_text">Thank you for trying out the Recent Contacts Widget.
-    To use it, please long-press on an empty place of your home screen, 
-    select Widget, then the Recent Contacts Widget should appear on the list.
-    (The widget is 4x1 sized: the whole width of your screen by 1 unit of height.) 
-    Please see the Market page for email support and other links.</string>
+    <string name="about_header">Using the widget</string>
+    <string name="about_text">
+    To use the Recent Contacts Widget, please long-press on an empty place of your home screen.
+    Select the Widget option. Then select the Recent Contacts Widget in the list.
+    </string>
 
+	<!-- Preferences -->
+    <string name="pref_provider_header">Widget Content</string>
+    <string name="pref_provider_email">GMail - EXPERIMENTAL</string>
+    <string name="pref_provider_email_text">Whether the widget aggregates GMail conversations (2.x only)</string>
+	
 	<!-- Common -->
     <string name="save_action">Save</string>
     <string name="close_action">Close</string>

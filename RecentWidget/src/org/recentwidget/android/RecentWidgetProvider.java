@@ -24,8 +24,22 @@ public class RecentWidgetProvider extends AppWidgetProvider {
 
 	public static final int defaultContactImage = R.drawable.ic_contacts_details;
 
-	static final EventObserver[] eventObservers = new EventObserver[] {
-			new SmsDao(), new CallLogDao(), new GmailDao() };
+	/**
+	 * Default observers. GMail observer can be added as a preference.
+	 */
+	static final EventObserver[] eventObservers;
+
+	static {
+		if (RecentWidgetUtils.HAS_ACCOUNT_MANAGER) {
+			// Check preference
+			eventObservers = new EventObserver[] { new SmsDao(),
+					new CallLogDao(), new GmailDao() };
+		} else {
+			// Check preference
+			eventObservers = new EventObserver[] { new SmsDao(),
+					new CallLogDao() };
+		}
+	}
 
 	/**
 	 * The buttons available on the widget.

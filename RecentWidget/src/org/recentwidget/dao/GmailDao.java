@@ -18,6 +18,8 @@ import android.util.Log;
 
 public class GmailDao extends ContentResolverTemplate {
 
+	private static final String GMAIL_ACCOUNT_TYPE = "com.google";
+
 	private static final String TAG = "RW:GmailDao";
 
 	private static String accountName;
@@ -36,14 +38,14 @@ public class GmailDao extends ContentResolverTemplate {
 
 	@Override
 	protected Uri getContentUri() {
-		// 2.x only!
+		// 2.0+ only!
 
 		if (context != null && accountName == null) {
 
 			Account[] accounts = AccountManager.get(context).getAccounts();
 
 			for (Account account : accounts) {
-				if (account.type != null && account.type.equals("com.google")) {
+				if (GMAIL_ACCOUNT_TYPE.equals(account.type)) {
 					accountName = account.name;
 					Log.d(TAG, "Using account: " + accountName);
 					break;

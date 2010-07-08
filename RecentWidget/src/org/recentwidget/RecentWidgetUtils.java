@@ -43,9 +43,17 @@ public class RecentWidgetUtils {
 			CONTACTS_API = new PeopleAccessor();
 			Log.d(TAG, "ContactsContract not available");
 		}
+
+		try {
+			Class.forName("android.accounts.AccountManager");
+			HAS_ACCOUNT_MANAGER = true;
+		} catch (Throwable e) {
+			HAS_ACCOUNT_MANAGER = false;
+		}
 	}
 
 	// public static boolean contactsContractAvailable = false;
 
 	public static AbstractContactAccessor CONTACTS_API;
+	public static boolean HAS_ACCOUNT_MANAGER;
 }
