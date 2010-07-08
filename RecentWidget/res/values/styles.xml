@@ -13,7 +13,11 @@
 	</style>    
 
 	<style name="WidgetEventImage2" parent="WidgetEventImage">
-    	<item name="android:layout_marginRight">17dip</item>
+    	<item name="android:layout_marginRight">18dip</item>
+	</style>    
+
+	<style name="WidgetEventImage3" parent="WidgetEventImage">
+    	<item name="android:layout_marginRight">34dip</item>
 	</style>    
 
 </resources>

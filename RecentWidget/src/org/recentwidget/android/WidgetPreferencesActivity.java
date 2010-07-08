@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 
 // TODO: Extend PreferenceActivity for easier management?
+// TODO: DELETE THIS ONE in favor of WidgetPreference(no s)Activity!
 public class WidgetPreferencesActivity extends Activity {
 
 	private static final String TAG = "RW:WidgetPreferencesActivity";
