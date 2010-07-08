@@ -16,7 +16,7 @@
 
 		<service android:name=".android.RecentWidgetUpdateService" />
 		
-		<activity android:name=".android.RecentWidgetMainActivity"
+		<activity android:name=".android.WidgetPreferenceActivity"
 			android:label="@string/app_name">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
