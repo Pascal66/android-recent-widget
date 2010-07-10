@@ -21,7 +21,7 @@
 
 		<ImageButton android:id="@+id/flingIcon"
 			android:layout_width="wrap_content" android:layout_height="wrap_content"
-			android:layout_alignParentRight="true" android:layout_centerVertical="true"
+			android:layout_alignParentRight="true"
 			android:src="@drawable/media_seek_forward" android:background="@android:color/transparent" />
 
 	</RelativeLayout>

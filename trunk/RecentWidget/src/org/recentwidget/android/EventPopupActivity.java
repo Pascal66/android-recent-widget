@@ -143,7 +143,6 @@ public class EventPopupActivity extends Activity {
 				50, 50);
 		badgeLayout.addRule(RelativeLayout.ALIGN_PARENT_LEFT,
 				RelativeLayout.TRUE);
-		// badgeLayout.addRule(RelativeLayout.LEFT_OF, R.id.popupText);
 		header.addView(badge, 0, badgeLayout);
 
 		// Set the display name in header
@@ -155,6 +154,9 @@ public class EventPopupActivity extends Activity {
 				LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 		textLayout.addRule(RelativeLayout.RIGHT_OF, badge.getId());
 		textLayout.addRule(RelativeLayout.LEFT_OF, R.id.flingIcon);
+		textLayout.addRule(RelativeLayout.ALIGN_BASELINE, badge.getId());
+		// textLayout.addRule(RelativeLayout.CENTER_VERTICAL,
+		// RelativeLayout.TRUE);
 
 		header.updateViewLayout(textView, textLayout);
 
