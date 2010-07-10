@@ -52,6 +52,7 @@ M- Possible preferences
 	- Custom Messaging/Dialer app launched from popup
 	- Clear Missed Call / SMS notification on popup?
 	- Only show on widget if contact exists (ignore unknown contacts and unknown numbers?)
+	- Oldest event to display (max. 1-2 weeks?)
 M- Landscape: icons are not aligned with home icons
 M- inactivity brings page cursor to 1?
 M- layoutopt the views (does not work!?)

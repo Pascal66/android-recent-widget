@@ -37,4 +37,29 @@
     	<item name="android:background">@android:color/transparent</item>
     </style>
 
+    <style name="PopupEventGroup">
+    	<item name="android:layout_width">fill_parent</item>
+    	<item name="android:layout_height">wrap_content</item>
+    	<item name="android:orientation">horizontal</item>
+    	<item name="android:gravity">top</item>
+    	<item name="android:paddingBottom">5dip</item>
+    </style>
+
+    <style name="PopupEventButton">
+    	<item name="android:layout_width">wrap_content</item>
+    	<item name="android:layout_height">wrap_content</item>
+    	<item name="android:layout_gravity">center_vertical</item>
+    </style>
+
+    <style name="PopupEventTable">
+    	<item name="android:layout_width">fill_parent</item>
+    	<item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="PopupEventTableHeader">
+    	<item name="android:layout_width">wrap_content</item>
+    	<item name="android:layout_height">wrap_content</item>
+    	<item name="android:textStyle">bold</item>
+    </style>
+
 </resources>

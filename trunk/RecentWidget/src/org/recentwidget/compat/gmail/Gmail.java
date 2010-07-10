@@ -83,7 +83,7 @@ public class Gmail {
 
 	public static final Uri BASE_URI = Uri.parse("content://" + AUTHORITY);
 	private static final Uri LABELS_URI = Uri.parse(AUTHORITY_PLUS_LABELS);
-	private static final Uri CONVERSATIONS_URI = Uri
+	public static final Uri CONVERSATIONS_URI = Uri
 			.parse(AUTHORITY_PLUS_CONVERSATIONS);
 	private static final Uri SETTINGS_URI = Uri.parse(AUTHORITY_PLUS_SETTINGS);
 
