@@ -73,17 +73,7 @@ public class GmailDao extends ContentResolverTemplate {
 		// 2.0+ only!
 
 		if (context != null && accountName == null) {
-
-			Account[] accounts = AccountManager.get(context).getAccounts();
-
-			for (Account account : accounts) {
-				if (GMAIL_ACCOUNT_TYPE.equals(account.type)) {
-					accountName = account.name;
-					Log.d(TAG, "Using account: " + accountName);
-					break;
-				}
-			}
-
+			accountName = getAccountName(context);
 		}
 
 		if (useConversations) {
@@ -92,6 +82,24 @@ public class GmailDao extends ContentResolverTemplate {
 			return Uri.parse(Gmail.AUTHORITY_PLUS_MESSAGES + accountName);
 			// return Uri.parse("content://gmail-ls/unread/^i");
 		}
+	}
+
+	public static final String getAccountName(Context context) {
+
+		if (accountName != null) {
+			return accountName;
+		}
+
+		Account[] accounts = AccountManager.get(context).getAccounts();
+
+		for (Account account : accounts) {
+			if (GMAIL_ACCOUNT_TYPE.equals(account.type)) {
+				Log.d(TAG, "Using account: " + accountName);
+				return account.name;
+			}
+		}
+
+		return null;
 	}
 
 	@Override

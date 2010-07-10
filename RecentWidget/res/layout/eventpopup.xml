@@ -42,43 +42,28 @@
 			android:isScrollContainer="true" android:layout_width="fill_parent"
 			android:layout_height="wrap_content">
 
-			<LinearLayout android:gravity="top" android:orientation="horizontal"
-				android:paddingBottom="5dip"
-				android:layout_width="fill_parent" android:layout_height="wrap_content">
-
-				<ImageButton android:id="@+id/popupTableAction1"
-					android:layout_width="wrap_content" android:layout_height="wrap_content"
-					android:layout_gravity="center_vertical" android:src="@android:drawable/sym_action_call" />
-
-				<TableLayout android:id="@+id/popupTable1"
-					android:layout_width="fill_parent" android:layout_height="wrap_content">
-
-					<TextView android:text="@string/popup_telephone"
-						android:textStyle="bold" android:layout_width="wrap_content"
-						android:layout_height="wrap_content" />
-
-					<!-- Sample 
-				<TextView android:text="Test" />
-				-->
-
+			<LinearLayout android:id="@+id/popupLayout1" style="@style/PopupEventGroup">
+				<ImageButton android:id="@+id/popupTableAction1" style="@style/PopupEventButton"
+					android:src="@android:drawable/sym_action_call" />
+				<TableLayout android:id="@+id/popupTable1" style="@style/PopupEventTable">
+					<TextView android:text="@string/popup_telephone" style="@style/PopupEventTableHeader" />
 				</TableLayout>
-
 			</LinearLayout>
 
-			<LinearLayout android:gravity="top" android:orientation="horizontal"
-				android:layout_width="fill_parent" android:layout_height="wrap_content">
+			<LinearLayout android:id="@+id/popupLayout2" style="@style/PopupEventGroup">
+				<ImageButton android:id="@+id/popupTableAction2" style="@style/PopupEventButton"
+					android:src="@drawable/sym_action_sms" />
+				<TableLayout android:id="@+id/popupTable2" style="@style/PopupEventTable">
+					<TextView android:text="@string/popup_sms" style="@style/PopupEventTableHeader" />
+				</TableLayout>
+			</LinearLayout>
 
-				<ImageButton android:id="@+id/popupTableAction2"
-					android:layout_width="wrap_content" android:layout_height="wrap_content"
-					android:layout_gravity="center_vertical" android:src="@drawable/sym_action_sms" />
-
-				<TableLayout android:id="@+id/popupTable2"
-					android:layout_width="fill_parent" android:layout_height="wrap_content">
-
-					<TextView android:text="@string/popup_sms"
-						android:textStyle="bold" android:layout_width="wrap_content"
-						android:layout_height="wrap_content" />
-
+			<LinearLayout android:id="@+id/popupLayout3" style="@style/PopupEventGroup"
+				android:visibility="gone">
+				<ImageButton android:id="@+id/popupTableAction3" style="@style/PopupEventButton"
+					android:src="@android:drawable/ic_dialog_email" />
+				<TableLayout android:id="@+id/popupTable3" style="@style/PopupEventTable">
+					<TextView android:text="@string/popup_email" style="@style/PopupEventTableHeader" />
 				</TableLayout>
 
 			</LinearLayout>

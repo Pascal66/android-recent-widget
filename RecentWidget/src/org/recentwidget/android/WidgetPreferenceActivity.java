@@ -72,6 +72,7 @@ public class WidgetPreferenceActivity extends PreferenceActivity {
 
 		hasChanged = false;
 
+		// finish();
 		super.onPause();
 	}
 }

@@ -36,6 +36,8 @@ import android.widget.RelativeLayout.LayoutParams;
 
 public class EventPopupActivity extends Activity {
 
+	private static final int BADGE_ID = 4567;
+
 	private static final String TAG = "RW:EventPopupActivity";
 
 	private GestureDetector gestureDetector;
@@ -91,7 +93,7 @@ public class EventPopupActivity extends Activity {
 
 		ImageView badge = RecentWidgetUtils.CONTACTS_API.createPopupBadge(this,
 				recentContact);
-		badge.setId(4567);
+		badge.setId(BADGE_ID);
 
 		// Set image
 
@@ -160,32 +162,49 @@ public class EventPopupActivity extends Activity {
 
 		header.updateViewLayout(textView, textLayout);
 
+		// Display of the recent events
+
 		// Call Log button
 
-		RecentEvent callLogEvent = recentContact
+		RecentEvent lastEvent = recentContact
 				.getMostRecentEvent(RecentEvent.TYPE_CALL);
-		View callButton = findViewById(R.id.popupTableAction1);
-		if (callLogEvent != null) {
-			bindIntentToButton(callButton, ContentUris.withAppendedId(
-					Calls.CONTENT_URI, callLogEvent.getId()));
+		View eventTypeButton = findViewById(R.id.popupTableAction1);
+		if (lastEvent != null) {
+			bindIntentToButton(eventTypeButton, ContentUris.withAppendedId(
+					Calls.CONTENT_URI, lastEvent.getId()));
 		} else if (recentContact.getNumber() != null) {
 			// Provide a way to dial anyways
-			bindIntentToButton(callButton, Uri.parse("tel:"
+			bindIntentToButton(eventTypeButton, Uri.parse("tel:"
 					+ recentContact.getNumber()));
 		}
 
 		// SMS button
 
-		RecentEvent smsEvent = recentContact
-				.getMostRecentEvent(RecentEvent.TYPE_SMS);
-		View smsButton = findViewById(R.id.popupTableAction2);
-		if (smsEvent != null) {
-			bindIntentToButton(smsButton, ContentUris.withAppendedId(
-					SmsDao.SMS_CONTENT_URI, smsEvent.getId()));
+		lastEvent = recentContact.getMostRecentEvent(RecentEvent.TYPE_SMS);
+		eventTypeButton = findViewById(R.id.popupTableAction2);
+		if (lastEvent != null) {
+			bindIntentToButton(eventTypeButton, ContentUris.withAppendedId(
+					SmsDao.SMS_CONTENT_URI, lastEvent.getId()));
 		} else if (recentContact.getNumber() != null) {
 			// Provide a way to compose a new message
-			bindIntentToButton(smsButton, Uri.parse("sms:"
+			bindIntentToButton(eventTypeButton, Uri.parse("sms:"
 					+ recentContact.getNumber()));
+		}
+
+		// Gmail button
+
+		lastEvent = recentContact.getMostRecentEvent(RecentEvent.TYPE_EMAIL);
+		eventTypeButton = findViewById(R.id.popupTableAction3);
+		// TODO: How to fetch contact's email?
+		if (lastEvent != null) {
+			findViewById(R.id.popupLayout3).setVisibility(View.VISIBLE);
+			/* DOES NOT WORK!
+			bindIntentToButton(eventTypeButton, ContentUris.withAppendedId(Uri
+					.withAppendedPath(Gmail.CONVERSATIONS_URI, GmailDao
+							.getAccountName(this)), lastEvent.getId()));
+			*/
+		} else {
+			findViewById(R.id.popupLayout3).setVisibility(View.GONE);
 		}
 
 		// Show the recent events
@@ -193,6 +212,7 @@ public class EventPopupActivity extends Activity {
 
 		TableLayout telLayout = (TableLayout) findViewById(R.id.popupTable1);
 		TableLayout smsLayout = (TableLayout) findViewById(R.id.popupTable2);
+		TableLayout emailLayout = (TableLayout) findViewById(R.id.popupTable3);
 
 		for (RecentEvent recentEvent : recentContact.getRecentEvents()) {
 
@@ -243,6 +263,9 @@ public class EventPopupActivity extends Activity {
 				break;
 			case RecentEvent.TYPE_SMS:
 				smsLayout.addView(row);
+				break;
+			case RecentEvent.TYPE_EMAIL:
+				emailLayout.addView(row);
 				break;
 			default:
 				break;

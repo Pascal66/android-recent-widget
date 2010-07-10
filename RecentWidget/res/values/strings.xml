@@ -23,6 +23,7 @@
 	<!-- Providers -->    
     <string name="popup_telephone">Telephone</string>
     <string name="popup_sms">SMS</string>
+    <string name="popup_email">Gmail</string>
     <string name="unknownNumber">Unknown</string>
 
 	<!-- Popup Activity -->
