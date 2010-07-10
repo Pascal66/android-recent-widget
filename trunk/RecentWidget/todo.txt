@@ -18,6 +18,7 @@ H- CPU:
 	- Why double-initialization on widget creation?
 M- Call event on popup: "30 minutes ago..." "yesterday 8:20pm"
 M- Show call duration
+H- Not listening on sms sent!?
 
 H- ActivityPopup styling!!!
 	- use headerbar, like browser or newsrob article view?
