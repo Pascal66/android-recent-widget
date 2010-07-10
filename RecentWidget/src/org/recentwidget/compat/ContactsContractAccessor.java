@@ -40,7 +40,20 @@ public class ContactsContractAccessor extends AbstractContactAccessor {
 		ContentResolver resolver = context.getContentResolver();
 		Cursor lookupCursor = null;
 
-		if (recentContact.getNumber() != null) {
+		if (recentContact.getNumber() != null
+				&& recentContact.getPerson() != null) {
+
+			lookupCursor = resolver.query(
+					ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+					new String[] { personIdColumn, displayNameColumn,
+							ContactsContract.CommonDataKinds.Phone.CONTACT_ID,
+							ContactsContract.CommonDataKinds.Photo.PHOTO_ID },
+					displayNameColumn + " = ? OR "
+							+ ContactsContract.CommonDataKinds.Phone.NUMBER
+							+ " = ?", new String[] { recentContact.getPerson(),
+							recentContact.getNumber() }, null);
+
+		} else if (recentContact.getNumber() != null) {
 
 			// Search by number
 
