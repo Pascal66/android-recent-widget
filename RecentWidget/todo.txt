@@ -20,6 +20,7 @@ M- Call event on popup: "30 minutes ago..." "yesterday 8:20pm"
 M- Show call duration
 
 H- ActivityPopup styling!!!
+	- use headerbar, like browser or newsrob article view?
 H- When no photo, make the text wrap on more lines
 H- make photo bigger and less overlap with name (when photo exists)
 
@@ -30,6 +31,7 @@ H- try to aggregate email contact based on First/Last Name, since they are token
 	- OR use getMessageId() to get more info on exact emails?
 		- do we know whether it is a sent or a received email?
 
+M- Add "OK/Close" button on preferences screen
 M- Sent sms process not caught to update the widget?
 M- ContactsContract.StatusUpdates
 L- Use relative layout in Popup screen, instead of table?!
