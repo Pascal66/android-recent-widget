@@ -23,19 +23,14 @@
 
 	<!-- TODO: create onPressed drawables for better visual -->
 
-	<FrameLayout android:layout_width="fill_parent"
-		android:padding="5dip" android:layout_weight="1"
-		android:layout_height="fill_parent">
+	<FrameLayout style="@style/WidgetFrame">
 
 		<!--
 			ImageView for displaying contact pic. Button for actually pressing on
 			it.
 		-->
 
-		<ImageButton android:id="@+id/contactButton01"
-			android:layout_margin="3dip" android:scaleType="fitCenter"
-			android:layout_width="fill_parent" android:layout_gravity="center_horizontal|center_vertical"
-			android:layout_height="fill_parent" android:background="@android:color/transparent" />
+		<ImageButton android:id="@+id/contactButton01" style="@style/WidgetContactButton" />
 
 		<ImageView android:id="@+id/contactEventLabel01_0" style="@style/WidgetEventImage1" />
 		<ImageView android:id="@+id/contactEventLabel01_1" style="@style/WidgetEventImage2" />
@@ -51,19 +46,14 @@
 
 	</FrameLayout>
 
-	<FrameLayout android:layout_width="fill_parent"
-		android:padding="5dip" android:layout_weight="1"
-		android:layout_height="fill_parent">
+	<FrameLayout style="@style/WidgetFrame">
 
 		<!--
 			ImageView for displaying contact pic. Button for actually pressing on
 			it.
 		-->
 
-		<ImageButton android:id="@+id/contactButton02"
-			android:layout_margin="3dip" android:scaleType="fitCenter"
-			android:layout_width="fill_parent" android:layout_gravity="center_horizontal|center_vertical"
-			android:layout_height="fill_parent" android:background="@android:color/transparent" />
+		<ImageButton android:id="@+id/contactButton02" style="@style/WidgetContactButton" />
 
 		<ImageView android:id="@+id/contactEventLabel02_0" style="@style/WidgetEventImage1" />
 		<ImageView android:id="@+id/contactEventLabel02_1" style="@style/WidgetEventImage2" />
@@ -79,19 +69,14 @@
 
 	</FrameLayout>
 
-	<FrameLayout android:layout_width="fill_parent"
-		android:padding="5dip" android:layout_weight="1"
-		android:layout_height="fill_parent">
+	<FrameLayout style="@style/WidgetFrame">
 
 		<!--
 			ImageView for displaying contact pic. Button for actually pressing on
 			it.
 		-->
 
-		<ImageButton android:id="@+id/contactButton03"
-			android:layout_margin="3dip" android:scaleType="fitCenter"
-			android:layout_width="fill_parent" android:layout_gravity="center_horizontal|center_vertical"
-			android:layout_height="fill_parent" android:background="@android:color/transparent" />
+		<ImageButton android:id="@+id/contactButton03" style="@style/WidgetContactButton" />
 
 		<ImageView android:id="@+id/contactEventLabel03_0" style="@style/WidgetEventImage1" />
 		<ImageView android:id="@+id/contactEventLabel03_1" style="@style/WidgetEventImage2" />
