@@ -13,9 +13,8 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.CallLog.Calls;
 import android.text.TextUtils.TruncateAt;
-import android.text.format.DateFormat;
+import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.Gravity;
@@ -169,13 +168,9 @@ public class EventPopupActivity extends Activity {
 		RecentEvent lastEvent = recentContact
 				.getMostRecentEvent(RecentEvent.TYPE_CALL);
 		View eventTypeButton = findViewById(R.id.popupTableAction1);
-		if (lastEvent != null) {
-			bindIntentToButton(eventTypeButton, ContentUris.withAppendedId(
-					Calls.CONTENT_URI, lastEvent.getId()));
-		} else if (recentContact.getNumber() != null) {
-			// Provide a way to dial anyways
-			bindIntentToButton(eventTypeButton, Uri.parse("tel:"
-					+ recentContact.getNumber()));
+		if (recentContact.getNumber() != null) {
+			bindIntentToButton(Intent.ACTION_CALL, eventTypeButton, Uri
+					.parse("tel:" + recentContact.getNumber()));
 		}
 
 		// SMS button
@@ -221,8 +216,12 @@ public class EventPopupActivity extends Activity {
 			TableRow row = new TableRow(this);
 			row.setGravity(Gravity.CENTER_VERTICAL);
 
-			CharSequence date = DateFormat.format("MMM dd, h:mmaa", recentEvent
-					.getDate());
+			CharSequence date = DateUtils.getRelativeDateTimeString(this,
+					recentEvent.getDate(), DateUtils.SECOND_IN_MILLIS,
+					DateUtils.WEEK_IN_MILLIS, DateUtils.FORMAT_ABBREV_RELATIVE
+							| DateUtils.FORMAT_NUMERIC_DATE
+							| DateUtils.FORMAT_SHOW_WEEKDAY
+							| DateUtils.FORMAT_ABBREV_WEEKDAY);
 
 			TextView eventText = new TextView(this);
 			eventText.setText(date);
@@ -385,8 +384,13 @@ public class EventPopupActivity extends Activity {
 	}
 
 	private void bindIntentToButton(View button, Uri contentUriData) {
+		bindIntentToButton(Intent.ACTION_VIEW, button, contentUriData);
+	}
 
-		final Intent actionIntent = new Intent(Intent.ACTION_VIEW);
+	private void bindIntentToButton(String action, View button,
+			Uri contentUriData) {
+
+		final Intent actionIntent = new Intent(action);
 
 		actionIntent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
 
