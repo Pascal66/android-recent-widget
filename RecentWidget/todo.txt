@@ -30,6 +30,7 @@ H- try to aggregate email contact based on First/Last Name, since they are token
 		- do we know whether it is a sent or a received email?
 
 H- What with international number formating not matching...
+	- use LIKE %345677654 (http://www.sqlite.org/lang_expr.html)
 
 M- Scrollable widget?
 M- Double-line widget?
