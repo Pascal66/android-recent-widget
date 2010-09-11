@@ -3,6 +3,10 @@
  */
 package org.recentwidget.android;
 
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+
 import org.recentwidget.R;
 import org.recentwidget.RecentWidgetUtils;
 import org.recentwidget.dao.CallLogDao;
@@ -17,6 +21,8 @@ import android.content.Intent;
 import android.util.Log;
 
 public class RecentWidgetProvider extends AppWidgetProvider {
+
+	private static final int RESET_PAGE_AFTER_MINUTES = 15;
 
 	private static final String TAG = "RW:RecentWidgetProvider";
 
@@ -59,6 +65,8 @@ public class RecentWidgetProvider extends AppWidgetProvider {
 
 	static int numContactsDisplayed = buttonMap.length;
 
+	static Date lastUpdated = new Date(0);
+
 	@Override
 	// Note: not called when using a ConfigurationActivity
 	public void onUpdate(Context context, AppWidgetManager appWidgetManager,
@@ -89,7 +97,15 @@ public class RecentWidgetProvider extends AppWidgetProvider {
 			// to the widget.
 
 			// BUT maybe it's the first time we display the widget, so update
-			// the graphics
+			// the graphics, or inactivity resets the page num to 0.
+
+			Calendar calendar = GregorianCalendar.getInstance();
+			calendar.add(Calendar.MINUTE, -RESET_PAGE_AFTER_MINUTES);
+
+			if (lastUpdated.getTime() == 0
+					|| lastUpdated.before(calendar.getTime())) {
+				RecentWidgetHolder.currentPage = 0;
+			}
 
 			Intent serviceIntent = new Intent(context,
 					RecentWidgetUpdateService.class);
@@ -112,6 +128,8 @@ public class RecentWidgetProvider extends AppWidgetProvider {
 		// To prevent any ANR timeouts, we perform the update in a service
 
 		for (String acceptedAction : RecentWidgetUtils.ACTION_UPDATE_TYPES) {
+
+			lastUpdated = new Date();
 
 			if (acceptedAction.equals(action)) {
 

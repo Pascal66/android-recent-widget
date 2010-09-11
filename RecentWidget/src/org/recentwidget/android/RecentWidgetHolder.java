@@ -23,6 +23,9 @@ public class RecentWidgetHolder {
 
 	private static final String TAG = "RW:RecentWidgetHolder";
 
+	private static final int LABEL_MAX_LINES_WITH_PIC = 2;
+	private static final int LABEL_MAX_LINES_NO_PIC = 4;
+
 	/**
 	 * List of the Events to be displayed on the widget.
 	 */
@@ -31,7 +34,7 @@ public class RecentWidgetHolder {
 	/**
 	 * 0-based index of the page of contacts to be displayed.
 	 */
-	private static int currentPage;
+	protected static int currentPage;
 	private static int maxPage;
 
 	static final void updateWidgetLabels(Context context) {
@@ -66,6 +69,10 @@ public class RecentWidgetHolder {
 					label = recentContact.getDisplayName();
 				}
 
+				views.setViewVisibility(RecentWidgetProvider.labelMap[i
+						% RecentWidgetProvider.numContactsDisplayed],
+						View.VISIBLE);
+
 				views.setCharSequence(RecentWidgetProvider.labelMap[i
 						% RecentWidgetProvider.numContactsDisplayed],
 						"setText", label);
@@ -86,6 +93,11 @@ public class RecentWidgetHolder {
 					views.setImageViewBitmap(RecentWidgetProvider.imageMap[i
 							% RecentWidgetProvider.numContactsDisplayed],
 							contactPhoto);
+
+					views.setInt(RecentWidgetProvider.labelMap[i
+							% RecentWidgetProvider.numContactsDisplayed],
+							"setMaxLines", LABEL_MAX_LINES_WITH_PIC);
+
 				} else {
 
 					// No photo found or no contact associated
@@ -97,7 +109,18 @@ public class RecentWidgetHolder {
 					views.setImageViewResource(RecentWidgetProvider.imageMap[i
 							% RecentWidgetProvider.numContactsDisplayed],
 							RecentWidgetProvider.defaultContactImage);
+
+					// When no photo, make the text wrap on more lines
+
+					views.setInt(RecentWidgetProvider.labelMap[i
+							% RecentWidgetProvider.numContactsDisplayed],
+							"setMaxLines", LABEL_MAX_LINES_NO_PIC);
+
 				}
+
+				views.setViewVisibility(RecentWidgetProvider.imageMap[i
+						% RecentWidgetProvider.numContactsDisplayed],
+						View.VISIBLE);
 
 				// Show each last event type for this contact
 
@@ -118,6 +141,22 @@ public class RecentWidgetHolder {
 					}
 				}
 
+			}
+
+			// Show blank areas if not enough events to be shown
+
+			for (; i < endIndex; i++) {
+				views.setViewVisibility(RecentWidgetProvider.labelMap[i
+						% RecentWidgetProvider.numContactsDisplayed],
+						View.INVISIBLE);
+				views.setViewVisibility(RecentWidgetProvider.imageMap[i
+						% RecentWidgetProvider.numContactsDisplayed],
+						View.INVISIBLE);
+				for (EventObserver observer : RecentWidgetProvider.eventObservers) {
+					views.setViewVisibility(observer.getWidgetLabels()[i
+							% RecentWidgetProvider.numContactsDisplayed],
+							View.INVISIBLE);
+				}
 			}
 
 			// Push update for this widget to the home screen
@@ -255,7 +294,11 @@ public class RecentWidgetHolder {
 
 	private static boolean updatePager() {
 
-		maxPage = (int) Math.floor(((double) recentContacts.size() - 1) / 3);
+		maxPage = (int) Math.floor(((double) recentContacts.size() - 1)
+				/ RecentWidgetProvider.numContactsDisplayed);
+		if (maxPage < 0) {
+			maxPage = 0;
+		}
 
 		// Just check if we are on an existing page
 

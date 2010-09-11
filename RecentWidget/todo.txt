@@ -1,8 +1,6 @@
 TODO:
 -----
 
-Change description with wording "Direct access to..."
-
 H- PERF of rebuild list!!!
 	- create debug log with stats/summaries
 
@@ -16,22 +14,25 @@ H- CPU:
 	- android.intent.action.PHONE_STATE actually listened twice... observer.supports should also take the intent
 		- get new phoneState extra
 	- Why double-initialization on widget creation?
-M- Call event on popup: "30 minutes ago..." "yesterday 8:20pm"
 M- Show call duration
 H- Not listening on sms sent!?
 
 H- ActivityPopup styling!!!
 	- use headerbar, like browser or newsrob article view?
-H- When no photo, make the text wrap on more lines
+	- touch outside popup should close it
 H- make photo bigger and less overlap with name (when photo exists)
 
-H- Try ContactBadge on widget...
+H- Try ContactBadge on widget... (NO, what happens to event popup then?!)
 H- try to aggregate email contact based on First/Last Name, since they are tokenized...
 	- dangerous! maybe make search based on exact match (except case-sensitive)
 	- make it more efficient by storing matches found?
 	- OR use getMessageId() to get more info on exact emails?
 		- do we know whether it is a sent or a received email?
 
+H- What with international number formating not matching...
+
+M- Scrollable widget?
+M- Double-line widget?
 M- Add "OK/Close" button on preferences screen
 M- Sent sms process not caught to update the widget?
 M- ContactsContract.StatusUpdates
@@ -44,7 +45,6 @@ M- Facebook provider?
 	- show button even if no notif
 	- only show certain group of friends
 	- only show notifs or inbox
-M- Bug: if list is not finished, remainder of previous page is still displayed
 M- bothering: if compose sms activity was called, clicking on a contact goes back to that compose activity
 M- Possible preferences
 	- Only show incoming and/or outgoing and/or missed calls
@@ -55,7 +55,6 @@ M- Possible preferences
 	- Only show on widget if contact exists (ignore unknown contacts and unknown numbers?)
 	- Oldest event to display (max. 1-2 weeks?)
 M- Landscape: icons are not aligned with home icons
-M- inactivity brings page cursor to 1?
 M- layoutopt the views (does not work!?)
 M- traduction française?
 
@@ -99,12 +98,16 @@ test: M- When opening Contact page, pressing back shows the list of all Dialer a
 0.4.3: M- Widget display (show whether sms was read or not, if call missed for given contact)
 0.4.3: H- add arrow to educate on possible fling gesture
 0.4.3: M- email content provider
+0.4.4: Fix call button on popup
+0.4.4: Fix ArithmeticException
+0.4.4: Fix display when < 9 contacts
+	   - Bug: if list is not finished, remainder of previous page is still displayed
+0.4.4: H- When no photo, make the text wrap on more lines
+0.4.4: M- inactivity brings page cursor to 1?
+0.4.4: M- Call event on popup: "30 minutes ago..." "yesterday 8:20pm"
 
 NOTES:
 ------
-
-Rel 0.3: +/- 11/06
-Rel 0.4:
 
 Notes on tasks and activities:
 
@@ -116,3 +119,11 @@ Notes on tasks and activities:
 
 market://search?q=pname:org.recentwidget
 
+DESCRIPTION:
+------------
+
+Early version, open to suggestions ;)
+
+This open-source widget summarizes your last calls and sms received and displays them right on your Android home for direct dial or messaging.
+
+Update: Fix HTC dial, date display, other bugfixes.
