@@ -14,7 +14,7 @@ public class EventListBuilder {
 	/**
 	 * Number of recent events displayed on widget. Might be configurable?
 	 */
-	static final int maxRetrieved = 9;
+	static final int maxRetrieved = 51;
 
 	private static final String TAG = "EventListBuilder";
 
