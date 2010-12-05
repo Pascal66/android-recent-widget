@@ -235,6 +235,11 @@ public class RecentWidgetHolder {
 
 	}
 
+	/**
+	 * @param buttonPressed
+	 * @param context
+	 * @return !!! Resource intensive!
+	 */
 	protected static RecentContact getRecentEventPressed(int buttonPressed,
 			Context context) {
 
