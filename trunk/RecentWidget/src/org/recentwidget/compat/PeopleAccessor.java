@@ -19,6 +19,10 @@ import android.widget.ImageView.ScaleType;
 @SuppressWarnings("deprecation")
 public class PeopleAccessor extends AbstractContactAccessor {
 
+	private boolean initialized = false;
+	private int displayNameIndex;
+	private int personIdIndex;
+
 	public PeopleAccessor() {
 		contentUri = People.CONTENT_URI;
 		displayNameColumn = Phones.DISPLAY_NAME;
@@ -35,7 +39,8 @@ public class PeopleAccessor extends AbstractContactAccessor {
 		if (recentContact.getNumber() != null
 				&& recentContact.getPerson() != null) {
 
-			lookupCursor = resolver.query(Contacts.Phones.CONTENT_URI,
+			lookupCursor = resolver.query(
+					Contacts.Phones.CONTENT_URI,
 					new String[] { personIdColumn, displayNameColumn },
 					Phones.NUMBER + " = ? OR " + displayNameColumn + " = ?",
 					new String[] { recentContact.getNumber(),
@@ -47,8 +52,8 @@ public class PeopleAccessor extends AbstractContactAccessor {
 
 			lookupCursor = resolver.query(Contacts.Phones.CONTENT_URI,
 					new String[] { personIdColumn, displayNameColumn },
-					displayNameColumn + " = ?", new String[] { recentContact
-							.getPerson() }, null);
+					displayNameColumn + " = ?",
+					new String[] { recentContact.getPerson() }, null);
 
 		} else {
 
@@ -56,8 +61,8 @@ public class PeopleAccessor extends AbstractContactAccessor {
 
 			lookupCursor = resolver.query(Contacts.Phones.CONTENT_URI,
 					new String[] { personIdColumn, displayNameColumn },
-					Phones.NUMBER + " = ?", new String[] { recentContact
-							.getNumber() }, null);
+					Phones.NUMBER + " = ?",
+					new String[] { recentContact.getNumber() }, null);
 		}
 
 		if (lookupCursor != null && lookupCursor.getCount() >= 1) {
@@ -87,8 +92,8 @@ public class PeopleAccessor extends AbstractContactAccessor {
 
 		Cursor cursor = resolver.query(Contacts.Phones.CONTENT_URI,
 				new String[] { personIdColumn, displayNameColumn },
-				Phones.NUMBER + " = ?", new String[] { recentContact
-						.getNumber() }, null);
+				Phones.NUMBER + " = ?",
+				new String[] { recentContact.getNumber() }, null);
 
 		initContactFromCursor(recentContact, cursor);
 
@@ -122,21 +127,25 @@ public class PeopleAccessor extends AbstractContactAccessor {
 
 		*/
 
-		return People.loadContactPhoto(context, ContentUris.withAppendedId(
-				People.CONTENT_URI, recentContact.getPersonId()),
+		return People.loadContactPhoto(
+				context,
+				ContentUris.withAppendedId(People.CONTENT_URI,
+						recentContact.getPersonId()),
 				RecentWidgetProvider.defaultContactImage, null);
 	}
 
 	protected void initContactFromCursor(RecentContact recentContact,
 			Cursor lookupCursor) {
 
-		recentContact.setPerson(lookupCursor.getString(lookupCursor
-				.getColumnIndex(displayNameColumn)));
+		if (!initialized) {
+			displayNameIndex = lookupCursor.getColumnIndex(displayNameColumn);
+			personIdIndex = lookupCursor.getColumnIndex(personIdColumn);
+			initialized = true;
+		}
 
-		String personIdAsString = lookupCursor.getString(lookupCursor
-				.getColumnIndex(personIdColumn));
-
-		recentContact.setPersonId(Long.parseLong(personIdAsString));
+		recentContact.setPerson(lookupCursor.getString(displayNameIndex));
+		recentContact.setPersonId(Long.parseLong(lookupCursor
+				.getString(personIdIndex)));
 	}
 
 }

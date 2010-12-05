@@ -27,6 +27,11 @@ public class ContactsContractAccessor extends AbstractContactAccessor {
 	// TODO: possible performance gain with
 	// ContactsContract.Contacts.CONTENT_FILTER_URI ?
 
+	private int displayNameIndex;
+	private int personIdIndex;
+	private boolean initialized = false;
+	private int contactIdIndex;
+
 	public ContactsContractAccessor() {
 		contentUri = ContactsContract.Contacts.CONTENT_URI;
 		displayNameColumn = ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME;
@@ -85,8 +90,8 @@ public class ContactsContractAccessor extends AbstractContactAccessor {
 					new String[] { personIdColumn, displayNameColumn,
 							ContactsContract.CommonDataKinds.Phone.CONTACT_ID,
 							ContactsContract.CommonDataKinds.Photo.PHOTO_ID },
-					displayNameColumn + " = ?", new String[] { recentContact
-							.getPerson() }, null);
+					displayNameColumn + " = ?",
+					new String[] { recentContact.getPerson() }, null);
 
 		} else {
 
@@ -140,8 +145,8 @@ public class ContactsContractAccessor extends AbstractContactAccessor {
 		QuickContactBadge badge = new QuickContactBadge(context);
 		if (recentContact.getPersonId() != null
 				&& recentContact.getLookupKey() != null) {
-			badge.assignContactUri(Contacts.getLookupUri(recentContact
-					.getPersonId(), recentContact.getLookupKey()));
+			badge.assignContactUri(Contacts.getLookupUri(
+					recentContact.getPersonId(), recentContact.getLookupKey()));
 		} else {
 			badge.assignContactFromPhone(recentContact.getNumber(), false);
 		}
@@ -213,8 +218,8 @@ public class ContactsContractAccessor extends AbstractContactAccessor {
 
 		*/
 
-		Uri contactUri = ContentUris.withAppendedId(contentUri, recentContact
-				.getPersonId());
+		Uri contactUri = ContentUris.withAppendedId(contentUri,
+				recentContact.getPersonId());
 
 		InputStream photoInputStream = ContactsContract.Contacts
 				.openContactPhotoInputStream(context.getContentResolver(),
@@ -240,16 +245,19 @@ public class ContactsContractAccessor extends AbstractContactAccessor {
 	protected void initContactFromCursor(RecentContact recentContact,
 			Cursor lookupCursor) {
 
-		recentContact.setPerson(lookupCursor.getString(lookupCursor
-				.getColumnIndex(displayNameColumn)));
+		if (!initialized) {
+			displayNameIndex = lookupCursor.getColumnIndex(displayNameColumn);
+			personIdIndex = lookupCursor.getColumnIndex(personIdColumn);
+			contactIdIndex = lookupCursor
+					.getColumnIndex(ContactsContract.CommonDataKinds.Phone.CONTACT_ID);
+			initialized = true;
+		}
 
-		recentContact.setPersonKey(lookupCursor.getString(lookupCursor
-				.getColumnIndex(personIdColumn)));
+		recentContact.setPerson(lookupCursor.getString(displayNameIndex));
+		recentContact.setPersonKey(lookupCursor.getString(personIdIndex));
 
-		int contactIdColumn = lookupCursor
-				.getColumnIndex(ContactsContract.CommonDataKinds.Phone.CONTACT_ID);
-		if (contactIdColumn >= 0) {
-			recentContact.setPersonId(lookupCursor.getLong(contactIdColumn));
+		if (contactIdIndex >= 0) {
+			recentContact.setPersonId(lookupCursor.getLong(contactIdIndex));
 		}
 	}
 
@@ -260,8 +268,8 @@ public class ContactsContractAccessor extends AbstractContactAccessor {
 		String debugString = "";
 
 		Uri phoneLookupUri = Uri.withAppendedPath(
-				PhoneLookup.CONTENT_FILTER_URI, Uri.encode(recentContact
-						.getNumber()));
+				PhoneLookup.CONTENT_FILTER_URI,
+				Uri.encode(recentContact.getNumber()));
 
 		Cursor phoneLookup = contentResolver.query(phoneLookupUri,
 				new String[] { PhoneLookup.LOOKUP_KEY, PhoneLookup.TYPE,
@@ -303,8 +311,8 @@ public class ContactsContractAccessor extends AbstractContactAccessor {
 
 		try {
 			InputStream photoStream = ContactsContract.Contacts
-					.openContactPhotoInputStream(cr, Uri.withAppendedPath(
-							contentUri, id));
+					.openContactPhotoInputStream(cr,
+							Uri.withAppendedPath(contentUri, id));
 
 			return photoStream;
 			/*
@@ -324,11 +332,11 @@ public class ContactsContractAccessor extends AbstractContactAccessor {
 		Log.v(TAG, "Looking for contact photo in Data table");
 		cursor = cr.query(ContactsContract.Data.CONTENT_URI,
 		// new String[] {ContactsContract.CommonDataKinds.Photo.PHOTO,
-				// ContactsContract.Data.MIMETYPE},
-				// ContactsContract.Data.MIMETYPE + "== '" +
-				// ContactsContract.CommonDataKinds.Photo.CONTENT_ITEM_TYPE +
-				// "' AND " +
-				// ContactsContract.Data.CONTACT_ID + " == " + id, null, null);
+		// ContactsContract.Data.MIMETYPE},
+		// ContactsContract.Data.MIMETYPE + "== '" +
+		// ContactsContract.CommonDataKinds.Photo.CONTENT_ITEM_TYPE +
+		// "' AND " +
+		// ContactsContract.Data.CONTACT_ID + " == " + id, null, null);
 				new String[] { "data15", "mimetype" }, "mimetype" + "== '"
 						+ "vnd.android.cursor.item/photo" + "' AND "
 						+ "contact_id" + " == " + id, null, null);
@@ -340,9 +348,8 @@ public class ContactsContractAccessor extends AbstractContactAccessor {
 			while (cursor.moveToNext()) {
 				byte[] data = cursor.getBlob(0);
 				if (data != null) {
-					Log
-							.v(TAG,
-									"openContactPhotoInputStream(): contact photo found using Data table");
+					Log.v(TAG,
+							"openContactPhotoInputStream(): contact photo found using Data table");
 					return new ByteArrayInputStream(data);
 				} else {
 					Log.v(TAG, "PHOTO DATA WAS NULL");
