@@ -108,6 +108,7 @@ test: M- When opening Contact page, pressing back shows the list of all Dialer a
 0.4.4: M- Call event on popup: "30 minutes ago..." "yesterday 8:20pm"
 
 0.4.5: H- fix ANR keyDispatchingTimedOut (at least on EventPopup...)
+M- Better phone number matching
 
 NOTES:
 ------
