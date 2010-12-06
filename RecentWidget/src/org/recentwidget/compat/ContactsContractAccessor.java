@@ -24,6 +24,15 @@ import android.widget.QuickContactBadge;
 // but does not embed an class instance.
 public class ContactsContractAccessor extends AbstractContactAccessor {
 
+	private static final String SQLLITE_WILDCARD = "%";
+	private static final int PREFIX_LENGTH = 4; // "+352"
+	private static final int LOCAL_PREFIX_LENGTH = 3; // "052"
+	/**
+	 * MIN_NUM_LOOKUP_LENGTH must be greater than PREFIX_LENGTH Min number of
+	 * characters used for pattern matching.
+	 */
+	private static final int MIN_NUM_LOOKUP_LENGTH = 5; // "219006"
+
 	// TODO: possible performance gain with
 	// ContactsContract.Contacts.CONTENT_FILTER_URI ?
 
@@ -31,11 +40,16 @@ public class ContactsContractAccessor extends AbstractContactAccessor {
 	private int personIdIndex;
 	private boolean initialized = false;
 	private int contactIdIndex;
+	private final String[] projection;
 
 	public ContactsContractAccessor() {
 		contentUri = ContactsContract.Contacts.CONTENT_URI;
 		displayNameColumn = ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME;
 		personIdColumn = PhoneLookup.LOOKUP_KEY;
+
+		projection = new String[] { personIdColumn, displayNameColumn,
+				ContactsContract.CommonDataKinds.Phone.CONTACT_ID,
+				ContactsContract.CommonDataKinds.Photo.PHOTO_ID };
 	}
 
 	@Override
@@ -45,20 +59,37 @@ public class ContactsContractAccessor extends AbstractContactAccessor {
 		ContentResolver resolver = context.getContentResolver();
 		Cursor lookupCursor = null;
 
-		if (recentContact.getNumber() != null
-				&& recentContact.getPerson() != null) {
+		String lookupNumber = recentContact.getNumber();
+		if (lookupNumber != null) {
+
+			int numberLength = lookupNumber.length();
+
+			int prefixLength = PREFIX_LENGTH;
+			if (lookupNumber.startsWith("+")) {
+				prefixLength = LOCAL_PREFIX_LENGTH;
+			}
+
+			// Only do wildcard matching if string has a min. length
+			if (numberLength >= MIN_NUM_LOOKUP_LENGTH + prefixLength) {
+
+				lookupNumber = SQLLITE_WILDCARD
+						+ lookupNumber
+								.substring(prefixLength + 1, numberLength);
+			}
+		}
+		Log.d(TAG, "Searching with number: " + lookupNumber);
+
+		if (lookupNumber != null && recentContact.getPerson() != null) {
 
 			lookupCursor = resolver.query(
 					ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
-					new String[] { personIdColumn, displayNameColumn,
-							ContactsContract.CommonDataKinds.Phone.CONTACT_ID,
-							ContactsContract.CommonDataKinds.Photo.PHOTO_ID },
-					displayNameColumn + " = ? OR "
+					projection, displayNameColumn + " = ? OR "
 							+ ContactsContract.CommonDataKinds.Phone.NUMBER
-							+ " = ?", new String[] { recentContact.getPerson(),
-							recentContact.getNumber() }, null);
+							+ " LIKE ?",
+					new String[] { recentContact.getPerson(), lookupNumber },
+					null);
 
-		} else if (recentContact.getNumber() != null) {
+		} else if (lookupNumber != null) {
 
 			// Search by number
 
@@ -73,13 +104,20 @@ public class ContactsContractAccessor extends AbstractContactAccessor {
 					PhoneLookup.PHOTO_ID }, null, null, null);
 			 */
 
+			/*
 			lookupCursor = resolver.query(Uri.withAppendedPath(
 					ContactsContract.CommonDataKinds.Phone.CONTENT_FILTER_URI,
-					recentContact.getNumber()), new String[] { personIdColumn,
+					lookupNumber), new String[] { personIdColumn,
 					displayNameColumn,
 					ContactsContract.CommonDataKinds.Phone.CONTACT_ID,
 					ContactsContract.CommonDataKinds.Photo.PHOTO_ID }, null,
 					null, null);
+			*/
+
+			lookupCursor = resolver.query(
+					ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+					projection, ContactsContract.CommonDataKinds.Phone.NUMBER
+							+ " LIKE ?", new String[] { lookupNumber }, null);
 
 		} else if (recentContact.getPerson() != null) {
 
@@ -87,10 +125,7 @@ public class ContactsContractAccessor extends AbstractContactAccessor {
 
 			lookupCursor = resolver.query(
 					ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
-					new String[] { personIdColumn, displayNameColumn,
-							ContactsContract.CommonDataKinds.Phone.CONTACT_ID,
-							ContactsContract.CommonDataKinds.Photo.PHOTO_ID },
-					displayNameColumn + " = ?",
+					projection, displayNameColumn + " = ?",
 					new String[] { recentContact.getPerson() }, null);
 
 		} else {
