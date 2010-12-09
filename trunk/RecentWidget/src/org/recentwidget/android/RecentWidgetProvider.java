@@ -9,6 +9,7 @@ import java.util.GregorianCalendar;
 
 import org.recentwidget.R;
 import org.recentwidget.RecentWidgetUtils;
+import org.recentwidget.dao.CalendarDao;
 import org.recentwidget.dao.CallLogDao;
 import org.recentwidget.dao.EventObserver;
 import org.recentwidget.dao.GmailDao;
@@ -38,7 +39,7 @@ public class RecentWidgetProvider extends AppWidgetProvider {
 	static {
 		if (RecentWidgetUtils.HAS_ACCOUNT_MANAGER) {
 			eventObservers = new EventObserver[] { new SmsDao(),
-					new CallLogDao(), new GmailDao() };
+					new CallLogDao(), new GmailDao(), new CalendarDao() };
 		} else {
 			// Check preference
 			eventObservers = new EventObserver[] { new SmsDao(),

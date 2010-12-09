@@ -71,7 +71,7 @@ public abstract class ContentResolverTemplate implements EventObserver {
 			// Do not use managedQuery() because we will unload it ourselves
 
 			cursor = contentResolver.query(getContentUri(), projection,
-					getQuery(), null, sortOrder);
+					getQuery(), getQueryArgs(), sortOrder);
 
 			if (cursor.moveToFirst()) {
 
@@ -109,6 +109,10 @@ public abstract class ContentResolverTemplate implements EventObserver {
 		context = null;
 
 		return builder.build();
+	}
+
+	protected String[] getQueryArgs() {
+		return null;
 	}
 
 	protected String getQuery() {
