@@ -29,17 +29,12 @@ H- try to aggregate email contact based on First/Last Name, since they are token
 	- OR use getMessageId() to get more info on exact emails?
 		- do we know whether it is a sent or a received email?
 
-H- What with international number formating not matching...
-	- use LIKE %345677654 (http://www.sqlite.org/lang_expr.html)
-
 M- Scrollable widget?
 M- Double-line widget?
 M- Add "OK/Close" button on preferences screen
-M- Sent sms process not caught to update the widget?
 M- ContactsContract.StatusUpdates
 L- Use relative layout in Popup screen, instead of table?!
 	-> actually, all table layout can be relative layouts
-M- Use AsyncTask to draw the ActivityPopup
 M- Add event info on popup: Home, Mobile, ...
 M- gTalk provider?
 M- Facebook provider?
@@ -67,7 +62,7 @@ L- Close popup when clicking outside popup window
 L- When just added a custom number / new contact, refresh the widget also?
 L- Add treshold on fling?
 
-?- Override long-press on search?
+?- Override long-press on search? -> create MainActivity window
 
 KINDA FIXED / TO TEST / KINDA UGLY:
 -------------------------
