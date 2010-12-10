@@ -12,6 +12,8 @@ import android.net.Uri;
 import android.text.format.DateUtils;
 import android.util.Log;
 
+// TODO: What about reminders? http://hi-android.info/src/android/provider/Calendar.java.html
+// -> filter events here on whether they have reminders -> no double-fetch
 public class CalendarDao extends ContentResolverTemplate {
 
 	private static final String TAG = "RW:CalendarDao";
