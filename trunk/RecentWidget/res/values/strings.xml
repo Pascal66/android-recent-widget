@@ -12,8 +12,12 @@
 
 	<!-- Preferences -->
     <string name="pref_provider_header">Widget Content</string>
+    <string name="pref_num_retrieved">Contacts retrieved</string>
+    <string name="pref_num_retrieved_text">Number of contacts to be displayed on widget. More than 30 uses a lot of resources</string>
     <string name="pref_provider_email">GMail - EXPERIMENTAL</string>
     <string name="pref_provider_email_text">Whether the widget aggregates GMail conversations (2.x only)</string>
+    <string name="pref_provider_calendar">Calendar - EXPERIMENTAL</string>
+    <string name="pref_provider_calendar_text">Whether the widget aggregates the calendar events (2.x only)</string>
 	
 	<!-- Common -->
     <string name="save_action">Save</string>

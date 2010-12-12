@@ -8,8 +8,10 @@ import org.recentwidget.model.RecentContact;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 public abstract class ContentResolverTemplate implements EventObserver {
@@ -28,6 +30,8 @@ public abstract class ContentResolverTemplate implements EventObserver {
 
 	protected abstract int getTargetType();
 
+	protected String preferenceEnabledName = null;
+
 	// as a getter because we want to override it
 	protected abstract Uri getContentUri();
 
@@ -44,10 +48,24 @@ public abstract class ContentResolverTemplate implements EventObserver {
 		// Note: Make sure no unnecessary ArrayLists created in all those
 		// params/returns.
 
-		this.context = context;
-		this.contentResolver = context.getContentResolver();
+		// Check with Preference first
 
-		return fetchEvents(recentContacts);
+		SharedPreferences prefs = PreferenceManager
+				.getDefaultSharedPreferences(context);
+
+		if (preferenceEnabledName == null
+				|| prefs.getBoolean(preferenceEnabledName, false)) {
+
+			this.context = context;
+			this.contentResolver = context.getContentResolver();
+
+			return fetchEvents(recentContacts);
+
+		} else {
+			// Do nothing
+			return recentContacts;
+		}
+
 	}
 
 	/**
@@ -62,7 +80,7 @@ public abstract class ContentResolverTemplate implements EventObserver {
 		// The builder is useful in order for the business logic to be stored
 		// elsewhere.
 
-		EventListBuilder builder = new EventListBuilder(recentContacts);
+		EventListBuilder builder = new EventListBuilder(context, recentContacts);
 
 		Cursor cursor = null;
 
