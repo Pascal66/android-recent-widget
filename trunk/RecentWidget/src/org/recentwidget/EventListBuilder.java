@@ -30,9 +30,9 @@ public class EventListBuilder {
 
 		SharedPreferences sharedPreferences = PreferenceManager
 				.getDefaultSharedPreferences(context);
-		maxRetrieved = sharedPreferences.getInt(
+		maxRetrieved = Integer.parseInt(sharedPreferences.getString(
 				WidgetPreferenceActivity.PREF_MAX_RETRIEVED,
-				DEFAULT_MAX_RETRIEVED);
+				Integer.toString(DEFAULT_MAX_RETRIEVED)));
 
 		if (previousContacts != null) {
 			this.contacts = previousContacts;
