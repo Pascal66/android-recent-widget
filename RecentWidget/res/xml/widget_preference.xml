@@ -5,12 +5,21 @@
 		<EditTextPreference android:enabled="false"
 			android:selectable="false"
 			android:layout="@layout/preference_about" />
+		<ListPreference android:key="num_retrieved"
+			android:title="@string/pref_num_retrieved"
+			android:summary="@string/pref_num_retrieved_text"
+			android:defaultValue="21"
+			android:entries="@array/num_retrieved_entries"
+			android:entryValues="@array/num_retrieved_values" />
 	</PreferenceCategory>
 
 	<PreferenceCategory android:title="@string/pref_provider_header">
 		<CheckBoxPreference android:title="@string/pref_provider_email"
 			android:defaultValue="false" android:summary="@string/pref_provider_email_text"
 			android:key="provider_email" />
+		<CheckBoxPreference android:title="@string/pref_provider_calendar"
+			android:defaultValue="false" android:summary="@string/pref_provider_calendar_text"
+			android:key="provider_calendar" />
 	</PreferenceCategory>
 
 </PreferenceScreen>

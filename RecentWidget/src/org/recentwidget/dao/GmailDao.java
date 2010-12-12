@@ -1,6 +1,5 @@
 package org.recentwidget.dao;
 
-import java.util.List;
 import java.util.StringTokenizer;
 
 import org.recentwidget.EventListBuilder;
@@ -16,10 +15,8 @@ import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
-import android.preference.PreferenceManager;
 import android.util.Log;
 
 public class GmailDao extends ContentResolverTemplate {
@@ -40,32 +37,14 @@ public class GmailDao extends ContentResolverTemplate {
 	public GmailDao() {
 		super();
 
+		preferenceEnabledName = WidgetPreferenceActivity.PREF_PROVIDER_GMAIL;
+
 		if (useConversations) {
 			projection = Gmail.CONVERSATION_PROJECTION;
 		} else {
 			projection = Gmail.MESSAGE_PROJECTION;
 		}
 		sortOrder = null; // MUST be empty
-	}
-
-	@Override
-	public List<RecentContact> update(List<RecentContact> recentContacts,
-			Intent intent, Context context) {
-
-		// Check with Preference first
-
-		SharedPreferences prefs = PreferenceManager
-				.getDefaultSharedPreferences(context);
-
-		if (prefs.getBoolean(WidgetPreferenceActivity.PREF_PROVIDER_GMAIL,
-				false)) {
-
-			return super.update(recentContacts, intent, context);
-
-		} else {
-			// Do nothing
-			return recentContacts;
-		}
 	}
 
 	@Override
@@ -143,6 +122,7 @@ public class GmailDao extends ContentResolverTemplate {
 					.getColumnIndex(ConversationColumns.FROM));
 
 			// The address is in the form: "0\n0\nLASTNAME First name\n"
+			// or "n\n7\n0\n0\n\n0\n2\nFranco\n0\n1\nFscafidi\n"
 			// TODO: Use TextUtils.StringSplitter instead?
 			StringTokenizer tokenizer = new StringTokenizer(address, "\n");
 			while (tokenizer.hasMoreElements()) {

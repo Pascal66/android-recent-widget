@@ -4,6 +4,7 @@ import java.util.Date;
 
 import org.recentwidget.EventListBuilder;
 import org.recentwidget.R;
+import org.recentwidget.android.WidgetPreferenceActivity;
 import org.recentwidget.model.RecentContact;
 import org.recentwidget.model.RecentEvent;
 
@@ -30,6 +31,8 @@ public class CalendarDao extends ContentResolverTemplate {
 
 	public CalendarDao() {
 		super();
+
+		preferenceEnabledName = WidgetPreferenceActivity.PREF_PROVIDER_CALENDAR;
 
 		projection = new String[] { CALENDAR_ID, CALENDAR_TITLE,
 				CALENDAR_EVENT_START, CALENDAR_DESCRIPTION };

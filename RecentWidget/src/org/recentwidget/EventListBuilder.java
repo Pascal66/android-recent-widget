@@ -3,25 +3,37 @@ package org.recentwidget;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.recentwidget.android.WidgetPreferenceActivity;
 import org.recentwidget.model.RecentContact;
 import org.recentwidget.model.RecentEvent;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 public class EventListBuilder {
 
+	public static final int DEFAULT_MAX_RETRIEVED = 21;
 	/**
-	 * Number of recent events displayed on widget. Might be configurable?
+	 * Number of recent events displayed on widget.
 	 */
-	static final int maxRetrieved = 30;
+	private final int maxRetrieved;
 
 	private static final String TAG = "EventListBuilder";
 
 	// Temporary reference/variable
 	private List<RecentContact> contacts;
 
-	public EventListBuilder(List<RecentContact> previousContacts) {
+	public EventListBuilder(Context context,
+			List<RecentContact> previousContacts) {
+
+		SharedPreferences sharedPreferences = PreferenceManager
+				.getDefaultSharedPreferences(context);
+		maxRetrieved = sharedPreferences.getInt(
+				WidgetPreferenceActivity.PREF_MAX_RETRIEVED,
+				DEFAULT_MAX_RETRIEVED);
+
 		if (previousContacts != null) {
 			this.contacts = previousContacts;
 		} else {
