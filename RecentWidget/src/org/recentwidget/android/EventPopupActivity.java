@@ -333,13 +333,14 @@ public class EventPopupActivity extends Activity {
 							simulatedButtonPosition = -1;
 						} else {
 							// start from last
-							simulatedButtonPosition = RecentWidgetProvider.numContactsDisplayed - 1;
+							simulatedButtonPosition = RecentWidgetHolder.numPerPage - 1;
 						}
 
+						// TODO: updating these labels should be done async
 						RecentWidgetHolder
 								.updateWidgetLabels(getApplicationContext());
 
-					} else if (simulatedButtonPosition >= RecentWidgetProvider.numContactsDisplayed) {
+					} else if (simulatedButtonPosition >= RecentWidgetHolder.numPerPage) {
 
 						// If touching the last one, next page please.
 
@@ -349,6 +350,7 @@ public class EventPopupActivity extends Activity {
 							simulatedButtonPosition = 0;
 						}
 
+						// TODO: updating these labels should be done async
 						RecentWidgetHolder
 								.updateWidgetLabels(getApplicationContext());
 					}
@@ -357,7 +359,7 @@ public class EventPopupActivity extends Activity {
 
 					if (simulatedButtonPosition != -1) {
 
-						simulatedButtonPosition %= RecentWidgetProvider.numContactsDisplayed;
+						simulatedButtonPosition %= RecentWidgetHolder.numPerPage;
 
 						Intent intent = new Intent(
 								RecentWidgetUtils.ACTION_SHOW_POPUP);

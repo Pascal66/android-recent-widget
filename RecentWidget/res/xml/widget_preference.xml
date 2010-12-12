@@ -5,6 +5,12 @@
 		<EditTextPreference android:enabled="false"
 			android:selectable="false"
 			android:layout="@layout/preference_about" />
+		<ListPreference android:key="num_per_page"
+			android:title="@string/pref_num_per_page"
+			android:summary="@string/pref_num_per_page_text"
+			android:defaultValue="3"
+			android:entries="@array/num_per_page_entries"
+			android:entryValues="@array/num_per_page_values" />
 		<ListPreference android:key="num_retrieved"
 			android:title="@string/pref_num_retrieved"
 			android:summary="@string/pref_num_retrieved_text"

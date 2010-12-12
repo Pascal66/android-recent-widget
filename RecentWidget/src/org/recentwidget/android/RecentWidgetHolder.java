@@ -13,7 +13,9 @@ import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.RemoteViews;
@@ -34,13 +36,21 @@ public class RecentWidgetHolder {
 	static List<RecentContact> recentContacts;
 
 	static int[] firstImageMap = new int[] { R.id.contactEventLabel01_0,
-			R.id.contactEventLabel02_0, R.id.contactEventLabel03_0 };
+			R.id.contactEventLabel02_0, R.id.contactEventLabel03_0,
+			R.id.contactEventLabel04_0, R.id.contactEventLabel05_0,
+			R.id.contactEventLabel06_0 };
 	static int[] secondImageMap = new int[] { R.id.contactEventLabel01_1,
-			R.id.contactEventLabel02_1, R.id.contactEventLabel03_1 };
+			R.id.contactEventLabel02_1, R.id.contactEventLabel03_1,
+			R.id.contactEventLabel04_1, R.id.contactEventLabel05_1,
+			R.id.contactEventLabel06_1 };
 	static int[] thirdImageMap = new int[] { R.id.contactEventLabel01_2,
-			R.id.contactEventLabel02_2, R.id.contactEventLabel03_2 };
+			R.id.contactEventLabel02_2, R.id.contactEventLabel03_2,
+			R.id.contactEventLabel04_2, R.id.contactEventLabel05_2,
+			R.id.contactEventLabel06_2 };
 	static int[] fourthImageMap = new int[] { R.id.contactEventLabel01_3,
-			R.id.contactEventLabel02_3, R.id.contactEventLabel03_3 };
+			R.id.contactEventLabel02_3, R.id.contactEventLabel03_3,
+			R.id.contactEventLabel04_3, R.id.contactEventLabel05_3,
+			R.id.contactEventLabel06_3 };
 
 	static int[][] imageMap = new int[][] { firstImageMap, secondImageMap,
 			thirdImageMap, fourthImageMap };
@@ -48,8 +58,10 @@ public class RecentWidgetHolder {
 	/**
 	 * 0-based index of the page of contacts to be displayed.
 	 */
-	protected static int currentPage;
+	protected static int currentPage = 0;
 	private static int maxPage;
+
+	public static int numPerPage;
 
 	static final void updateWidgetLabels(Context context) {
 
@@ -69,9 +81,9 @@ public class RecentWidgetHolder {
 
 			RemoteViews views = buildWidgetView(context);
 
-			int i = currentPage * RecentWidgetProvider.numContactsDisplayed;
+			int i = currentPage * RecentWidgetHolder.numPerPage;
 			// End index not included
-			int endIndex = i + RecentWidgetProvider.numContactsDisplayed;
+			int endIndex = i + RecentWidgetHolder.numPerPage;
 
 			for (; i < recentContacts.size() && i < endIndex; i++) {
 
@@ -84,12 +96,10 @@ public class RecentWidgetHolder {
 				}
 
 				views.setViewVisibility(RecentWidgetProvider.labelMap[i
-						% RecentWidgetProvider.numContactsDisplayed],
-						View.VISIBLE);
+						% RecentWidgetHolder.numPerPage], View.VISIBLE);
 
 				views.setCharSequence(RecentWidgetProvider.labelMap[i
-						% RecentWidgetProvider.numContactsDisplayed],
-						"setText", label);
+						% RecentWidgetHolder.numPerPage], "setText", label);
 
 				// Also try to set the picture
 
@@ -105,12 +115,11 @@ public class RecentWidgetHolder {
 				if (contactPhoto != null) {
 
 					views.setImageViewBitmap(RecentWidgetProvider.imageMap[i
-							% RecentWidgetProvider.numContactsDisplayed],
-							contactPhoto);
+							% RecentWidgetHolder.numPerPage], contactPhoto);
 
 					views.setInt(RecentWidgetProvider.labelMap[i
-							% RecentWidgetProvider.numContactsDisplayed],
-							"setMaxLines", LABEL_MAX_LINES_WITH_PIC);
+							% RecentWidgetHolder.numPerPage], "setMaxLines",
+							LABEL_MAX_LINES_WITH_PIC);
 
 				} else {
 
@@ -121,20 +130,19 @@ public class RecentWidgetHolder {
 					// things like that. So we need to use a ViewResource...
 
 					views.setImageViewResource(RecentWidgetProvider.imageMap[i
-							% RecentWidgetProvider.numContactsDisplayed],
+							% RecentWidgetHolder.numPerPage],
 							RecentWidgetProvider.defaultContactImage);
 
 					// When no photo, make the text wrap on more lines
 
 					views.setInt(RecentWidgetProvider.labelMap[i
-							% RecentWidgetProvider.numContactsDisplayed],
-							"setMaxLines", LABEL_MAX_LINES_NO_PIC);
+							% RecentWidgetHolder.numPerPage], "setMaxLines",
+							LABEL_MAX_LINES_NO_PIC);
 
 				}
 
 				views.setViewVisibility(RecentWidgetProvider.imageMap[i
-						% RecentWidgetProvider.numContactsDisplayed],
-						View.VISIBLE);
+						% RecentWidgetHolder.numPerPage], View.VISIBLE);
 
 				// Show each last event type for this contact
 
@@ -144,15 +152,13 @@ public class RecentWidgetHolder {
 							.getResourceForWidget(recentContact);
 					if (resource != null) {
 						views.setImageViewResource(imageMap[count][i
-								% RecentWidgetProvider.numContactsDisplayed],
-								resource);
+								% RecentWidgetHolder.numPerPage], resource);
 						views.setViewVisibility(imageMap[count][i
-								% RecentWidgetProvider.numContactsDisplayed],
-								View.VISIBLE);
+								% RecentWidgetHolder.numPerPage], View.VISIBLE);
 						count++;
 					} else {
 						views.setViewVisibility(imageMap[count][i
-								% RecentWidgetProvider.numContactsDisplayed],
+								% RecentWidgetHolder.numPerPage],
 								View.INVISIBLE);
 					}
 				}
@@ -163,15 +169,12 @@ public class RecentWidgetHolder {
 
 			for (; i < endIndex; i++) {
 				views.setViewVisibility(RecentWidgetProvider.labelMap[i
-						% RecentWidgetProvider.numContactsDisplayed],
-						View.INVISIBLE);
+						% RecentWidgetHolder.numPerPage], View.INVISIBLE);
 				views.setViewVisibility(RecentWidgetProvider.imageMap[i
-						% RecentWidgetProvider.numContactsDisplayed],
-						View.INVISIBLE);
+						% RecentWidgetHolder.numPerPage], View.INVISIBLE);
 				for (int j = 0; j < OBSERVERS_COUNT; j++) {
 					views.setViewVisibility(imageMap[j][i
-							% RecentWidgetProvider.numContactsDisplayed],
-							View.INVISIBLE);
+							% RecentWidgetHolder.numPerPage], View.INVISIBLE);
 				}
 			}
 
@@ -205,11 +208,33 @@ public class RecentWidgetHolder {
 		RemoteViews views = new RemoteViews(context.getPackageName(),
 				R.layout.recentwidget);
 
-		// Note: API-7 supports RemoteViews.addView !!!
+		// Set the number of contacts per page
+
+		final int maxPerPage = 6;
+
+		int[] frames = { R.id.widgetFrame1, R.id.widgetFrame2,
+				R.id.widgetFrame3, R.id.widgetFrame4, R.id.widgetFrame5,
+				R.id.widgetFrame6 };
+
+		SharedPreferences prefs = PreferenceManager
+				.getDefaultSharedPreferences(context);
+
+		numPerPage = Integer.parseInt(prefs.getString(
+				WidgetPreferenceActivity.PREF_NUM_PER_PAGE, "3"));
+
+		int curPerPage = maxPerPage - 1;
+		for (; curPerPage >= numPerPage; curPerPage--) {
+			views.setViewVisibility(frames[curPerPage], View.GONE);
+		}
+		for (; curPerPage > 0; curPerPage--) {
+			views.setViewVisibility(frames[curPerPage], View.VISIBLE);
+		}
 
 		// What to do when onClick
 
-		for (int buttonId : RecentWidgetProvider.buttonMap) {
+		for (int buttonIdNum = 0; buttonIdNum < numPerPage; buttonIdNum++) {
+
+			int buttonId = RecentWidgetProvider.buttonMap[buttonIdNum];
 
 			Intent defineIntent = new Intent(
 					RecentWidgetUtils.ACTION_SHOW_POPUP);
@@ -241,6 +266,8 @@ public class RecentWidgetHolder {
 
 		// Pager info
 
+		updatePager();
+
 		int maxPageShown = maxPage + 1;
 		int currentPageShown = (currentPage % maxPageShown) + 1;
 
@@ -268,7 +295,7 @@ public class RecentWidgetHolder {
 		// Find which contact by shifting with the current paging
 
 		if (index >= 0) {
-			index += currentPage * RecentWidgetProvider.numContactsDisplayed;
+			index += currentPage * RecentWidgetHolder.numPerPage;
 			if (index < recentContacts.size()) {
 				return recentContacts.get(index);
 			} else {
@@ -316,7 +343,7 @@ public class RecentWidgetHolder {
 	private static boolean updatePager() {
 
 		maxPage = (int) Math.floor(((double) recentContacts.size() - 1)
-				/ RecentWidgetProvider.numContactsDisplayed);
+				/ RecentWidgetHolder.numPerPage);
 		if (maxPage < 0) {
 			maxPage = 0;
 		}
