@@ -14,12 +14,6 @@ public class SmsDao extends ContentResolverTemplate {
 
 	private static final String TAG = "RW:SmsDao";
 
-	/**
-	 * The image views holding the SMS icons.
-	 */
-	static int[] contactSmsMap = new int[] { R.id.contactEventLabel01_1,
-			R.id.contactEventLabel02_1, R.id.contactEventLabel03_1 };
-
 	public static final Uri SMS_CONTENT_URI = Uri
 			.parse("content://mms-sms/conversations/");
 
@@ -95,8 +89,4 @@ public class SmsDao extends ContentResolverTemplate {
 		return RecentEvent.TYPE_SMS;
 	}
 
-	@Override
-	public int[] getWidgetLabels() {
-		return contactSmsMap;
-	}
 }

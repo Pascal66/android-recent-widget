@@ -3,7 +3,6 @@ package org.recentwidget.dao;
 import java.util.StringTokenizer;
 
 import org.recentwidget.EventListBuilder;
-import org.recentwidget.R;
 import org.recentwidget.android.WidgetPreferenceActivity;
 import org.recentwidget.compat.gmail.Gmail;
 import org.recentwidget.compat.gmail.Gmail.ConversationColumns;
@@ -24,12 +23,6 @@ public class GmailDao extends ContentResolverTemplate {
 	private static final String GMAIL_ACCOUNT_TYPE = "com.google";
 
 	private static final String TAG = "RW:GmailDao";
-
-	/**
-	 * The image views holding the Gmail icons.
-	 */
-	static int[] contactGmailMap = new int[] { R.id.contactEventLabel01_2,
-			R.id.contactEventLabel02_2, R.id.contactEventLabel03_2 };
 
 	private static String accountName;
 	private static final boolean useConversations = true;
@@ -200,8 +193,4 @@ public class GmailDao extends ContentResolverTemplate {
 		}
 	}
 
-	@Override
-	public int[] getWidgetLabels() {
-		return contactGmailMap;
-	}
 }
