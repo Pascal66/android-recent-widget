@@ -35,6 +35,7 @@
 		<ImageView android:id="@+id/contactEventLabel01_0" style="@style/WidgetEventImage1" />
 		<ImageView android:id="@+id/contactEventLabel01_1" style="@style/WidgetEventImage2" />
 		<ImageView android:id="@+id/contactEventLabel01_2" style="@style/WidgetEventImage3" />
+		<ImageView android:id="@+id/contactEventLabel01_3" style="@style/WidgetEventImage4" />
 
 		<!-- Name of the contact -->
 
@@ -58,6 +59,7 @@
 		<ImageView android:id="@+id/contactEventLabel02_0" style="@style/WidgetEventImage1" />
 		<ImageView android:id="@+id/contactEventLabel02_1" style="@style/WidgetEventImage2" />
 		<ImageView android:id="@+id/contactEventLabel02_2" style="@style/WidgetEventImage3" />
+		<ImageView android:id="@+id/contactEventLabel02_3" style="@style/WidgetEventImage4" />
 
 		<!-- Name of the contact -->
 
@@ -81,6 +83,7 @@
 		<ImageView android:id="@+id/contactEventLabel03_0" style="@style/WidgetEventImage1" />
 		<ImageView android:id="@+id/contactEventLabel03_1" style="@style/WidgetEventImage2" />
 		<ImageView android:id="@+id/contactEventLabel03_2" style="@style/WidgetEventImage3" />
+		<ImageView android:id="@+id/contactEventLabel03_3" style="@style/WidgetEventImage4" />
 
 		<!-- Name of the contact -->
 

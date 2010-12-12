@@ -26,10 +26,24 @@ public class RecentWidgetHolder {
 	private static final int LABEL_MAX_LINES_WITH_PIC = 2;
 	private static final int LABEL_MAX_LINES_NO_PIC = 4;
 
+	private static final int OBSERVERS_COUNT = RecentWidgetProvider.eventObservers.length;
+
 	/**
 	 * List of the Events to be displayed on the widget.
 	 */
 	static List<RecentContact> recentContacts;
+
+	static int[] firstImageMap = new int[] { R.id.contactEventLabel01_0,
+			R.id.contactEventLabel02_0, R.id.contactEventLabel03_0 };
+	static int[] secondImageMap = new int[] { R.id.contactEventLabel01_1,
+			R.id.contactEventLabel02_1, R.id.contactEventLabel03_1 };
+	static int[] thirdImageMap = new int[] { R.id.contactEventLabel01_2,
+			R.id.contactEventLabel02_2, R.id.contactEventLabel03_2 };
+	static int[] fourthImageMap = new int[] { R.id.contactEventLabel01_3,
+			R.id.contactEventLabel02_3, R.id.contactEventLabel03_3 };
+
+	static int[][] imageMap = new int[][] { firstImageMap, secondImageMap,
+			thirdImageMap, fourthImageMap };
 
 	/**
 	 * 0-based index of the page of contacts to be displayed.
@@ -124,18 +138,20 @@ public class RecentWidgetHolder {
 
 				// Show each last event type for this contact
 
+				int count = 0;
 				for (EventObserver observer : RecentWidgetProvider.eventObservers) {
 					Integer resource = observer
 							.getResourceForWidget(recentContact);
 					if (resource != null) {
-						views.setImageViewResource(observer.getWidgetLabels()[i
+						views.setImageViewResource(imageMap[count][i
 								% RecentWidgetProvider.numContactsDisplayed],
 								resource);
-						views.setViewVisibility(observer.getWidgetLabels()[i
+						views.setViewVisibility(imageMap[count][i
 								% RecentWidgetProvider.numContactsDisplayed],
 								View.VISIBLE);
+						count++;
 					} else {
-						views.setViewVisibility(observer.getWidgetLabels()[i
+						views.setViewVisibility(imageMap[count][i
 								% RecentWidgetProvider.numContactsDisplayed],
 								View.INVISIBLE);
 					}
@@ -152,8 +168,8 @@ public class RecentWidgetHolder {
 				views.setViewVisibility(RecentWidgetProvider.imageMap[i
 						% RecentWidgetProvider.numContactsDisplayed],
 						View.INVISIBLE);
-				for (EventObserver observer : RecentWidgetProvider.eventObservers) {
-					views.setViewVisibility(observer.getWidgetLabels()[i
+				for (int j = 0; j < OBSERVERS_COUNT; j++) {
+					views.setViewVisibility(imageMap[j][i
 							% RecentWidgetProvider.numContactsDisplayed],
 							View.INVISIBLE);
 				}

@@ -16,6 +16,4 @@ public interface EventObserver {
 
 	Integer getResourceForWidget(RecentContact contact);
 
-	int[] getWidgetLabels();
-
 }

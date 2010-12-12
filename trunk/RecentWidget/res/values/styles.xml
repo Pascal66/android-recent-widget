@@ -20,6 +20,10 @@
     	<item name="android:layout_marginRight">34dip</item>
 	</style>    
 
+	<style name="WidgetEventImage4" parent="WidgetEventImage">
+    	<item name="android:layout_marginRight">50dip</item>
+	</style>    
+
     <style name="WidgetFrame">
     	<item name="android:layout_width">fill_parent</item>
     	<item name="android:layout_height">fill_parent</item>

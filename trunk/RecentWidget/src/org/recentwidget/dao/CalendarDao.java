@@ -3,7 +3,6 @@ package org.recentwidget.dao;
 import java.util.Date;
 
 import org.recentwidget.EventListBuilder;
-import org.recentwidget.R;
 import org.recentwidget.android.WidgetPreferenceActivity;
 import org.recentwidget.model.RecentContact;
 import org.recentwidget.model.RecentEvent;
@@ -23,11 +22,6 @@ public class CalendarDao extends ContentResolverTemplate {
 	private static final String CALENDAR_EVENT_START = "dtstart";
 	private static final String CALENDAR_TITLE = "title";
 	private static final String CALENDAR_ID = "_id";
-	/**
-	 * The image views holding the CallLog icons.
-	 */
-	static int[] imageMap = new int[] { R.id.contactEventLabel01_0,
-			R.id.contactEventLabel02_0, R.id.contactEventLabel03_0 };
 
 	public CalendarDao() {
 		super();
@@ -48,11 +42,6 @@ public class CalendarDao extends ContentResolverTemplate {
 	@Override
 	public Integer getResourceForWidget(RecentContact contact) {
 		return null;
-	}
-
-	@Override
-	public int[] getWidgetLabels() {
-		return imageMap;
 	}
 
 	@Override

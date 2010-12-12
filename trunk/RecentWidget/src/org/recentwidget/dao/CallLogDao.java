@@ -15,12 +15,6 @@ public class CallLogDao extends ContentResolverTemplate {
 
 	private static final String TAG = "RW:CallLogDao";
 
-	/**
-	 * The image views holding the CallLog icons.
-	 */
-	static int[] contactCallMap = new int[] { R.id.contactEventLabel01_0,
-			R.id.contactEventLabel02_0, R.id.contactEventLabel03_0 };
-
 	public CallLogDao() {
 		super();
 
@@ -111,8 +105,4 @@ public class CallLogDao extends ContentResolverTemplate {
 		return RecentEvent.TYPE_CALL;
 	}
 
-	@Override
-	public int[] getWidgetLabels() {
-		return contactCallMap;
-	}
 }
