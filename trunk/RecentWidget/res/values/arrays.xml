@@ -1,13 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-<string-array name="num_retrieved_entries">
-<item>12</item>
-<item>21</item>
-<item>30</item>
-</string-array>
-<string-array name="num_retrieved_values">
-<item>12</item>
-<item>21</item>
-<item>30</item>
-</string-array>
+	<string-array name="num_per_page_entries">
+		<item>3</item>
+		<item>4</item>
+		<item>5</item>
+		<item>6</item>
+	</string-array>
+	<string-array name="num_per_page_values">
+		<item>3</item>
+		<item>4</item>
+		<item>5</item>
+		<item>6</item>
+	</string-array>
+	<string-array name="num_retrieved_entries">
+		<item>12</item>
+		<item>21</item>
+		<item>30</item>
+	</string-array>
+	<string-array name="num_retrieved_values">
+		<item>12</item>
+		<item>21</item>
+		<item>30</item>
+	</string-array>
 </resources>

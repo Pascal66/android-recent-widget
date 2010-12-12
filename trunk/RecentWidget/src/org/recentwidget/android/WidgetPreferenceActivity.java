@@ -30,6 +30,8 @@ public class WidgetPreferenceActivity extends PreferenceActivity {
 	public static final String PREF_PROVIDER_GMAIL = "provider_email";
 	public static final String PREF_PROVIDER_CALENDAR = "provider_calendar";
 	public static final String PREF_MAX_RETRIEVED = "num_retrieved";
+	public static final String PREF_NUM_PER_PAGE = "num_per_page";
+
 	private static final String TAG = "RW:PrefActivity";
 
 	private static boolean hasChanged = false;
@@ -42,6 +44,7 @@ public class WidgetPreferenceActivity extends PreferenceActivity {
 		addPreferencesFromResource(R.xml.widget_preference);
 		reloadAfterPreferenceChanged = new OnPreferenceChangeListenerImplementation();
 
+		initProviderPreferenceWith2x(PREF_NUM_PER_PAGE, false);
 		initProviderPreferenceWith2x(PREF_MAX_RETRIEVED, false);
 
 		initProviderPreferenceWith2x(PREF_PROVIDER_CALENDAR, true);

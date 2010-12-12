@@ -51,7 +51,8 @@ public class RecentWidgetProvider extends AppWidgetProvider {
 	 * The buttons available on the widget.
 	 */
 	static int[] buttonMap = new int[] { R.id.contactButton01,
-			R.id.contactButton02, R.id.contactButton03 };
+			R.id.contactButton02, R.id.contactButton03, R.id.contactButton04,
+			R.id.contactButton05, R.id.contactButton06 };
 
 	/**
 	 * The contact images available on the widget.
@@ -62,9 +63,8 @@ public class RecentWidgetProvider extends AppWidgetProvider {
 	 * The text views holding the contact name labels.
 	 */
 	static int[] labelMap = new int[] { R.id.contactLabel01,
-			R.id.contactLabel02, R.id.contactLabel03 };
-
-	static int numContactsDisplayed = buttonMap.length;
+			R.id.contactLabel02, R.id.contactLabel03, R.id.contactLabel04,
+			R.id.contactLabel05, R.id.contactLabel06 };
 
 	static Date lastUpdated = new Date(0);
 
@@ -166,7 +166,7 @@ public class RecentWidgetProvider extends AppWidgetProvider {
 	}
 
 	public static int getButtonPosition(int buttonId) {
-		for (int index = 0; index < numContactsDisplayed; index++) {
+		for (int index = 0; index < RecentWidgetHolder.numPerPage; index++) {
 			if (buttonMap[index] == buttonId) {
 				return index;
 			}
