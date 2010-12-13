@@ -183,7 +183,7 @@ public class RecentWidgetHolder {
 			Log.d(TAG, "Pushing updated widget to provider");
 
 			ComponentName thisWidget = new ComponentName(context,
-					RecentWidgetProvider.class);
+					SingleWidgetProvider.class);
 			AppWidgetManager manager = AppWidgetManager.getInstance(context);
 			manager.updateAppWidget(thisWidget, views);
 
@@ -206,7 +206,7 @@ public class RecentWidgetHolder {
 		Log.d(TAG, "Creating widget view");
 
 		RemoteViews views = new RemoteViews(context.getPackageName(),
-				R.layout.recentwidget);
+				R.layout.frames_first);
 
 		// Set the number of contacts per page
 

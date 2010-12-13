@@ -9,9 +9,7 @@
 		AnalogClock,Button,Chronometer,ImageButton,ImageView,ProgressBar,TextView
 	-->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:background="@drawable/widget_background" android:orientation="horizontal"
-	android:layout_width="fill_parent" android:layout_height="fill_parent"
-	android:paddingLeft="14dp">
+	android:layout_width="fill_parent" android:layout_height="fill_parent">
 
 	<!-- TODO: Add a default "initializing" message... -->
 

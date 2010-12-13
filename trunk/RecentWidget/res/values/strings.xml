@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Recent Contacts Widget</string>
-    <string name="short_app_name">Recent Contacts</string>
+    <string name="short_app_name">Recent Contacts (1 row)</string>
+    <string name="short_app_name_single">Recent Contacts (1 row)</string>
+    <string name="short_app_name_double">Recent Contacts (2 rows)</string>
     
     <!-- About -->
     <string name="about_header">Using the widget</string>

@@ -17,6 +17,7 @@ public class RecentWidgetUpdateService extends Service {
 
 	public static final String ORIGINAL_ACTION = "ORIGINAL_ACTION";
 	public static final String ORIGINAL_INTENT = "ORIGINAL_INTENT";
+	public static final String UPDATED_WIDGETS_IDS = "WIDGET_IDS";
 
 	private static final long OBSERVER_DELAY_MILIS = 4000;
 

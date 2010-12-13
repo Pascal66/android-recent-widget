@@ -82,13 +82,8 @@ public class RecentWidgetProvider extends AppWidgetProvider {
 		if (!RecentWidgetHolder.isAlive()) {
 			Log.d(TAG, "Holder was empty. Rebuild the list.");
 
-			Intent serviceIntent = new Intent(context,
-					RecentWidgetUpdateService.class);
-
-			serviceIntent.putExtra(RecentWidgetUpdateService.ORIGINAL_ACTION,
+			startService(context, appWidgetManager, appWidgetIds,
 					RecentWidgetUtils.ACTION_UPDATE_ALL);
-
-			context.startService(serviceIntent);
 
 		} else {
 			Log.d(TAG, "Holder still filled.");
@@ -108,16 +103,38 @@ public class RecentWidgetProvider extends AppWidgetProvider {
 				RecentWidgetHolder.currentPage = 0;
 			}
 
-			Intent serviceIntent = new Intent(context,
-					RecentWidgetUpdateService.class);
-
-			serviceIntent.putExtra(RecentWidgetUpdateService.ORIGINAL_ACTION,
+			startService(context, appWidgetManager, appWidgetIds,
 					RecentWidgetUtils.ACTION_REFRESH_DISPLAY);
-
-			context.startService(serviceIntent);
 
 		}
 
+	}
+
+	private void startService(Context context,
+			AppWidgetManager appWidgetManager, int[] appWidgetIds,
+			String serviceAction) {
+
+		Intent serviceIntent = new Intent(context,
+				RecentWidgetUpdateService.class);
+
+		serviceIntent.putExtra(RecentWidgetUpdateService.ORIGINAL_ACTION,
+				serviceAction);
+
+		serviceIntent.putExtra(RecentWidgetUpdateService.UPDATED_WIDGETS_IDS,
+				appWidgetIds);
+
+		context.startService(serviceIntent);
+	}
+
+	private void startService(Context context, Intent originalIntent) {
+
+		Intent serviceIntent = new Intent(context,
+				RecentWidgetUpdateService.class);
+
+		serviceIntent.putExtra(RecentWidgetUpdateService.ORIGINAL_INTENT,
+				originalIntent);
+
+		context.startService(serviceIntent);
 	}
 
 	@Override
@@ -137,10 +154,7 @@ public class RecentWidgetProvider extends AppWidgetProvider {
 				Intent serviceIntent = new Intent(context,
 						RecentWidgetUpdateService.class);
 
-				serviceIntent.putExtra(
-						RecentWidgetUpdateService.ORIGINAL_INTENT, intent);
-
-				context.startService(serviceIntent);
+				startService(context, serviceIntent);
 
 				return;
 

@@ -46,7 +46,7 @@
 			</intent-filter>
 		</activity>
 
-		<receiver android:name=".android.RecentWidgetProvider" android:label="@string/short_app_name">
+		<receiver android:name=".android.SingleWidgetProvider" android:label="@string/short_app_name_single">
 			<intent-filter>
 				<!-- Core android events -->
 				<action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -63,6 +63,14 @@
 			</intent-filter>
 			<meta-data android:name="android.appwidget.provider"
 				android:resource="@xml/recentwidget_provider_info" />
+		</receiver>
+
+		<receiver android:name=".android.DoubleWidgetProvider" android:label="@string/short_app_name_double">
+			<intent-filter>
+				<action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+			</intent-filter>
+			<meta-data android:name="android.appwidget.provider"
+				android:resource="@xml/recentwidget_double_provider_info" />
 		</receiver>
 
 	</application>
