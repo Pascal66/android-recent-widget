@@ -4,8 +4,8 @@
 	android:layout_width="fill_parent" android:layout_height="fill_parent"
 	android:paddingLeft="14dp">
 
-	<include android:id="@layout/frames_first" />
+	<include layout="@layout/frames_first" />
 
-	<include android:id="@layout/frames_second" />
+	<include layout="@layout/frames_second" />
 
 </LinearLayout>
