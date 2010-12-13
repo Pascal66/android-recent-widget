@@ -10,6 +10,7 @@ import org.recentwidget.model.RecentContact;
 
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
+import android.appwidget.AppWidgetProviderInfo;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -29,6 +30,8 @@ public class RecentWidgetHolder {
 	private static final int LABEL_MAX_LINES_NO_PIC = 4;
 
 	private static final int OBSERVERS_COUNT = RecentWidgetProvider.eventObservers.length;
+
+	private static final int UNKNOWN_WIDGET_ID = -1;
 
 	/**
 	 * List of the Events to be displayed on the widget.
@@ -64,6 +67,10 @@ public class RecentWidgetHolder {
 	public static int numPerPage;
 
 	static final void updateWidgetLabels(Context context) {
+		updateWidgetLabels(context, new int[] {});
+	}
+
+	static final void updateWidgetLabels(Context context, int[] widgetIds) {
 
 		if (recentContacts == null) {
 			Log.e(TAG, "Trying to update widget without recentContacts! "
@@ -79,7 +86,13 @@ public class RecentWidgetHolder {
 
 			String label = "N/A";
 
-			RemoteViews views = buildWidgetView(context);
+			RemoteViews views = null;
+			int widgetId = UNKNOWN_WIDGET_ID;
+			if (widgetIds != null && widgetIds.length > 0) {
+				views = buildWidgetView(context, widgetIds[0]);
+			} else {
+				views = buildWidgetView(context, UNKNOWN_WIDGET_ID);
+			}
 
 			int i = currentPage * RecentWidgetHolder.numPerPage;
 			// End index not included
@@ -182,10 +195,20 @@ public class RecentWidgetHolder {
 
 			Log.d(TAG, "Pushing updated widget to provider");
 
-			ComponentName thisWidget = new ComponentName(context,
-					SingleWidgetProvider.class);
 			AppWidgetManager manager = AppWidgetManager.getInstance(context);
-			manager.updateAppWidget(thisWidget, views);
+			if (widgetId != UNKNOWN_WIDGET_ID) {
+				AppWidgetProviderInfo widgetInfo = manager
+						.getAppWidgetInfo(widgetId);
+				manager.updateAppWidget(widgetInfo.provider, views);
+				Log.d(TAG, "Using provider " + widgetInfo.provider
+						+ " for widget");
+			} else {
+				// Defaults to the single-line one
+				ComponentName thisWidget = new ComponentName(context,
+						SingleWidgetProvider.class);
+				manager.updateAppWidget(thisWidget, views);
+
+			}
 
 		} else {
 
@@ -199,14 +222,25 @@ public class RecentWidgetHolder {
 	 * listeners and the interaction widgets.
 	 * 
 	 * @param context
+	 * @param widgetIds
 	 * @return
 	 */
-	static final RemoteViews buildWidgetView(final Context context) {
+	static final RemoteViews buildWidgetView(final Context context, int widgetId) {
 
 		Log.d(TAG, "Creating widget view");
 
-		RemoteViews views = new RemoteViews(context.getPackageName(),
-				R.layout.frames_first);
+		RemoteViews views;
+		AppWidgetManager manager = AppWidgetManager.getInstance(context);
+		if (widgetId != UNKNOWN_WIDGET_ID) {
+			AppWidgetProviderInfo widgetInfo = manager
+					.getAppWidgetInfo(widgetId);
+			views = new RemoteViews(context.getPackageName(),
+					widgetInfo.initialLayout);
+		} else {
+			// use the first one in mind...
+			views = new RemoteViews(context.getPackageName(),
+					R.layout.recentwidget_single);
+		}
 
 		// Set the number of contacts per page
 

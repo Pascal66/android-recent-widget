@@ -39,6 +39,8 @@ public class RecentWidgetUpdateService extends Service {
 			originalAction = intent.getStringExtra(ORIGINAL_ACTION);
 		}
 
+		int[] widgetIds = intent.getIntArrayExtra(UPDATED_WIDGETS_IDS);
+
 		if (originalAction == null) {
 			Log.d(TAG, "Could not handle intent.");
 		}
@@ -101,7 +103,7 @@ public class RecentWidgetUpdateService extends Service {
 		// Update the widget
 
 		if (updateWidget) {
-			RecentWidgetHolder.updateWidgetLabels(this);
+			RecentWidgetHolder.updateWidgetLabels(this, widgetIds);
 		}
 
 	}
